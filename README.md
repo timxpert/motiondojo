@@ -1,32 +1,98 @@
-# React + TypeScript + Vite
+# Motion Dojo — Visual, Animated Community Website
 
-This template provides a minimal setup to get React working in Vite with HMR and some Oxlint rules.
+A bespoke, production-grade community website for **Motion Dojo**, an exclusive global community for smartphone motion designers.
 
-Currently, two official plugins are available:
+Built from scratch with **React 19**, **TypeScript**, **Vite**, and custom **CSS design tokens**.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+---
 
-## React Compiler
+## 🥋 Brand Identity & Design System
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+### 1. Official Color Palette
+- **Dojo Midnight**: `#140A2E` — deep backgrounds, dark surfaces, and immersive sections.
+- **Motion Violet**: `#6D32E8` — primary brand color for buttons, links, active states, and interactive elements.
+- **Electric Lavender**: `#A77BFF` — secondary accent for illustrations, highlights, and visual depth.
+- **Kinetic Lime**: `#C8FF3D` — energetic accents, selected words, indicators, and important details.
+- **White**: `#F7F5FF` — light-theme background, light surfaces, and text on dark backgrounds.
 
-## Expanding the Oxlint configuration
+### 2. Signature Extended Gradient
+`#6D32E8 → #A77BFF → #C8FF3D`
+Applied selectively to hero headlines, keyframe motion trails, stage connectors, and progress indicators.
 
-If you are developing a production application, we recommend enabling type-aware lint rules by installing `oxlint-tsgolint` and editing `.oxlintrc.json`:
+### 3. Typography
+- **Clash Display**: Hero headlines, large section headings, editorial display statements, short expressive moments. Loaded via official Fontshare CDN.
+- **Sora**: Body text, navigation, buttons, captions, FAQ content, labels and interface elements. Loaded via official Google Fonts CDN.
 
-```json
-{
-  "$schema": "./node_modules/oxlint/configuration_schema.json",
-  "plugins": ["react", "typescript", "oxc"],
-  "options": {
-    "typeAware": true
-  },
-  "rules": {
-    "react/rules-of-hooks": "error",
-    "react/only-export-components": ["warn", { "allowConstantExport": true }]
-  }
-}
+---
+
+## 🚀 Key Features
+
+1. **Light & Dark Theme Engine**
+   - High-contrast, custom-tailored dark and light palettes.
+   - Smooth theme toggle button in the navigation bar.
+   - System preference detection and `localStorage` persistence.
+   - Zero-flash inline script execution in `index.html`.
+
+2. **Hero & Interactive Keyframe Timeline**
+   - Headline: *"You were never meant to figure it all out alone."*
+   - Interactive 60fps playhead scrubber with real-time frame counter (`00:00:24f`).
+   - Animated SVG motion trajectory path with custom cubic-bezier curvature.
+   - Primary CTA: **LEARN MORE** opens the dedicated `/about` page.
+
+3. **Cinematic 16:9 Hero Video & Modal Player**
+   - Full 16:9 cinematic video player with authentic poster artwork (`/images/hero-video-poster.webp`).
+   - Accessible modal dialog for Vimeo embed with ESC listener and backdrop blur.
+
+4. **Speed Graph Lab (About Motion Dojo Section)**
+   - Interactive visualizer demonstrating real cubic-bezier speed curves (*Kinetic Punch*, *Elastic Snap*, *Cinematic S-Curve*, *Linear*).
+   - Real-time animated canvas element demonstrating the difference between amateur mechanical motion and professional easing.
+
+5. **Our Mission: 3-Part Ecosystem**
+   - Visualizing **LEARN**, **BELONG**, and **WORK** with kinetic cards, metrics, and animated stage transitions.
+
+6. **Community Philosophy**
+   - Oversized Clash Display typographic crescendo: *"A skill can change what you do. The right community can change how far you go."*
+   - Core values triad: *No Lone Wolfing*, *Radical Standards*, *Lifelong Network*.
+
+7. **The Ninja Path**
+   - Structured 4-phase progression:
+     - `01 — Foundations`
+     - `02 — Alight Motion Mastery`
+     - `03 — Execution`
+     - `04 — Portfolio and Mastery`
+     - `Final Milestone — Black Belt in Motion Design`
+   - Direct CTA to the course portal: `https://blackbelt.motiondojo.com`.
+
+8. **Keyframe Ninjas Showcase**
+   - Authentic student capstone projects from the Dojo directory.
+   - Interactive project previews with play modal triggers and student credentials.
+   - External CTA linking to the full showcase: `https://ninjasmotiondojo.vercel.app`.
+
+9. **Stories from the Dojo (Student Experiences)**
+   - Real video testimonials from graduates: **Mary** (Cohort 01), **Roseline** (Cohort 02), and **Muhammad Fatihi** (Cohort 02).
+   - Instant video playback modal with authentic Vimeo feeds.
+
+10. **Frequently Asked Questions**
+    - Accessible accordion component with all 7 exact questions & answers regarding split payments (₦20,000), virtual community, phone specifications, Alight Motion, and certification.
+
+11. **Dedicated `/about` Page**
+    - Deep dive into Motion Dojo's story, philosophy, and ecosystem.
+    - Seamless client-side route navigation between `/` and `/about`.
+
+---
+
+## 🛠️ Development & Production
+
+```bash
+# Install dependencies
+npm install
+
+# Start development server
+npm run dev
+
+# Build for production
+npm run build
+
+# Preview production build
+npm run preview
 ```
-
-See the [Oxlint rules documentation](https://oxc.rs/docs/guide/usage/linter/rules) for the full list of rules and categories.
