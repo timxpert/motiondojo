@@ -1,223 +1,73 @@
-import React, { useState } from 'react';
-import { BookOpen, Users, Briefcase, Sparkles } from 'lucide-react';
+import React from 'react';
+import { Target } from 'lucide-react';
 
 export const MissionSection: React.FC = () => {
-  const [activeStep, setActiveStep] = useState<number>(0);
-
-  const pillars = [
-    {
-      id: 'learn',
-      title: 'LEARN',
-      subtitle: 'Knowledge & Craft',
-      description: 'Build knowledge and develop your creative skills through structured frameworks and intentional speed curve control.',
-      accent: '#6D32E8',
-      icon: BookOpen,
-      metric: '01',
-      details: 'Master mobile animation principles, Alight Motion depth, and pacing before touching complex projects.',
-    },
-    {
-      id: 'belong',
-      title: 'BELONG',
-      subtitle: 'Proximity & Culture',
-      description: 'Connect with people who share your passion and understand your journey. No more creating in isolation.',
-      accent: '#A77BFF',
-      icon: Users,
-      metric: '02',
-      details: 'Daily peer critique, private discord channels, live feedback circles, and lifelong creative camaraderie.',
-    },
-    {
-      id: 'work',
-      title: 'WORK',
-      subtitle: 'Execution & Capstones',
-      description: 'Put your knowledge into practice and create meaningful projects evaluated against agency standards.',
-      accent: '#C8FF3D',
-      icon: Briefcase,
-      metric: '03',
-      details: 'Two commercial capstone projects that turn your phone into a high-tier motion portfolio machine.',
-    },
-  ];
-
   return (
-    <section className="section-padding relative" style={{ backgroundColor: 'var(--bg-primary)' }}>
-      <div className="dojo-container">
-        {/* Section Header */}
-        <div style={{ maxWidth: '880px', margin: '0 auto 4.5rem', textAlign: 'center' }}>
-          <div className="pill-badge" style={{ marginBottom: '1.25rem' }}>
-            <Sparkles size={13} />
-            <span>OUR MISSION</span>
+    <section className="py-16 sm:py-24 border-b border-[var(--color-border)]">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="max-w-3xl mx-auto text-center mb-12 sm:mb-16">
+          {/* Label */}
+          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[var(--color-surface-2)] text-[var(--color-link)] text-xs font-bold uppercase tracking-wider mb-4">
+            <Target className="w-3.5 h-3.5" />
+            <span>Our Mission</span>
           </div>
 
-          <h2
-            className="font-display"
-            style={{
-              fontSize: 'clamp(2.2rem, 4.2vw, 3.8rem)',
-              fontWeight: 700,
-              letterSpacing: '-0.025em',
-              lineHeight: 1.15,
-              marginBottom: '1.75rem',
-              color: 'var(--text-primary)',
-            }}
-          >
-            Growth demands the right{' '}
-            <span className="text-gradient">environment, knowledge and proximity.</span>
+          {/* Headline */}
+          <h2 className="font-heading font-extrabold text-3xl sm:text-4xl lg:text-5xl text-[var(--color-text)] tracking-tight leading-tight mb-6">
+            Growth demands the right environment, knowledge and proximity.
           </h2>
 
-          <p
-            style={{
-              fontSize: 'clamp(1rem, 1.8vw, 1.25rem)',
-              lineHeight: 1.7,
-              color: 'var(--text-secondary)',
-              maxWidth: '750px',
-              margin: '0 auto',
-            }}
-          >
-            Most people don't lack ambition. They lack the right room, the right skills and the
-            right people around them. We provide curated environments and practical systems that
-            help people overcome inertia and drive execution.
+          {/* Text 1 */}
+          <p className="text-base sm:text-lg text-[var(--color-muted)] leading-relaxed mb-4">
+            Most people don’t lack ambition. They lack the right room, the right skills and the right
+            people around them. We provide curated environments and practical systems that help
+            people overcome inertia and drive execution.
           </p>
 
-          <p
-            style={{
-              fontSize: '0.95rem',
-              fontWeight: 600,
-              letterSpacing: '0.04em',
-              color: 'var(--color-electric-lavender)',
-              marginTop: '1.25rem',
-            }}
-          >
-            That is why the ecosystem has three parts: a place to learn, a community to belong to,
-            and a space to work.
+          {/* Text 2 */}
+          <p className="text-base sm:text-lg text-[var(--color-muted)] leading-relaxed">
+            That is why the ecosystem has three parts: a place to learn, a community to belong to, and
+            a space to work.
           </p>
         </div>
 
-        {/* Visual Composition: 3 Interconnected Kinetic Environments */}
-        <div
-          style={{
-            display: 'grid',
-            gridTemplateColumns: 'repeat(auto-fit, minmax(290px, 1fr))',
-            gap: '2rem',
-            position: 'relative',
-          }}
-        >
-          {pillars.map((pillar, index) => {
-            const Icon = pillar.icon;
-            const isHovered = activeStep === index;
+        {/* Three Parts Cards */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-4xl mx-auto">
+          {/* Card 1: A place to learn */}
+          <div className="rounded-card border border-[var(--color-border)] bg-[var(--color-surface)] p-6 sm:p-8 flex flex-col items-center text-center shadow-soft transition-all duration-200 hover:-translate-y-1 hover:shadow-soft-lg">
+            <div className="w-12 h-12 rounded-full bg-[var(--color-surface-2)] flex items-center justify-center text-[var(--color-link)] mb-4">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                <circle cx="12" cy="12" r="9" />
+              </svg>
+            </div>
+            <h3 className="font-heading font-extrabold text-lg sm:text-xl text-[var(--color-text)] tracking-tight">
+              A place to learn
+            </h3>
+          </div>
 
-            return (
-              <div
-                key={pillar.id}
-                onMouseEnter={() => setActiveStep(index)}
-                className="dojo-card group"
-                style={{
-                  padding: '2.5rem 2rem',
-                  display: 'flex',
-                  flexDirection: 'column',
-                  justifyContent: 'space-between',
-                  borderRadius: '1.5rem',
-                  border: isHovered
-                    ? `1px solid ${pillar.accent}`
-                    : '1px solid var(--border-subtle)',
-                  boxShadow: isHovered ? 'var(--shadow-lg)' : 'var(--shadow-sm)',
-                  backgroundColor: 'var(--bg-card)',
-                  transition: 'all 0.35s var(--ease-spring)',
-                  transform: isHovered ? 'translateY(-6px)' : 'translateY(0)',
-                }}
-              >
-                <div>
-                  {/* Top Row: Metric & Icon */}
-                  <div
-                    style={{
-                      display: 'flex',
-                      alignItems: 'center',
-                      justifyContent: 'space-between',
-                      marginBottom: '2rem',
-                    }}
-                  >
-                    <span
-                      style={{
-                        fontFamily: 'var(--font-display)',
-                        fontSize: '2.5rem',
-                        fontWeight: 800,
-                        color: pillar.accent,
-                        opacity: 0.85,
-                        lineHeight: 1,
-                      }}
-                    >
-                      {pillar.metric}
-                    </span>
+          {/* Card 2: A community to belong to */}
+          <div className="rounded-card border border-[var(--color-border)] bg-[var(--color-surface)] p-6 sm:p-8 flex flex-col items-center text-center shadow-soft transition-all duration-200 hover:-translate-y-1 hover:shadow-soft-lg">
+            <div className="w-12 h-12 rounded-full bg-[var(--color-surface-2)] flex items-center justify-center text-[var(--color-link)] mb-4">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                <path d="M12 2L21.5 11.5C21.8 11.8 21.8 12.2 21.5 12.5L12 22L2.5 12.5C2.2 12.2 2.2 11.8 2.5 11.5L12 2Z" />
+              </svg>
+            </div>
+            <h3 className="font-heading font-extrabold text-lg sm:text-xl text-[var(--color-text)] tracking-tight">
+              A community to belong to
+            </h3>
+          </div>
 
-                    <div
-                      style={{
-                        width: '52px',
-                        height: '52px',
-                        borderRadius: '14px',
-                        backgroundColor: 'var(--bg-elevated)',
-                        border: '1px solid var(--border-medium)',
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                        color: pillar.accent,
-                        boxShadow: `0 0 20px ${pillar.accent}33`,
-                      }}
-                    >
-                      <Icon size={24} />
-                    </div>
-                  </div>
-
-                  {/* Title & Subtitle */}
-                  <div style={{ marginBottom: '1.25rem' }}>
-                    <span
-                      style={{
-                        fontSize: '0.75rem',
-                        fontWeight: 700,
-                        letterSpacing: '0.12em',
-                        color: 'var(--text-muted)',
-                        textTransform: 'uppercase',
-                      }}
-                    >
-                      {pillar.subtitle}
-                    </span>
-                    <h3
-                      className="font-display"
-                      style={{
-                        fontSize: '1.85rem',
-                        fontWeight: 700,
-                        color: 'var(--text-primary)',
-                        marginTop: '4px',
-                      }}
-                    >
-                      {pillar.title}
-                    </h3>
-                  </div>
-
-                  {/* Core Description */}
-                  <p
-                    style={{
-                      fontSize: '1.02rem',
-                      lineHeight: 1.65,
-                      color: 'var(--text-secondary)',
-                      marginBottom: '1.75rem',
-                    }}
-                  >
-                    {pillar.description}
-                  </p>
-                </div>
-
-                {/* Bottom Expansion Feature */}
-                <div
-                  style={{
-                    paddingTop: '1.25rem',
-                    borderTop: '1px solid var(--border-subtle)',
-                    fontSize: '0.85rem',
-                    color: 'var(--color-electric-lavender)',
-                    lineHeight: 1.5,
-                  }}
-                >
-                  {pillar.details}
-                </div>
-              </div>
-            );
-          })}
+          {/* Card 3: A space to work */}
+          <div className="rounded-card border border-[var(--color-border)] bg-[var(--color-surface)] p-6 sm:p-8 flex flex-col items-center text-center shadow-soft transition-all duration-200 hover:-translate-y-1 hover:shadow-soft-lg">
+            <div className="w-12 h-12 rounded-full bg-[var(--color-surface-2)] flex items-center justify-center text-[var(--color-link)] mb-4">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                <rect x="3" y="3" width="18" height="18" rx="5" />
+              </svg>
+            </div>
+            <h3 className="font-heading font-extrabold text-lg sm:text-xl text-[var(--color-text)] tracking-tight">
+              A space to work
+            </h3>
+          </div>
         </div>
       </div>
     </section>

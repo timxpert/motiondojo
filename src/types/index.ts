@@ -1,26 +1,23 @@
-export type ThemeMode = 'dark' | 'light';
-
-export interface ProjectInfo {
+export interface NinjaProject {
   title: string;
   video: string;
   note: string;
-  poster: string;
+  poster?: string;
 }
 
-export interface StudentLinks {
+export interface NinjaSocialLinks {
   instagram?: string;
   x?: string;
   linkedin?: string;
   behance?: string;
-  youtube?: string;
   tiktok?: string;
+  youtube?: string;
   website?: string;
   whatsapp?: string;
   email?: string;
 }
 
-export interface StudentNinja {
-  id: string;
+export interface Ninja {
   slug: string;
   name: string;
   specialty: string;
@@ -28,34 +25,23 @@ export interface StudentNinja {
   phase: string;
   cohort: string;
   openToWork: boolean;
-  photo: string;
+  photo?: string;
   bio: string;
-  project: ProjectInfo;
-  links: StudentLinks;
+  project: NinjaProject;
+  links: NinjaSocialLinks;
+  isSample?: boolean;
 }
 
-export interface TestimonialStory {
+export interface Story {
   id: string;
   name: string;
   role: string;
   poster: string;
   videoUrl: string;
   summary: string;
-  quote?: string;
-}
-
-export interface NinjaPhase {
-  number: string;
-  title: string;
-  subtitle: string;
-  description: string;
-  accentColor: string;
-  tag: string;
-  skills: string[];
 }
 
 export interface FAQItem {
-  id: string;
   question: string;
   answer: string;
 }

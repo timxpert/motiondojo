@@ -1,98 +1,105 @@
-# Motion Dojo — Visual, Animated Community Website
+# Motion Dojo — Official Website
 
-A bespoke, production-grade community website for **Motion Dojo**, an exclusive global community for smartphone motion designers.
-
-Built from scratch with **React 19**, **TypeScript**, **Vite**, and custom **CSS design tokens**.
+The official main website for **Motion Dojo** ([motiondojo.com](https://motiondojo.com)): an exclusive, focused community platform for smartphone motion designers. Built with Next.js App Router and Tailwind CSS v4.
 
 ---
 
-## 🥋 Brand Identity & Design System
+## 🛠️ Project Configuration & Quick Guide
 
-### 1. Official Color Palette
-- **Dojo Midnight**: `#140A2E` — deep backgrounds, dark surfaces, and immersive sections.
-- **Motion Violet**: `#6D32E8` — primary brand color for buttons, links, active states, and interactive elements.
-- **Electric Lavender**: `#A77BFF` — secondary accent for illustrations, highlights, and visual depth.
-- **Kinetic Lime**: `#C8FF3D` — energetic accents, selected words, indicators, and important details.
-- **White**: `#F7F5FF` — light-theme background, light surfaces, and text on dark backgrounds.
+### 1. How to Change `LEARN_MORE_URL`
+All "Learn more" buttons across the entire website use a single source of truth defined in:
+`src/config/site.ts`
 
-### 2. Signature Extended Gradient
-`#6D32E8 → #A77BFF → #C8FF3D`
-Applied selectively to hero headlines, keyframe motion trails, stage connectors, and progress indicators.
-
-### 3. Typography
-- **Clash Display**: Hero headlines, large section headings, editorial display statements, short expressive moments. Loaded via official Fontshare CDN.
-- **Sora**: Body text, navigation, buttons, captions, FAQ content, labels and interface elements. Loaded via official Google Fonts CDN.
+```typescript
+// src/config/site.ts
+export const LEARN_MORE_URL = "https://blackbelt.motiondojo.com";
+```
+Simply edit this value and all call-to-action buttons across the site will automatically update and open in the same tab.
 
 ---
 
-## 🚀 Key Features
+### 2. How to Add a Ninja to the Spotlight
+Student profiles displayed in the **Meet the Keyframe Ninjas** spotlight are loaded from:
+`src/data/ninjas.ts`
 
-1. **Light & Dark Theme Engine**
-   - High-contrast, custom-tailored dark and light palettes.
-   - Smooth theme toggle button in the navigation bar.
-   - System preference detection and `localStorage` persistence.
-   - Zero-flash inline script execution in `index.html`.
+To add a new ninja:
+1. Open `src/data/ninjas.ts`.
+2. Add an approved student object to the `NINJAS` array:
 
-2. **Hero & Interactive Keyframe Timeline**
-   - Headline: *"You were never meant to figure it all out alone."*
-   - Interactive 60fps playhead scrubber with real-time frame counter (`00:00:24f`).
-   - Animated SVG motion trajectory path with custom cubic-bezier curvature.
-   - Primary CTA: **LEARN MORE** opens the dedicated `/about` page.
+```typescript
+{
+  slug: 'new-ninja-slug',
+  name: 'Student Name',
+  specialty: '3D Motion & Kinetic Typography',
+  status: 'graduate', // 'graduate' | 'training'
+  phase: 'Black Belt',
+  cohort: 'Cohort 01',
+  openToWork: true,
+  photo: '/assets/student-photo.jpg', // Optional: leave empty '' to use neutral geometric shape avatar
+  bio: "Student's own approved bio...",
+  project: {
+    title: 'Capstone Title',
+    video: 'https://vimeo.com/123456789',
+    note: 'Technical summary of the capstone project...',
+    poster: '/images/project-poster.webp',
+  },
+  links: {
+    website: 'https://example.com',
+    instagram: 'student_handle',
+    x: 'student_handle',
+    linkedin: 'student-handle',
+    email: 'student@example.com',
+  },
+  isSample: false,
+}
+```
 
-3. **Cinematic 16:9 Hero Video & Modal Player**
-   - Full 16:9 cinematic video player with authentic poster artwork (`/images/hero-video-poster.webp`).
-   - Accessible modal dialog for Vimeo embed with ESC listener and backdrop blur.
-
-4. **Speed Graph Lab (About Motion Dojo Section)**
-   - Interactive visualizer demonstrating real cubic-bezier speed curves (*Kinetic Punch*, *Elastic Snap*, *Cinematic S-Curve*, *Linear*).
-   - Real-time animated canvas element demonstrating the difference between amateur mechanical motion and professional easing.
-
-5. **Our Mission: 3-Part Ecosystem**
-   - Visualizing **LEARN**, **BELONG**, and **WORK** with kinetic cards, metrics, and animated stage transitions.
-
-6. **Community Philosophy**
-   - Oversized Clash Display typographic crescendo: *"A skill can change what you do. The right community can change how far you go."*
-   - Core values triad: *No Lone Wolfing*, *Radical Standards*, *Lifelong Network*.
-
-7. **The Ninja Path**
-   - Structured 4-phase progression:
-     - `01 — Foundations`
-     - `02 — Alight Motion Mastery`
-     - `03 — Execution`
-     - `04 — Portfolio and Mastery`
-     - `Final Milestone — Black Belt in Motion Design`
-   - Direct CTA to the course portal: `https://blackbelt.motiondojo.com`.
-
-8. **Keyframe Ninjas Showcase**
-   - Authentic student capstone projects from the Dojo directory.
-   - Interactive project previews with play modal triggers and student credentials.
-   - External CTA linking to the full showcase: `https://ninjasmotiondojo.vercel.app`.
-
-9. **Stories from the Dojo (Student Experiences)**
-   - Real video testimonials from graduates: **Mary** (Cohort 01), **Roseline** (Cohort 02), and **Muhammad Fatihi** (Cohort 02).
-   - Instant video playback modal with authentic Vimeo feeds.
-
-10. **Frequently Asked Questions**
-    - Accessible accordion component with all 7 exact questions & answers regarding split payments (₦20,000), virtual community, phone specifications, Alight Motion, and certification.
-
-11. **Dedicated `/about` Page**
-    - Deep dive into Motion Dojo's story, philosophy, and ecosystem.
-    - Seamless client-side route navigation between `/` and `/about`.
+*Note: Never invent achievements, employers, or people. All placeholders are strictly marked with `// TODO:` comments.*
 
 ---
 
-## 🛠️ Development & Production
+### 3. How to Change a Story Video
+Student testimonial cards and video modals are configured in:
+`src/data/stories.ts`
+
+To update a story video:
+1. Open `src/data/stories.ts`.
+2. Update the Vimeo URL, poster image, and quote summary for any student entry:
+
+```typescript
+{
+  id: 'mary',
+  name: 'Mary',
+  role: 'Keyframe Ninja • Cohort 01',
+  poster: '/images/testimonial-mary.webp',
+  videoUrl: 'https://vimeo.com/1238665663', // Replace with any Vimeo link or ID
+  summary: 'How the structured phases took her from struggling with graph curves to producing confident commercial work.',
+}
+```
+The Vimeo embed automatically extracts the video ID and lazy-loads the player only when the student card is tapped.
+
+---
+
+## 🎨 Theme & Styling
+
+- **CSS Variables**: Defined in `src/app/globals.css`.
+  - Light theme: `bg #FFFFFF`, `surface #F7F5FC`, `surface-2 #F1EAFF`, `border #E7E3F1`, `text #14102A`, `muted #5E5877`, `accent #6D32E8`.
+  - Dark theme: `bg #0D0A1A`, `surface #15112A`, `surface-2 #1D1838`, `border #2A2447`, `text #F4F1FF`, `muted #A9A2C6`, `accent #A77BFF`.
+  - Accents: Kinetic Lime `#C8FF3D` (buttons, badges) with dark text `#14102A` in both modes to meet WCAG AA contrast.
+- **Pre-paint Theme Detection**: Embedded inline script prevents theme flash on first load while respecting system preferences and `localStorage`.
+- **Accessibility**: Meets WCAG AA contrast standards and honors `prefers-reduced-motion` and data saving mode (`saveData`).
+
+---
+
+## 🚀 Development & Build
 
 ```bash
-# Install dependencies
-npm install
-
-# Start development server
+# Run development server
 npm run dev
 
-# Build for production
+# Run production build
 npm run build
 
-# Preview production build
-npm run preview
+# Start production server
+npm start
 ```

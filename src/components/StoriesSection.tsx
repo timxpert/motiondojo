@@ -1,252 +1,97 @@
+'use client';
+
 import React, { useState } from 'react';
-import { Play, Sparkles, Award } from 'lucide-react';
-import { TESTIMONIAL_STORIES } from '../data/communityData';
-import { VideoModal } from './VideoModal';
-import type { TestimonialStory } from '../types';
+import { Quote, Play } from 'lucide-react';
+import { STORIES } from '@/data/stories';
+import { Story } from '@/types';
+import { StoryModal } from './StoryModal';
 
 export const StoriesSection: React.FC = () => {
-  const [activeStory, setActiveStory] = useState<TestimonialStory | null>(null);
+  const [selectedStory, setSelectedStory] = useState<Story | null>(null);
 
   return (
-    <section
-      id="stories"
-      className="section-padding relative overflow-hidden"
-      style={{
-        backgroundColor: 'var(--bg-secondary)',
-        borderTop: '1px solid var(--border-subtle)',
-        borderBottom: '1px solid var(--border-subtle)',
-      }}
-    >
-      <div className="dojo-container">
+    <section id="stories" className="py-16 sm:py-24 border-b border-[var(--color-border)] bg-[var(--color-surface)]/50 scroll-mt-20">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Section Header */}
-        <div style={{ maxWidth: '820px', margin: '0 auto 4rem', textAlign: 'center' }}>
-          <div className="pill-badge" style={{ marginBottom: '1.25rem' }}>
-            <Award size={13} />
-            <span>STUDENT EXPERIENCES</span>
+        <div className="text-center max-w-3xl mx-auto mb-14 sm:mb-18">
+          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[var(--color-surface-2)] text-[var(--color-link)] text-xs font-bold uppercase tracking-wider mb-3">
+            <Quote className="w-3.5 h-3.5" />
+            <span>Student experiences</span>
           </div>
-
-          <h2
-            className="font-display"
-            style={{
-              fontSize: 'clamp(2.2rem, 4.4vw, 3.8rem)',
-              fontWeight: 700,
-              letterSpacing: '-0.025em',
-              lineHeight: 1.15,
-              marginBottom: '1.5rem',
-              color: 'var(--text-primary)',
-            }}
-          >
+          <h2 className="font-heading text-3xl sm:text-4xl lg:text-5xl font-extrabold text-[var(--color-text)] tracking-tight">
             Stories from the Dojo
           </h2>
-
-          <p
-            style={{
-              fontSize: 'clamp(1.05rem, 1.8vw, 1.25rem)',
-              lineHeight: 1.65,
-              color: 'var(--text-secondary)',
-              maxWidth: '680px',
-              margin: '0 auto',
-            }}
-          >
-            Hear directly from students who joined the course, conquered the keyframes, and graduated
-            to Black Belt.
+          <p className="text-base sm:text-lg text-[var(--color-muted)] mt-3 leading-relaxed">
+            Hear directly from students who joined the course, conquered the keyframes, and graduated to Black Belt.
           </p>
         </div>
 
-        {/* 3-Column Video Card Gallery */}
-        <div
-          style={{
-            display: 'grid',
-            gridTemplateColumns: 'repeat(auto-fit, minmax(310px, 1fr))',
-            gap: '2.5rem',
-          }}
-        >
-          {TESTIMONIAL_STORIES.map((story) => (
+        {/* 3 Story Cards */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 sm:gap-8">
+          {STORIES.map((story) => (
             <div
               key={story.id}
-              className="dojo-card group cursor-pointer"
-              onClick={() => setActiveStory(story)}
-              style={{
-                borderRadius: '1.5rem',
-                overflow: 'hidden',
-                backgroundColor: 'var(--bg-card)',
-                border: '1px solid var(--border-subtle)',
-                display: 'flex',
-                flexDirection: 'column',
-                transition: 'all 0.35s var(--ease-spring)',
+              tabIndex={0}
+              role="button"
+              aria-label={`Open story from ${story.name}`}
+              onClick={() => setSelectedStory(story)}
+              onKeyDown={(e) => {
+                if (e.key === 'Enter' || e.key === ' ') {
+                  e.preventDefault();
+                  setSelectedStory(story);
+                }
               }}
+              className="group rounded-card border border-[var(--color-border)] bg-[var(--color-surface)] p-4 sm:p-5 flex flex-col justify-between shadow-soft hover:shadow-soft-lg transition-all duration-200 cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-link)]"
             >
-              {/* Video Thumbnail with Authentic Poster */}
-              <div
-                style={{
-                  position: 'relative',
-                  width: '100%',
-                  paddingTop: '65%', // Aspect ratio
-                  backgroundColor: 'var(--color-dojo-midnight)',
-                  overflow: 'hidden',
-                }}
-              >
-                <img
-                  src={story.poster}
-                  alt={`Student testimonial by ${story.name}`}
-                  loading="lazy"
-                  style={{
-                    position: 'absolute',
-                    top: 0,
-                    left: 0,
-                    width: '100%',
-                    height: '100%',
-                    objectFit: 'cover',
-                    transition: 'transform 0.5s var(--ease-expo)',
-                  }}
-                  className="group-hover:scale-105"
-                />
+              <div>
+                {/* Photo & Tap to watch */}
+                <div className="relative aspect-[4/3] w-full rounded-card-sm overflow-hidden bg-black border border-[var(--color-border)] mb-4 shadow-sm">
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img
+                    src={story.poster}
+                    alt={`Photo of ${story.name}`}
+                    className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
+                  />
 
-                {/* Dark Vignette Overlay */}
-                <div
-                  style={{
-                    position: 'absolute',
-                    inset: 0,
-                    background:
-                      'linear-gradient(180deg, rgba(20, 10, 46, 0.2) 0%, rgba(20, 10, 46, 0.75) 100%)',
-                  }}
-                />
+                  <div className="absolute inset-0 bg-black/35 group-hover:bg-black/25 transition-colors" />
 
-                {/* Center Play Button Badge */}
-                <div
-                  style={{
-                    position: 'absolute',
-                    top: '50%',
-                    left: '50%',
-                    transform: 'translate(-50%, -50%)',
-                    width: '60px',
-                    height: '60px',
-                    borderRadius: '50%',
-                    background: 'var(--gradient-signature)',
-                    padding: '2px',
-                    boxShadow: '0 0 25px rgba(200, 255, 61, 0.4)',
-                    transition: 'transform 0.3s var(--ease-spring)',
-                  }}
-                  className="group-hover:scale-110"
-                >
-                  <div
-                    style={{
-                      width: '100%',
-                      height: '100%',
-                      borderRadius: '50%',
-                      backgroundColor: 'rgba(20, 10, 46, 0.9)',
-                      display: 'flex',
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                      color: 'var(--color-kinetic-lime)',
-                    }}
-                  >
-                    <Play size={24} fill="currentColor" style={{ marginLeft: '3px' }} />
-                  </div>
-                </div>
-
-                {/* Tap to Watch Indicator Pill */}
-                <div
-                  style={{
-                    position: 'absolute',
-                    bottom: '1rem',
-                    left: '1rem',
-                    display: 'inline-flex',
-                    alignItems: 'center',
-                    gap: '5px',
-                    padding: '4px 10px',
-                    borderRadius: '9999px',
-                    backgroundColor: 'rgba(20, 10, 46, 0.85)',
-                    backdropFilter: 'blur(8px)',
-                    fontSize: '0.72rem',
-                    fontWeight: 700,
-                    color: 'var(--color-kinetic-lime)',
-                    border: '1px solid var(--border-subtle)',
-                  }}
-                >
-                  <Sparkles size={12} />
-                  <span>TAP TO WATCH</span>
-                </div>
-              </div>
-
-              {/* Story Content & Summary */}
-              <div
-                style={{
-                  padding: '1.75rem',
-                  display: 'flex',
-                  flexDirection: 'column',
-                  flexGrow: 1,
-                  justifyContent: 'space-between',
-                }}
-              >
-                <div>
-                  <div style={{ marginBottom: '1rem' }}>
-                    <h3
-                      className="font-display"
-                      style={{
-                        fontSize: '1.35rem',
-                        fontWeight: 700,
-                        color: 'var(--text-primary)',
-                      }}
-                    >
-                      {story.name}
-                    </h3>
-                    <span
-                      style={{
-                        fontSize: '0.8rem',
-                        fontWeight: 600,
-                        color: 'var(--color-electric-lavender)',
-                      }}
-                    >
-                      {story.role}
-                    </span>
+                  {/* Circular Lime Play Button */}
+                  <div className="absolute inset-0 flex items-center justify-center">
+                    <div className="relative z-10 w-14 h-14 rounded-full bg-[#C8FF3D] hover:bg-[#bbf629] text-[#14102A] flex items-center justify-center shadow-lg transition-transform duration-200 group-hover:scale-110 active:scale-95">
+                      <Play className="w-5 h-5 fill-[#14102A] ml-0.5" />
+                    </div>
                   </div>
 
-                  <p
-                    style={{
-                      fontSize: '0.95rem',
-                      lineHeight: 1.65,
-                      color: 'var(--text-secondary)',
-                      fontStyle: 'italic',
-                      marginBottom: '1.25rem',
-                    }}
-                  >
-                    "{story.summary}"
-                  </p>
+                  <span className="absolute bottom-2.5 left-2.5 text-[11px] font-semibold px-2 py-0.5 rounded-full bg-black/70 text-white backdrop-blur-md">
+                    Tap to watch
+                  </span>
                 </div>
 
-                {/* Interactive Link */}
-                <div
-                  style={{
-                    display: 'flex',
-                    alignItems: 'center',
-                    gap: '6px',
-                    fontSize: '0.85rem',
-                    fontWeight: 600,
-                    color: 'var(--color-kinetic-lime)',
-                    paddingTop: '0.75rem',
-                    borderTop: '1px solid var(--border-subtle)',
-                  }}
-                >
-                  <Play size={13} fill="currentColor" />
-                  <span>Play Graduate Interview</span>
+                {/* Info */}
+                <div className="flex items-center justify-between mb-1.5">
+                  <h3 className="font-heading font-extrabold text-lg text-[var(--color-text)] tracking-tight">
+                    {story.name}
+                  </h3>
+                  <span className="text-[11px] font-semibold text-[var(--color-link)] bg-[var(--color-surface-2)] px-2 py-0.5 rounded-full">
+                    Graduate
+                  </span>
                 </div>
+
+                <p className="text-xs text-[var(--color-muted)] font-medium mb-3">
+                  {story.role}
+                </p>
+
+                <p className="text-xs sm:text-sm text-[var(--color-text)] leading-relaxed italic border-t border-[var(--color-border)] pt-3">
+                  &quot;{story.summary}&quot;
+                </p>
               </div>
             </div>
           ))}
         </div>
       </div>
 
-      {/* Video Modal Player */}
-      {activeStory && (
-        <VideoModal
-          isOpen={true}
-          onClose={() => setActiveStory(null)}
-          videoUrl={activeStory.videoUrl}
-          title={`${activeStory.name}'s Story`}
-          subtitle={activeStory.role}
-        />
-      )}
+      {/* Video Modal Sheet */}
+      <StoryModal story={selectedStory} onClose={() => setSelectedStory(null)} />
     </section>
   );
 };
