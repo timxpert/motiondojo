@@ -53,63 +53,62 @@ export const HeroVideo: React.FC = () => {
   };
 
   return (
-    <section className="pb-16 sm:pb-24">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div
-          ref={containerRef}
-          className="relative aspect-video w-full rounded-card md:rounded-card-lg overflow-hidden border border-[var(--color-border)] bg-[var(--color-surface)] shadow-soft group"
-        >
-          {isDataSavingOrReduced ? (
-            /* Show only poster when reduced motion or data saving is on */
-            <div className="relative w-full h-full">
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img
-                src="/images/hero-poster.webp"
-                alt="Motion Dojo Hero Video Poster"
-                className="w-full h-full object-cover"
-              />
-              <div className="absolute bottom-4 right-4 inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-black/75 backdrop-blur-md text-xs font-semibold text-white/90">
-                <EyeOff className="w-3.5 h-3.5" />
-                <span>Motion saved for preference</span>
-              </div>
+    <section className="w-full">
+      {/* Full-bleed, edge to edge, 16:9, no rounded corners, no border and no side margin */}
+      <div
+        ref={containerRef}
+        className="w-full aspect-video relative overflow-hidden bg-[#F4F4F4] dark:bg-[#15112A]"
+      >
+        {isDataSavingOrReduced ? (
+          /* Show only poster when reduced motion or data saving is on */
+          <div className="relative w-full h-full">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src="/images/hero-poster.webp"
+              alt="Motion Dojo Hero Video Poster"
+              className="w-full h-full object-cover"
+            />
+            <div className="absolute bottom-4 right-4 inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-black/75 backdrop-blur-md text-xs font-semibold text-white/90">
+              <EyeOff className="w-3.5 h-3.5" />
+              <span>Motion saved for preference</span>
             </div>
-          ) : (
-            /* Lazy-loaded looping video */
-            <>
-              <video
-                ref={videoRef}
-                src={shouldLoadVideo ? '/videos/hero.mp4' : undefined}
-                poster="/images/hero-poster.webp"
-                muted={isMuted}
-                loop
-                autoPlay
-                playsInline
-                preload="none"
-                className="w-full h-full object-cover"
-              />
+          </div>
+        ) : (
+          /* Lazy-loaded looping video */
+          <>
+            <video
+              ref={videoRef}
+              src={shouldLoadVideo ? '/videos/hero.mp4' : undefined}
+              poster="/images/hero-poster.webp"
+              muted={isMuted}
+              loop
+              autoPlay
+              playsInline
+              preload="none"
+              className="w-full h-full object-cover"
+            />
 
-              {/* Tap to Unmute / Mute Control */}
-              <button
-                type="button"
-                onClick={toggleMute}
-                aria-label={isMuted ? 'Tap to unmute video audio' : 'Mute video audio'}
-                className="absolute bottom-4 right-4 z-20 inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#14102A]/85 hover:bg-[#14102A] text-white backdrop-blur-md border border-white/10 text-xs font-semibold shadow-md transition-all active:scale-95 focus:outline-none focus-visible:ring-2 focus-visible:ring-[#C8FF3D] cursor-pointer"
-              >
-                {isMuted ? (
-                  <>
-                    <VolumeX className="w-3.5 h-3.5 text-[#C8FF3D]" />
-                    <span>Tap to unmute</span>
-                  </>
-                ) : (
-                  <>
-                    <Volume2 className="w-3.5 h-3.5 text-[#C8FF3D]" />
-                    <span>Mute</span>
-                  </>
-                )}
-              </button>
-            </>
-          )}
-        </div>
+            {/* Tap to Unmute / Mute Control */}
+            <button
+              type="button"
+              onClick={toggleMute}
+              aria-label={isMuted ? 'Tap to unmute video audio' : 'Mute video audio'}
+              className="absolute bottom-4 right-4 z-20 inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#14102A]/85 hover:bg-[#14102A] text-white backdrop-blur-md border border-white/10 text-xs font-semibold shadow-md transition-all active:scale-95 focus:outline-none focus-visible:ring-2 focus-visible:ring-[#C8FF3D] cursor-pointer"
+            >
+              {isMuted ? (
+                <>
+                  <VolumeX className="w-3.5 h-3.5 text-[#C8FF3D]" />
+                  <span>Tap to unmute</span>
+                </>
+              ) : (
+                <>
+                  <Volume2 className="w-3.5 h-3.5 text-[#C8FF3D]" />
+                  <span>Mute</span>
+                </>
+              )}
+            </button>
+          </>
+        )}
       </div>
     </section>
   );

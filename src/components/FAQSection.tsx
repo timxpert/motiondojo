@@ -13,16 +13,16 @@ export const FAQSection: React.FC = () => {
 
   return (
     <section id="faq" className="py-20 sm:py-28 scroll-mt-20">
-      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-        {/* Left-aligned Section Header */}
-        <div className="text-left mb-12 sm:mb-16">
-          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[var(--color-surface-2)] text-[var(--color-link)] text-xs font-semibold uppercase tracking-wider mb-3">
+      <div className="max-w-[1200px] mx-auto px-6 min-[412px]:px-10 md:px-16 text-center">
+        {/* Centre-aligned Section Header */}
+        <div className="max-w-2xl mx-auto mb-12 sm:mb-16 text-center">
+          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[var(--color-surface-2)] text-[var(--color-link)] text-xs font-semibold uppercase tracking-wider mb-3 mx-auto">
             <HelpCircle className="w-3.5 h-3.5" />
             <span>FAQ</span>
           </div>
 
           <h2
-            className="font-heading font-semibold text-[var(--color-text)] tracking-tight leading-[1.15]"
+            className="font-heading font-semibold text-[var(--color-text)] tracking-tight leading-[1.15] text-center"
             style={{
               fontSize: 'clamp(1.75rem, 3.6vw, 2.75rem)',
               fontWeight: 600,
@@ -31,13 +31,13 @@ export const FAQSection: React.FC = () => {
             Frequently Asked Questions
           </h2>
 
-          <p className="text-base sm:text-lg text-[var(--color-muted)] mt-3 leading-relaxed font-normal">
+          <p className="text-base sm:text-lg text-[var(--color-muted)] mt-3 leading-relaxed font-normal text-center">
             Everything you need to know about the course, payments, and the showcase.
           </p>
         </div>
 
-        {/* Accordion List (one item open at a time) */}
-        <div className="space-y-3.5">
+        {/* Accordion List: Left-aligned inside a centred 720px column */}
+        <div className="max-w-[720px] mx-auto text-left space-y-3.5">
           {FAQ_ITEMS.map((item, index) => {
             const isOpen = openIndex === index;
             return (
@@ -67,7 +67,7 @@ export const FAQSection: React.FC = () => {
                 {isOpen && (
                   <div
                     id={`faq-answer-${index}`}
-                    className="px-5 sm:px-6 pb-5 sm:pb-6 pt-1 text-sm sm:text-base text-[var(--color-muted)] leading-relaxed border-t border-[var(--color-border)]/60 animate-fade-rise font-normal"
+                    className="px-5 sm:px-6 pb-5 sm:pb-6 pt-1 text-sm sm:text-base text-[var(--color-muted)] leading-relaxed border-t border-[var(--color-border)]/60 animate-fade-rise font-normal text-left"
                   >
                     {item.answer}
                   </div>

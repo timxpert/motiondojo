@@ -6,7 +6,6 @@ import {
   Share2,
   Check,
   Play,
-  ArrowUpRight,
   Globe,
   Mail,
 } from 'lucide-react';
@@ -293,7 +292,6 @@ export const NinjaModal: React.FC<NinjaModalProps> = ({ ninja, onClose }) => {
                 >
                   <Globe className="w-3.5 h-3.5" />
                   <span>Website</span>
-                  <ArrowUpRight className="w-3 h-3 opacity-60" />
                 </a>
               )}
               {ninja.links.email && (
@@ -305,7 +303,6 @@ export const NinjaModal: React.FC<NinjaModalProps> = ({ ninja, onClose }) => {
                 >
                   <Mail className="w-3.5 h-3.5" />
                   <span>Email</span>
-                  <ArrowUpRight className="w-3 h-3 opacity-60" />
                 </a>
               )}
               {ninja.links.instagram && (
@@ -317,7 +314,6 @@ export const NinjaModal: React.FC<NinjaModalProps> = ({ ninja, onClose }) => {
                 >
                   <InstagramIcon />
                   <span>Instagram</span>
-                  <ArrowUpRight className="w-3 h-3 opacity-60" />
                 </a>
               )}
               {ninja.links.x && (
@@ -329,7 +325,6 @@ export const NinjaModal: React.FC<NinjaModalProps> = ({ ninja, onClose }) => {
                 >
                   <XTwitterIcon />
                   <span>X (Twitter)</span>
-                  <ArrowUpRight className="w-3 h-3 opacity-60" />
                 </a>
               )}
               {ninja.links.linkedin && (
@@ -341,7 +336,6 @@ export const NinjaModal: React.FC<NinjaModalProps> = ({ ninja, onClose }) => {
                 >
                   <LinkedinIcon />
                   <span>LinkedIn</span>
-                  <ArrowUpRight className="w-3 h-3 opacity-60" />
                 </a>
               )}
             </div>

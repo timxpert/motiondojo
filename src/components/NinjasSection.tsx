@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState, useRef, useEffect, useCallback } from 'react';
-import { Users, Play, ArrowUpRight, ArrowLeft, ArrowRight } from 'lucide-react';
+import { Users, Play } from 'lucide-react';
 import { NINJAS } from '@/data/ninjas';
 import { Ninja } from '@/types';
 import { NinjaAvatar } from './NinjaAvatar';
@@ -56,70 +56,37 @@ export const NinjasSection: React.FC = () => {
 
   return (
     <section id="ninjas" className="py-20 sm:py-28 scroll-mt-20">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        {/* Section Heading Row with Left-aligned Copy and Right-aligned Carousel Controls */}
-        <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-6 mb-10 sm:mb-14 text-left">
-          <div className="max-w-2xl text-left">
-            <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[var(--color-surface-2)] text-[var(--color-link)] text-xs font-semibold uppercase tracking-wider mb-3">
-              <Users className="w-3.5 h-3.5" />
-              <span>Spotlight</span>
-            </div>
-
-            <h2
-              className="font-heading font-semibold text-[var(--color-text)] tracking-tight leading-[1.15]"
-              style={{
-                fontSize: 'clamp(1.75rem, 3.6vw, 2.75rem)',
-                fontWeight: 600,
-              }}
-            >
-              Meet the Keyframe Ninjas
-            </h2>
-
-            <p className="text-base sm:text-lg text-[var(--color-muted)] mt-3 leading-relaxed font-normal">
-              Explore real portfolio projects produced by paid students mastering motion design.
-            </p>
+      <div className="max-w-[1200px] mx-auto px-6 min-[412px]:px-10 md:px-16 text-center">
+        {/* Section Heading Row - Centre-aligned */}
+        <div className="max-w-2xl mx-auto mb-10 sm:mb-14 text-center">
+          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[var(--color-surface-2)] text-[var(--color-link)] text-xs font-semibold uppercase tracking-wider mb-3 mx-auto">
+            <Users className="w-3.5 h-3.5" />
+            <span>Spotlight</span>
           </div>
 
-          {/* Previous / Next Controls (44px Circles) */}
-          <div className="flex items-center gap-3 shrink-0">
-            <button
-              type="button"
-              onClick={() => scrollByCard('prev')}
-              disabled={!canScrollLeft}
-              aria-label="Previous"
-              className={`w-11 h-11 rounded-full border border-[var(--color-border)] bg-[var(--color-surface)] text-[var(--color-text)] flex items-center justify-center transition-all focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-link)] cursor-pointer ${
-                !canScrollLeft
-                  ? 'opacity-35 cursor-not-allowed'
-                  : 'hover:bg-[var(--color-surface-2)] hover:border-[var(--color-link)]/40 active:scale-95'
-              }`}
-            >
-              <ArrowLeft className="w-5 h-5" />
-            </button>
+          <h2
+            className="font-heading font-semibold text-[var(--color-text)] tracking-tight leading-[1.15] text-center"
+            style={{
+              fontSize: 'clamp(1.75rem, 3.6vw, 2.75rem)',
+              fontWeight: 600,
+            }}
+          >
+            Meet the Keyframe Ninjas
+          </h2>
 
-            <button
-              type="button"
-              onClick={() => scrollByCard('next')}
-              disabled={!canScrollRight}
-              aria-label="Next"
-              className={`w-11 h-11 rounded-full border border-[var(--color-border)] bg-[var(--color-surface)] text-[var(--color-text)] flex items-center justify-center transition-all focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-link)] cursor-pointer ${
-                !canScrollRight
-                  ? 'opacity-35 cursor-not-allowed'
-                  : 'hover:bg-[var(--color-surface-2)] hover:border-[var(--color-link)]/40 active:scale-95'
-              }`}
-            >
-              <ArrowRight className="w-5 h-5" />
-            </button>
-          </div>
+          <p className="text-base sm:text-lg text-[var(--color-muted)] mt-3 leading-relaxed font-normal text-center">
+            Explore real portfolio projects produced by paid students mastering motion design.
+          </p>
         </div>
 
-        {/* Horizontal Carousel Track */}
+        {/* Horizontal Carousel Track - Starts at consistent side margin and scrolls off edge */}
         <div
           ref={trackRef}
           onKeyDown={handleKeyDown}
           tabIndex={0}
           role="region"
           aria-label="Keyframe Ninjas Profiles Carousel"
-          className="flex overflow-x-auto no-scrollbar snap-x-mandatory gap-5 pb-6 -mx-4 px-4 sm:mx-0 sm:px-0 focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-link)]"
+          className="flex overflow-x-auto no-scrollbar snap-x-mandatory gap-5 pb-6 -mx-6 min-[412px]:-mx-10 md:-mx-16 px-6 min-[412px]:px-10 md:px-16 focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-link)]"
         >
           {NINJAS.slice(0, 3).map((ninja) => {
             const isBlackBelt =
@@ -138,9 +105,9 @@ export const NinjasSection: React.FC = () => {
                     setSelectedNinja(ninja);
                   }
                 }}
-                className="w-[min(86vw,340px)] shrink-0 snap-start group relative flex flex-col justify-between rounded-card border border-[var(--color-border)] bg-[var(--color-surface)] p-5 text-left transition-all duration-200 hover:-translate-y-1 hover:shadow-soft-lg hover:border-[var(--color-link)]/40 focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-link)] cursor-pointer"
+                className="w-[min(86vw,340px)] shrink-0 snap-start group relative flex flex-col justify-between items-center rounded-card border border-[var(--color-border)] bg-[var(--color-surface)] p-5 text-center transition-all duration-200 hover:-translate-y-1 hover:shadow-soft-lg hover:border-[var(--color-link)]/40 focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-link)] cursor-pointer"
               >
-                <div>
+                <div className="w-full flex flex-col items-center">
                   {/* Photo / Avatar Box with Status and Play Overlay */}
                   <div className="relative aspect-[4/3] w-full rounded-card-sm overflow-hidden mb-4 bg-[var(--color-surface-2)] border border-[var(--color-border)]">
                     {ninja.photo ? (
@@ -182,55 +149,108 @@ export const NinjasSection: React.FC = () => {
                   </div>
 
                   {/* Name and Cohort */}
-                  <div className="flex items-start justify-between gap-2 mb-1.5">
+                  <div className="flex flex-col items-center justify-center gap-1 mb-1.5 w-full text-center">
                     <h3 className="font-heading font-semibold text-lg text-[var(--color-text)] tracking-tight group-hover:text-[var(--color-link)] transition-colors">
                       {ninja.name}
                     </h3>
-                    <span className="text-xs text-[var(--color-muted)] font-normal shrink-0 pt-0.5">
+                    <span className="text-xs text-[var(--color-muted)] font-normal">
                       {ninja.cohort}
                     </span>
                   </div>
 
                   {/* Specialty */}
-                  <p className="text-xs font-medium text-[var(--color-link)] mb-3 line-clamp-1">
+                  <p className="text-xs font-medium text-[var(--color-link)] mb-2.5 line-clamp-1 text-center">
                     {ninja.specialty}
                   </p>
 
                   {/* Bio */}
-                  <p className="text-xs text-[var(--color-muted)] line-clamp-2 leading-relaxed mb-4 font-normal">
+                  <p className="text-xs text-[var(--color-muted)] line-clamp-2 leading-relaxed mb-4 font-normal text-center">
                     {ninja.bio}
                   </p>
                 </div>
 
-                {/* Bottom Project Title and Link Icon */}
-                <div className="pt-3 border-t border-[var(--color-border)] flex items-center justify-between">
-                  <div className="flex flex-col max-w-[78%]">
-                    <span className="text-[10px] uppercase font-bold tracking-wider text-[var(--color-muted)]">
-                      Final project
-                    </span>
-                    <span className="text-xs font-semibold text-[var(--color-text)] truncate">
-                      {ninja.project.title}
-                    </span>
-                  </div>
-                  <div className="w-7 h-7 rounded-full bg-[var(--color-surface-2)] flex items-center justify-center text-[var(--color-link)] transition-colors group-hover:bg-[#C8FF3D] group-hover:text-[#14102A]">
-                    <ArrowUpRight className="w-3.5 h-3.5" />
-                  </div>
+                {/* Bottom Project Title (Plain text, no arrow icon) */}
+                <div className="pt-3 border-t border-[var(--color-border)] w-full text-center">
+                  <span className="block text-[10px] uppercase font-bold tracking-wider text-[var(--color-muted)]">
+                    Final project
+                  </span>
+                  <span className="block text-xs font-semibold text-[var(--color-text)] truncate mt-0.5">
+                    {ninja.project.title}
+                  </span>
                 </div>
               </article>
             );
           })}
         </div>
 
-        {/* View all Keyframe Ninjas Button */}
-        <div className="mt-8 text-left">
+        {/* Carousel Previous / Next Buttons - Centred UNDER the cards */}
+        <div className="flex items-center justify-center gap-6 mt-8">
+          <button
+            type="button"
+            onClick={() => scrollByCard('prev')}
+            disabled={!canScrollLeft}
+            aria-label="Previous"
+            className={`w-12 h-12 rounded-full flex items-center justify-center transition-all cursor-pointer ${
+              !canScrollLeft ? 'opacity-40 cursor-not-allowed' : 'hover:scale-105 active:scale-95'
+            }`}
+            style={{
+              background: '#F5F5F5',
+              border: '1.5px solid rgba(109, 50, 232, 0.15)',
+              boxShadow: '0 6px 18px rgba(109, 50, 232, 0.12)',
+            }}
+          >
+            <svg
+              width="20"
+              height="20"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="#6D32E8"
+              strokeWidth="3"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            >
+              <polyline points="15 18 9 12 15 6" />
+            </svg>
+          </button>
+
+          <button
+            type="button"
+            onClick={() => scrollByCard('next')}
+            disabled={!canScrollRight}
+            aria-label="Next"
+            className={`w-12 h-12 rounded-full flex items-center justify-center transition-all cursor-pointer ${
+              !canScrollRight ? 'opacity-40 cursor-not-allowed' : 'hover:scale-105 active:scale-95'
+            }`}
+            style={{
+              background: '#F5F5F5',
+              border: '1.5px solid rgba(109, 50, 232, 0.15)',
+              boxShadow: '0 6px 18px rgba(109, 50, 232, 0.12)',
+            }}
+          >
+            <svg
+              width="20"
+              height="20"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="#6D32E8"
+              strokeWidth="3"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            >
+              <polyline points="9 18 15 12 9 6" />
+            </svg>
+          </button>
+        </div>
+
+        {/* View all Keyframe Ninjas Button - Centred BELOW carousel buttons, plain text (no icon) */}
+        <div className="mt-6 flex justify-center">
           <a
             href={NINJAS_DIRECTORY_URL}
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-[var(--color-surface)] hover:bg-[var(--color-surface-2)] text-[var(--color-text)] border border-[var(--color-border)] font-semibold text-sm tracking-tight transition-all active:scale-95 shadow-sm"
+            className="inline-flex items-center justify-center px-6 py-3 rounded-full bg-[var(--color-surface)] hover:bg-[var(--color-surface-2)] text-[var(--color-text)] border border-[var(--color-border)] font-semibold text-sm tracking-tight transition-all active:scale-95 shadow-sm"
           >
-            <span>View all Keyframe Ninjas</span>
-            <ArrowUpRight className="w-4 h-4 text-[var(--color-link)]" />
+            View all Keyframe Ninjas
           </a>
         </div>
       </div>

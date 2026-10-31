@@ -40,7 +40,7 @@ export const Header: React.FC = () => {
 
   return (
     <header className="sticky top-0 z-40 w-full transition-all duration-200 border-b bg-[var(--header-bg)] backdrop-blur-md border-[var(--color-border)]/60">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 sm:h-20 flex items-center justify-between">
+      <div className="max-w-[1200px] mx-auto px-6 min-[412px]:px-10 md:px-16 h-16 sm:h-20 flex items-center justify-between">
         {/* Brand Logo - Says "Motion Dojo" only (no "Keyframe Ninjas") */}
         <Link
           href="/"

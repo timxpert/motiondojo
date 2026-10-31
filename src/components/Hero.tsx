@@ -13,10 +13,10 @@ export const Hero: React.FC = () => {
         aria-hidden="true"
       />
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-left relative z-10">
+      <div className="max-w-[1200px] mx-auto px-6 min-[412px]:px-10 md:px-16 text-left relative z-10">
         {/* Left-aligned stack */}
         <div className="max-w-3xl">
-          {/* H1 strictly Sora 600 on two lines */}
+          {/* H1 strictly Sora 600 with explicit responsive line breaks */}
           <h1
             className="font-heading font-semibold text-[var(--color-text)] tracking-[-0.03em] leading-[1.1] mb-6"
             style={{
@@ -24,19 +24,29 @@ export const Hero: React.FC = () => {
               fontWeight: 600,
             }}
           >
-            <span className="block text-[var(--color-text)]">
-              You were never meant to
+            {/* Mobile (under 640px), three lines: "You were never" / "meant to figure it" / "all out alone" */}
+            <span className="block sm:hidden">
+              <span className="block text-[var(--color-text)]">
+                You were never
+              </span>
+              <span className="block">
+                <span className="text-[var(--color-text)]">meant to </span>
+                <span className="hero-gradient-text">figure it</span>
+              </span>
+              <span className="block hero-gradient-text pb-2">
+                all out alone
+              </span>
             </span>
-            <span
-              className="block pb-2"
-              style={{
-                background: 'linear-gradient(90deg, #6D32E8 0%, #A77BFF 50%, #C8FF3D 100%)',
-                WebkitBackgroundClip: 'text',
-                WebkitTextFillColor: 'transparent',
-                color: '#6D32E8',
-              }}
-            >
-              figure it all out alone
+
+            {/* 640px and up, two lines: "You were never meant" / "to figure it all out alone" */}
+            <span className="hidden sm:block">
+              <span className="block text-[var(--color-text)]">
+                You were never meant
+              </span>
+              <span className="block pb-2">
+                <span className="text-[var(--color-text)]">to </span>
+                <span className="hero-gradient-text">figure it all out alone</span>
+              </span>
             </span>
           </h1>
 
@@ -54,7 +64,7 @@ export const Hero: React.FC = () => {
             <a
               href={LEARN_MORE_URL}
               target="_self"
-              className="w-full sm:w-auto inline-flex items-center justify-center px-8 py-4 text-base font-semibold tracking-tight rounded-full bg-[#C8FF3D] hover:bg-[#bcf728] text-[#14102A] transition-all active:scale-95 focus:outline-none focus-visible:ring-2 focus-visible:ring-[#C8FF3D] focus-visible:ring-offset-2"
+              className="w-full sm:w-auto inline-flex items-center justify-center px-8 py-4 text-base font-semibold tracking-tight rounded-full bg-[#C8FF3D] hover:bg-[#bcf728] text-[#14102A] transition-all active:scale-95 focus:outline-none focus-visible:ring-2 focus-visible:ring-[#C8FF3D] focus-visible:ring-offset-2 shadow-sm"
               style={{
                 boxShadow: '0 12px 30px rgba(200, 255, 61, 0.35)',
               }}
