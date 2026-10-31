@@ -29,7 +29,7 @@ export const NinjaAvatar: React.FC<NinjaAvatarProps> = ({ name, specialty, class
         </svg>
       </div>
 
-      <span className="font-heading font-extrabold text-sm tracking-wider text-white/90 relative z-10">
+      <span className="font-heading font-semibold text-sm tracking-wider text-white/90 relative z-10">
         {initials}
       </span>
       {specialty && (

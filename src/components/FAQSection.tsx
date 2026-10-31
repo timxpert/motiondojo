@@ -12,18 +12,26 @@ export const FAQSection: React.FC = () => {
   };
 
   return (
-    <section id="faq" className="py-16 sm:py-24 border-b border-[var(--color-border)] scroll-mt-20">
+    <section id="faq" className="py-20 sm:py-28 scroll-mt-20">
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-        {/* Section Header */}
-        <div className="text-center mb-12 sm:mb-16">
-          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[var(--color-surface-2)] text-[var(--color-link)] text-xs font-bold uppercase tracking-wider mb-3">
+        {/* Left-aligned Section Header */}
+        <div className="text-left mb-12 sm:mb-16">
+          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[var(--color-surface-2)] text-[var(--color-link)] text-xs font-semibold uppercase tracking-wider mb-3">
             <HelpCircle className="w-3.5 h-3.5" />
             <span>FAQ</span>
           </div>
-          <h2 className="font-heading text-3xl sm:text-4xl lg:text-5xl font-extrabold text-[var(--color-text)] tracking-tight">
+
+          <h2
+            className="font-heading font-semibold text-[var(--color-text)] tracking-tight leading-[1.15]"
+            style={{
+              fontSize: 'clamp(1.75rem, 3.6vw, 2.75rem)',
+              fontWeight: 600,
+            }}
+          >
             Frequently Asked Questions
           </h2>
-          <p className="text-base sm:text-lg text-[var(--color-muted)] mt-3 leading-relaxed">
+
+          <p className="text-base sm:text-lg text-[var(--color-muted)] mt-3 leading-relaxed font-normal">
             Everything you need to know about the course, payments, and the showcase.
           </p>
         </div>
@@ -40,11 +48,11 @@ export const FAQSection: React.FC = () => {
                 <button
                   type="button"
                   onClick={() => toggleItem(index)}
-                  className="w-full p-5 sm:p-6 text-left flex items-center justify-between gap-4 focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-link)]"
+                  className="w-full p-5 sm:p-6 text-left flex items-center justify-between gap-4 focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-link)] cursor-pointer"
                   aria-expanded={isOpen}
                   aria-controls={`faq-answer-${index}`}
                 >
-                  <span className="font-heading font-extrabold text-base sm:text-lg text-[var(--color-text)] tracking-tight pr-2">
+                  <span className="font-heading font-semibold text-base sm:text-lg text-[var(--color-text)] tracking-tight pr-2">
                     {item.question}
                   </span>
                   <div
@@ -59,7 +67,7 @@ export const FAQSection: React.FC = () => {
                 {isOpen && (
                   <div
                     id={`faq-answer-${index}`}
-                    className="px-5 sm:px-6 pb-5 sm:pb-6 pt-1 text-sm sm:text-base text-[var(--color-muted)] leading-relaxed border-t border-[var(--color-border)]/60 animate-fade-rise"
+                    className="px-5 sm:px-6 pb-5 sm:pb-6 pt-1 text-sm sm:text-base text-[var(--color-muted)] leading-relaxed border-t border-[var(--color-border)]/60 animate-fade-rise font-normal"
                   >
                     {item.answer}
                   </div>

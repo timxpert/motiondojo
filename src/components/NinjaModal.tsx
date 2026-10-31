@@ -108,7 +108,7 @@ export const NinjaModal: React.FC<NinjaModalProps> = ({ ninja, onClose }) => {
         {/* Modal Top Bar */}
         <div className="sticky top-0 z-10 px-5 sm:px-7 py-4 bg-[var(--color-surface)]/95 backdrop-blur-md border-b border-[var(--color-border)] flex items-center justify-between">
           <div className="flex items-center gap-2">
-            <span className="text-xs uppercase font-extrabold tracking-wider text-[var(--color-link)]">
+            <span className="text-xs uppercase font-semibold tracking-wider text-[var(--color-link)]">
               Ninja profile
             </span>
             {ninja.isSample && (
@@ -192,7 +192,7 @@ export const NinjaModal: React.FC<NinjaModalProps> = ({ ninja, onClose }) => {
 
               <h2
                 id="ninja-modal-name"
-                className="text-2xl sm:text-3xl font-heading font-extrabold text-[var(--color-text)] tracking-tight leading-tight"
+                className="text-2xl sm:text-3xl font-heading font-semibold text-[var(--color-text)] tracking-tight leading-tight"
               >
                 {ninja.name}
               </h2>
@@ -221,7 +221,7 @@ export const NinjaModal: React.FC<NinjaModalProps> = ({ ninja, onClose }) => {
               <span className="text-[11px] uppercase font-bold tracking-wider text-[var(--color-link)] block">
                 Final capstone project
               </span>
-              <h4 className="font-heading font-extrabold text-lg text-[var(--color-text)] tracking-tight">
+              <h4 className="font-heading font-semibold text-lg text-[var(--color-text)] tracking-tight">
                 {ninja.project.title}
               </h4>
             </div>

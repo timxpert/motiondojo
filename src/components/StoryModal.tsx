@@ -63,7 +63,7 @@ export const StoryModal: React.FC<StoryModalProps> = ({ story, onClose }) => {
           <div>
             <h3
               id="story-modal-title"
-              className="font-heading font-extrabold text-xl sm:text-2xl text-[var(--color-text)] tracking-tight"
+              className="font-heading font-semibold text-xl sm:text-2xl text-[var(--color-text)] tracking-tight"
             >
               {story.name}
             </h3>

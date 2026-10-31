@@ -18,7 +18,7 @@ export const HeroVideo: React.FC = () => {
 
     if (prefersReducedMotion || isSaveData) {
       setIsDataSavingOrReduced(true);
-      return; // Do not load autoplaying video when reduced motion or data saving is on
+      return;
     }
 
     // Lazy load video when container enters viewport
@@ -57,7 +57,7 @@ export const HeroVideo: React.FC = () => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div
           ref={containerRef}
-          className="relative aspect-video w-full rounded-card md:rounded-card-lg overflow-hidden border border-[var(--color-border)] bg-[var(--color-surface-2)] shadow-soft group"
+          className="relative aspect-video w-full rounded-card md:rounded-card-lg overflow-hidden border border-[var(--color-border)] bg-[var(--color-surface)] shadow-soft group"
         >
           {isDataSavingOrReduced ? (
             /* Show only poster when reduced motion or data saving is on */
@@ -93,7 +93,7 @@ export const HeroVideo: React.FC = () => {
                 type="button"
                 onClick={toggleMute}
                 aria-label={isMuted ? 'Tap to unmute video audio' : 'Mute video audio'}
-                className="absolute bottom-4 right-4 z-20 inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#14102A]/85 hover:bg-[#14102A] text-white backdrop-blur-md border border-white/10 text-xs font-semibold shadow-md transition-all active:scale-95 focus:outline-none focus-visible:ring-2 focus-visible:ring-[#C8FF3D]"
+                className="absolute bottom-4 right-4 z-20 inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#14102A]/85 hover:bg-[#14102A] text-white backdrop-blur-md border border-white/10 text-xs font-semibold shadow-md transition-all active:scale-95 focus:outline-none focus-visible:ring-2 focus-visible:ring-[#C8FF3D] cursor-pointer"
               >
                 {isMuted ? (
                   <>

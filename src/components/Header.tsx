@@ -12,8 +12,14 @@ export const Header: React.FC = () => {
 
   useEffect(() => {
     setMounted(true);
-    const hasDarkClass = document.documentElement.classList.contains('dark');
-    setIsDark(hasDarkClass);
+    const stored = localStorage.getItem('theme');
+    if (stored === 'dark') {
+      setIsDark(true);
+      document.documentElement.classList.add('dark');
+    } else {
+      setIsDark(false);
+      document.documentElement.classList.remove('dark');
+    }
   }, []);
 
   const toggleTheme = () => {
@@ -33,38 +39,31 @@ export const Header: React.FC = () => {
   };
 
   return (
-    <header className="sticky top-0 z-40 w-full transition-all duration-200 border-b bg-[var(--header-bg)] backdrop-blur-md border-[var(--color-border)]">
+    <header className="sticky top-0 z-40 w-full transition-all duration-200 border-b bg-[var(--header-bg)] backdrop-blur-md border-[var(--color-border)]/60">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 sm:h-20 flex items-center justify-between">
-        {/* Brand Logo */}
+        {/* Brand Logo - Says "Motion Dojo" only (no "Keyframe Ninjas") */}
         <Link
           href="/"
-          className="flex items-center gap-3 focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-link)] rounded-lg py-1"
+          className="flex items-center gap-2.5 focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-link)] rounded-lg py-1"
           aria-label="Motion Dojo Home"
         >
-          <div className="flex items-center gap-2.5">
-            <div className="w-8 h-8 rounded-[9px] bg-[#6D32E8] flex items-center justify-center shadow-sm relative overflow-hidden group">
-              <div className="absolute inset-0 bg-[#C8FF3D] opacity-0 group-hover:opacity-20 transition-opacity" />
-              <svg
-                width="18"
-                height="18"
-                viewBox="0 0 24 24"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
-                className="text-[#C8FF3D]"
-              >
-                <path d="M12 3L20 12L12 21L4 12L12 3Z" fill="#C8FF3D" />
-                <path d="M8.5 12H15.5" stroke="#14102A" strokeWidth="2" strokeLinecap="round" />
-              </svg>
-            </div>
-            <div className="flex flex-col">
-              <span className="font-heading font-extrabold text-[17px] leading-tight tracking-tight text-[var(--color-text)]">
-                Motion Dojo
-              </span>
-              <span className="text-[10px] uppercase font-bold tracking-wider text-[var(--color-link)] -mt-0.5">
-                Keyframe Ninjas
-              </span>
-            </div>
+          <div className="w-8 h-8 rounded-[9px] bg-[#6D32E8] flex items-center justify-center shadow-sm relative overflow-hidden group">
+            <div className="absolute inset-0 bg-[#C8FF3D] opacity-0 group-hover:opacity-20 transition-opacity" />
+            <svg
+              width="18"
+              height="18"
+              viewBox="0 0 24 24"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+              className="text-[#C8FF3D]"
+            >
+              <path d="M12 3L20 12L12 21L4 12L12 3Z" fill="#C8FF3D" />
+              <path d="M8.5 12H15.5" stroke="#14102A" strokeWidth="2" strokeLinecap="round" />
+            </svg>
           </div>
+          <span className="font-heading text-lg font-semibold tracking-tight text-[var(--color-text)]">
+            Motion Dojo
+          </span>
         </Link>
 
         {/* Desktop Navigation */}
@@ -109,7 +108,7 @@ export const Header: React.FC = () => {
             type="button"
             onClick={toggleTheme}
             aria-label={isDark ? 'Switch to light mode' : 'Switch to dark mode'}
-            className="w-9 h-9 rounded-full flex items-center justify-center border border-[var(--color-border)] bg-[var(--color-surface)] text-[var(--color-text)] hover:bg-[var(--color-surface-2)] transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-link)]"
+            className="w-9 h-9 rounded-full flex items-center justify-center border border-[var(--color-border)] bg-[var(--color-surface)] text-[var(--color-text)] hover:bg-[var(--color-surface-2)] transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-link)] cursor-pointer"
           >
             {mounted ? (
               isDark ? (
@@ -126,7 +125,7 @@ export const Header: React.FC = () => {
           <a
             href={LEARN_MORE_URL}
             target="_self"
-            className="inline-flex items-center justify-center px-5 py-2 text-sm font-bold tracking-tight rounded-full bg-[#C8FF3D] hover:bg-[#bbf629] text-[#14102A] transition-all shadow-sm active:scale-95 focus:outline-none focus-visible:ring-2 focus-visible:ring-[#C8FF3D] focus-visible:ring-offset-2"
+            className="inline-flex items-center justify-center px-5 py-2 text-sm font-semibold tracking-tight rounded-full bg-[#C8FF3D] hover:bg-[#bbf629] text-[#14102A] transition-all shadow-sm active:scale-95 focus:outline-none focus-visible:ring-2 focus-visible:ring-[#C8FF3D] focus-visible:ring-offset-2"
           >
             Learn more
           </a>
@@ -138,7 +137,7 @@ export const Header: React.FC = () => {
             type="button"
             onClick={toggleTheme}
             aria-label={isDark ? 'Switch to light mode' : 'Switch to dark mode'}
-            className="w-9 h-9 rounded-full flex items-center justify-center border border-[var(--color-border)] bg-[var(--color-surface)] text-[var(--color-text)] transition-all"
+            className="w-9 h-9 rounded-full flex items-center justify-center border border-[var(--color-border)] bg-[var(--color-surface)] text-[var(--color-text)] transition-all cursor-pointer"
           >
             {mounted ? (
               isDark ? (
@@ -154,7 +153,7 @@ export const Header: React.FC = () => {
           <button
             type="button"
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            className="w-10 h-10 rounded-full flex items-center justify-center border border-[var(--color-border)] bg-[var(--color-surface)] text-[var(--color-text)] focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-link)]"
+            className="w-10 h-10 rounded-full flex items-center justify-center border border-[var(--color-border)] bg-[var(--color-surface)] text-[var(--color-text)] focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-link)] cursor-pointer"
             aria-label={mobileMenuOpen ? 'Close navigation menu' : 'Open navigation menu'}
             aria-expanded={mobileMenuOpen}
           >
@@ -209,7 +208,7 @@ export const Header: React.FC = () => {
               href={LEARN_MORE_URL}
               target="_self"
               onClick={closeMobileMenu}
-              className="w-full inline-flex items-center justify-center py-3 text-sm font-bold tracking-tight rounded-full bg-[#C8FF3D] text-[#14102A] shadow-sm active:scale-98"
+              className="w-full inline-flex items-center justify-center py-3 text-sm font-semibold tracking-tight rounded-full bg-[#C8FF3D] text-[#14102A] shadow-sm active:scale-98"
             >
               Learn more
             </a>
