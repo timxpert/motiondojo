@@ -12,15 +12,14 @@ All "Learn more" buttons across the entire website use a single source of truth 
 
 ```typescript
 // src/config/site.ts
-export const LEARN_MORE_URL = 'https://joinmotiondojo.vercel.app';
-export const NINJAS_DIRECTORY_URL = 'https://ninjasmotiondojo.vercel.app';
+export const LEARN_MORE_URL = "https://blackbelt.motiondojo.com";
 ```
 Simply edit this value and all call-to-action buttons across the site will automatically update and open in the same tab.
 
 ---
 
 ### 2. How to Add a Ninja to the Spotlight
-The homepage spotlight shows a preview of a member's showcase page. Once real, approved members are added below (with `isSample: false`), up to three of them also appear as cards. Profiles are loaded from:
+Student profiles displayed in the **Meet the Keyframe Ninjas** spotlight are loaded from:
 `src/data/ninjas.ts`
 
 To add a new ninja:
@@ -81,14 +80,9 @@ The Vimeo embed automatically extracts the video ID and lazy-loads the player on
 
 ---
 
-### 4. How to change the team
-The people on the hero timeline and in "The people who'll know your name" come from `src/data/team.ts`.
-
----
-
 ## 🎨 Theme & Styling
 
-- **CSS Variables & component styles**: Defined in `src/app/globals.css` (plain CSS classes; no lucide icons, see `src/components/Icons.tsx`).
+- **CSS Variables**: Defined in `src/app/globals.css`.
   - Light theme: `bg #FFFFFF`, `surface #F7F5FC`, `surface-2 #F1EAFF`, `border #E7E3F1`, `text #14102A`, `muted #5E5877`, `accent #6D32E8`.
   - Dark theme: `bg #0D0A1A`, `surface #15112A`, `surface-2 #1D1838`, `border #2A2447`, `text #F4F1FF`, `muted #A9A2C6`, `accent #A77BFF`.
   - Accents: Kinetic Lime `#C8FF3D` (buttons, badges) with dark text `#14102A` in both modes to meet WCAG AA contrast.

@@ -2,34 +2,52 @@ import React from 'react';
 import { Header } from '@/components/Header';
 import { Hero } from '@/components/Hero';
 import { HeroVideo } from '@/components/HeroVideo';
-import { Belonging } from '@/components/Belonging';
-import { About } from '@/components/About';
-import { NinjaPath } from '@/components/NinjaPath';
-import { Spotlight } from '@/components/Spotlight';
-import { Stories } from '@/components/Stories';
-import { FAQ } from '@/components/FAQ';
-import { Closing } from '@/components/Closing';
+import { AboutSection } from '@/components/AboutSection';
+import { MissionSection } from '@/components/MissionSection';
+import { StatementSection } from '@/components/StatementSection';
+import { NinjaPathSection } from '@/components/NinjaPathSection';
+import { NinjasSection } from '@/components/NinjasSection';
+import { StoriesSection } from '@/components/StoriesSection';
+import { FAQSection } from '@/components/FAQSection';
 import { Footer } from '@/components/Footer';
 
 export default function HomePage() {
   return (
-    <>
-      <a href="#main" className="skip-link">
-        Skip to content
-      </a>
+    <div className="min-h-screen flex flex-col bg-[var(--color-bg)] text-[var(--color-text)]">
+      {/* Sticky Navigation Header with Theme Toggle */}
       <Header />
-      <main id="main">
+
+      <main className="flex-1">
+        {/* 1. Hero */}
         <Hero />
+
+        {/* 2. Full-width 16:9 Video */}
         <HeroVideo />
-        <Belonging />
-        <About />
-        <NinjaPath />
-        <Stories />
-        <Spotlight />
-        <FAQ />
-        <Closing />
+
+        {/* 3. About Motion Dojo */}
+        <AboutSection />
+
+        {/* 4. Our Mission */}
+        <MissionSection />
+
+        {/* 5. Statement */}
+        <StatementSection />
+
+        {/* 6. The Ninja Path */}
+        <NinjaPathSection />
+
+        {/* 7. Spotlight: Meet the Keyframe Ninjas */}
+        <NinjasSection />
+
+        {/* 8. Stories from the Dojo */}
+        <StoriesSection />
+
+        {/* 9. Frequently Asked Questions */}
+        <FAQSection />
       </main>
+
+      {/* 10. Footer */}
       <Footer />
-    </>
+    </div>
   );
 }
