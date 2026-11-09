@@ -1,115 +1,77 @@
 'use client';
 
-import React, { useState, useEffect, useRef } from 'react';
-import { Volume2, VolumeX, EyeOff } from 'lucide-react';
+import React, { useEffect, useRef, useState } from 'react';
+import { SoundOffIcon, SoundOnIcon } from './Icons';
 
-export const HeroVideo: React.FC = () => {
-  const [isMuted, setIsMuted] = useState<boolean>(true);
-  const [shouldLoadVideo, setShouldLoadVideo] = useState<boolean>(false);
-  const [isDataSavingOrReduced, setIsDataSavingOrReduced] = useState<boolean>(false);
-  const containerRef = useRef<HTMLDivElement>(null);
+const POSTER = '/images/hero-video-poster.webp';
+
+export function HeroVideo() {
+  const frameRef = useRef<HTMLDivElement>(null);
   const videoRef = useRef<HTMLVideoElement>(null);
+  const [posterOnly, setPosterOnly] = useState(false);
+  const [load, setLoad] = useState(false);
+  const [muted, setMuted] = useState(true);
 
   useEffect(() => {
-    // Detect reduced motion or data saving mode
-    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    const connection = (navigator as unknown as { connection?: { saveData?: boolean } }).connection;
-    const isSaveData = connection?.saveData === true;
-
-    if (prefersReducedMotion || isSaveData) {
-      setIsDataSavingOrReduced(true);
+    const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const saveData =
+      (navigator as unknown as { connection?: { saveData?: boolean } }).connection?.saveData === true;
+    if (reduced || saveData) {
+      setPosterOnly(true);
       return;
     }
 
-    // Lazy load video when container enters viewport
-    const observer = new IntersectionObserver(
+    const el = frameRef.current;
+    if (!el) return;
+    const io = new IntersectionObserver(
       (entries) => {
-        if (entries[0].isIntersecting) {
-          setShouldLoadVideo(true);
-          observer.disconnect();
+        if (entries.some((e) => e.isIntersecting)) {
+          setLoad(true);
+          io.disconnect();
         }
       },
-      { rootMargin: '200px' }
+      { rootMargin: '300px' },
     );
-
-    if (containerRef.current) {
-      observer.observe(containerRef.current);
-    }
-
-    return () => {
-      observer.disconnect();
-    };
+    io.observe(el);
+    return () => io.disconnect();
   }, []);
 
-  const toggleMute = () => {
-    if (videoRef.current) {
-      const nextMuted = !isMuted;
-      videoRef.current.muted = nextMuted;
-      setIsMuted(nextMuted);
-      if (!nextMuted) {
-        videoRef.current.play().catch(() => {});
-      }
-    }
+  useEffect(() => {
+    if (load) videoRef.current?.play().catch(() => {});
+  }, [load]);
+
+  const toggleSound = () => {
+    const v = videoRef.current;
+    if (!v) return;
+    v.muted = !muted;
+    setMuted(!muted);
+    if (v.paused) v.play().catch(() => {});
   };
 
   return (
-    <section className="w-full">
-      {/* Full-bleed, edge to edge, 16:9, no rounded corners, no border and no side margin */}
-      <div
-        ref={containerRef}
-        className="w-full aspect-video relative overflow-hidden bg-[#F4F4F4] dark:bg-[#15112A]"
-      >
-        {isDataSavingOrReduced ? (
-          /* Show only poster when reduced motion or data saving is on */
-          <div className="relative w-full h-full">
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img
-              src="/images/hero-poster.webp"
-              alt="Motion Dojo Hero Video Poster"
-              className="w-full h-full object-cover"
-            />
-            <div className="absolute bottom-4 right-4 inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-black/75 backdrop-blur-md text-xs font-semibold text-white/90">
-              <EyeOff className="w-3.5 h-3.5" />
-              <span>Motion saved for preference</span>
-            </div>
-          </div>
+    <section className="reel" aria-label="Motion Dojo reel">
+      <div className="reel-frame" ref={frameRef}>
+        {posterOnly ? (
+          <img src={POSTER} alt="Motion Dojo reel" />
         ) : (
-          /* Lazy-loaded looping video */
           <>
             <video
               ref={videoRef}
-              src={shouldLoadVideo ? '/videos/hero.mp4' : undefined}
-              poster="/images/hero-poster.webp"
-              muted={isMuted}
+              src={load ? '/videos/hero.mp4' : undefined}
+              poster={POSTER}
+              muted={muted}
               loop
-              autoPlay
               playsInline
               preload="none"
-              className="w-full h-full object-cover"
+              aria-label="Motion Dojo reel"
             />
-
-            {/* Tap to Unmute / Mute Control */}
-            <button
-              type="button"
-              onClick={toggleMute}
-              aria-label={isMuted ? 'Tap to unmute video audio' : 'Mute video audio'}
-              className="absolute bottom-4 right-4 z-20 inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#14102A]/85 hover:bg-[#14102A] text-white backdrop-blur-md border border-white/10 text-xs font-semibold shadow-md transition-all active:scale-95 focus:outline-none focus-visible:ring-2 focus-visible:ring-[#C8FF3D] cursor-pointer"
-            >
-              {isMuted ? (
-                <>
-                  <VolumeX className="w-3.5 h-3.5 text-[#C8FF3D]" />
-                  <span>Tap to unmute</span>
-                </>
-              ) : (
-                <>
-                  <Volume2 className="w-3.5 h-3.5 text-[#C8FF3D]" />
-                  <span>Mute</span>
-                </>
-              )}
+            <button type="button" className="reel-sound" onClick={toggleSound} aria-pressed={!muted}>
+              {muted ? <SoundOffIcon /> : <SoundOnIcon />}
+              {muted ? 'Tap for sound' : 'Mute'}
             </button>
           </>
         )}
       </div>
     </section>
   );
-};
+}
