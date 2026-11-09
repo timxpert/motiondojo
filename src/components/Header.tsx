@@ -7,7 +7,6 @@ import { CloseIcon, MenuIcon, MoonIcon, SunIcon } from './Icons';
 const NAV = [
   { href: '#about', label: 'About' },
   { href: '#path', label: 'Ninja Path' },
-  { href: '#ninjas', label: 'Ninjas' },
   { href: '#stories', label: 'Stories' },
   { href: '#faq', label: 'FAQ' },
 ];

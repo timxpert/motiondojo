@@ -4,7 +4,7 @@ export const STORIES: Story[] = [
   {
     id: 'mary',
     name: 'Mary',
-    role: 'Keyframe Ninja • Cohort 01',
+    role: 'Cohort 01',
     // TODO: Real student photo for Mary at /images/testimonial-mary.webp
     poster: '/images/testimonial-mary.webp',
     videoUrl: 'https://vimeo.com/1238665663',
@@ -14,7 +14,7 @@ export const STORIES: Story[] = [
   {
     id: 'roseline',
     name: 'Roseline',
-    role: 'Keyframe Ninja • Cohort 02',
+    role: 'Cohort 02',
     // TODO: Real student photo for Roseline at /images/testimonial-roseline.webp
     poster: '/images/testimonial-roseline.webp',
     videoUrl: 'https://vimeo.com/1238666245',
@@ -24,7 +24,7 @@ export const STORIES: Story[] = [
   {
     id: 'fatihi',
     name: 'Muhammad Fatihi',
-    role: 'Keyframe Ninja • Cohort 02',
+    role: 'Cohort 02',
     // TODO: Real student photo for Muhammad Fatihi at /images/testimonial-fatihi.webp
     poster: '/images/testimonial-fatihi.webp',
     videoUrl: 'https://vimeo.com/1238668293',

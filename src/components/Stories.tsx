@@ -4,6 +4,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import { STORIES } from '@/data/stories';
 import { Story } from '@/types';
 import { getVimeoEmbedUrl } from '@/utils/media';
+import { NINJAS_DIRECTORY_URL } from '@/config/site';
 import { CloseIcon, PlayIcon } from './Icons';
 
 // Roseline's recording is vertical; the others are landscape.
@@ -20,9 +21,7 @@ export function Stories() {
           <h2 className="h2" id="stories-title">
             Stories from the Keyframe Ninjas
           </h2>
-          <p className="lede">
-            Hear it from members who joined, worked through the keyframes and earned their Black Belt.
-          </p>
+          <p className="lede">Members who joined, worked through the phases and earned their Black Belt.</p>
         </div>
 
         <ul className="stories">
@@ -52,6 +51,14 @@ export function Stories() {
             </li>
           ))}
         </ul>
+
+        <p className="showcase-note" id="ninjas">
+          Every Keyframe Ninja also gets a public page on the showcase with their story, final project and links, ready
+          to share like a portfolio.{' '}
+          <a href={NINJAS_DIRECTORY_URL} className="text-link" target="_blank" rel="noopener noreferrer">
+            Meet the Keyframe Ninjas
+          </a>
+        </p>
       </div>
 
       {active && (

@@ -24,8 +24,8 @@ export default function HomePage() {
         <Belonging />
         <About />
         <NinjaPath />
-        <Spotlight />
         <Stories />
+        <Spotlight />
         <FAQ />
         <Closing />
       </main>

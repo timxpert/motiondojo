@@ -6,32 +6,28 @@ export function About() {
     <section className="section" id="about" aria-labelledby="about-title">
       <div className="wrap">
         <div className="about-grid">
-          <div className="section-head" style={{ marginBottom: 0 }}>
-            <h2 className="h2" id="about-title">
-              About Motion Dojo
-            </h2>
+          <h2 className="h2" id="about-title">
+            About Motion Dojo
+          </h2>
+          <div className="about-copy">
             <p className="lede">
-              Motion Dojo is an exclusive community where smartphone motion designers learn, practice, share, and grow
-              together.
+              Motion Dojo is an exclusive community where smartphone motion designers learn, practice, share, and
+              grow together.
+            </p>
+            <p className="mission">
+              Our mission is to empower aspiring and emerging smartphone motion designers to develop their creative
+              abilities, master motion design, and build the skills and confidence to create meaningful work and
+              opportunities for themselves.
             </p>
           </div>
-
-          <p className="mission">
-            <span className="mission-label">Our mission</span>
-            To empower aspiring and emerging smartphone motion designers to develop their creative abilities, master
-            motion design, and build the skills and confidence to create meaningful work and opportunities for
-            themselves.
-          </p>
         </div>
 
         <div className="people">
           <div className="people-head">
-            <h3 className="h2" style={{ fontSize: 'clamp(1.6rem, 3vw, 2.25rem)' }}>
-              The people who’ll know your name
-            </h3>
+            <h3 className="h2 h2-sm">Who runs the dojo</h3>
             <p className="body">
-              Timxpert built the school he wished he had when he started. He called it a dojo because you don’t just
-              watch here: you train, get corrected and level up, with a team that keeps the room running every day.
+              Timxpert built the school he wished he had when he started. The team below keeps it running day to day
+              and will be the first people you talk to when you join.
             </p>
           </div>
 

@@ -3,19 +3,19 @@ import React from 'react';
 const PROMISES = [
   {
     title: 'Your questions matter',
-    body: 'Ask anything, at any stage. Nobody here was born knowing the graph editor, and someone is always around to help you find the answer.',
+    body: 'Ask anything at any stage. Someone will help you find the answer.',
   },
   {
     title: 'Your progress is celebrated',
-    body: 'From your first render to your first big client, you share the milestone and the whole room cheers with you.',
+    body: 'Share your first render, your first client and everything in between.',
   },
   {
     title: 'Your work gets better through practice',
-    body: 'Daily practice, honest feedback and peers who keep raising the bar, so you keep raising yours.',
+    body: 'Daily practice and honest feedback from peers who keep raising the bar.',
   },
   {
     title: 'The people around you want to see you win',
-    body: 'Members share referrals, collaborate on projects and open doors for each other.',
+    body: 'Members pass on referrals, collaborate and open doors for each other.',
   },
 ];
 
@@ -33,7 +33,6 @@ export function Belonging() {
         <ul className="promises">
           {PROMISES.map((p) => (
             <li className="promise" key={p.title}>
-              <span className="diamond" aria-hidden="true" />
               <h3 className="h3">{p.title}</h3>
               <p>{p.body}</p>
             </li>

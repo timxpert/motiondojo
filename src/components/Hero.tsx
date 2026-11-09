@@ -19,8 +19,8 @@ export function Hero() {
           <a href={LEARN_MORE_URL} className="btn btn-lime">
             Learn more
           </a>
-          <a href="#ninjas" className="text-link">
-            See what members make
+          <a href="#stories" className="text-link">
+            Watch member stories
           </a>
         </div>
 
@@ -53,8 +53,8 @@ export function Hero() {
           <span className="playhead" aria-hidden="true" />
 
           <figcaption className="track-caption">
-            {TEAM.map((p) => p.short).slice(0, -1).join(', ')} and {TEAM[TEAM.length - 1].short} are already on the
-            timeline. <strong>The next keyframe is yours.</strong>
+            {TEAM.map((p) => p.short).slice(0, -1).join(', ')} and {TEAM[TEAM.length - 1].short} are already on
+            the timeline. The next keyframe is yours.
           </figcaption>
         </figure>
       </div>
