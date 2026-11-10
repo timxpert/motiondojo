@@ -1,11 +1,10 @@
 import React from 'react';
 import { COMMUNITY_JOIN_URL } from '@/config/site';
-import { GraphEditor } from './GraphEditor';
 
 export function Hero() {
   return (
     <section className="hero" id="top" aria-labelledby="hero-title">
-      <div className="wrap hero-grid">
+      <div className="wrap">
         <div className="hero-copy">
           <h1 className="display" id="hero-title">
             <span className="line">You were never meant</span>
@@ -24,10 +23,6 @@ export function Hero() {
               Learn more
             </a>
           </div>
-        </div>
-
-        <div className="hero-art">
-          <GraphEditor />
         </div>
       </div>
     </section>

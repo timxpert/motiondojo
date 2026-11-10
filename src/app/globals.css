@@ -467,22 +467,16 @@ main > .section:last-child {
   padding-top: clamp(48px, 8vw, 104px);
   padding-bottom: clamp(56px, 7vw, 88px);
 }
-.hero-grid {
-  display: grid;
-  gap: 20px;
-  align-items: center;
-}
 .hero-copy {
   position: relative;
-  z-index: 2;
   display: grid;
   gap: 28px;
   justify-items: start;
 }
-/* Two lines at every width: below desktop the size follows the screen so
-   "to figure it all out alone." (about 10.5em wide) always fits the column */
+/* Two lines at every width: the size follows the screen so
+   "to figure it all out alone." (about 10.5em wide) always fits */
 .hero .display {
-  font-size: min(3.75rem, calc((100vw - 2 * var(--gutter)) / 10.8));
+  font-size: min(4.5rem, calc((100vw - 2 * var(--gutter)) / 10.8));
 }
 .hero .display .line {
   display: block;
@@ -491,112 +485,6 @@ main > .section:last-child {
 .hero .lede {
   max-width: 46ch;
 }
-.hero-art {
-  position: relative;
-  width: 100%;
-  max-width: 520px;
-  justify-self: center;
-}
-@media (min-width: 1000px) {
-  /* Copy column sized to the headline's longest line, the curve takes the rest */
-  .hero-grid {
-    grid-template-columns: auto minmax(0, 1fr);
-    gap: clamp(40px, 5vw, 72px);
-  }
-  .hero .display {
-    font-size: clamp(2.6rem, 4vw, 3.75rem);
-  }
-  .hero-art {
-    justify-self: end;
-  }
-}
-
-/* Graph-editor composition */
-.graph {
-  width: 100%;
-  height: auto;
-  overflow: visible;
-}
-.graph .grid-line {
-  stroke: var(--line);
-  stroke-width: 1;
-}
-.graph .curve {
-  fill: none;
-  stroke: var(--violet);
-  stroke-width: 4;
-  stroke-linecap: round;
-}
-.graph .curve-ghost {
-  fill: none;
-  stroke: var(--line);
-  stroke-width: 2;
-  stroke-dasharray: 4 8;
-}
-.graph .handle {
-  stroke: var(--lavender);
-  stroke-width: 1.5;
-}
-.graph .handle-dot {
-  fill: var(--paper);
-  stroke: var(--lavender);
-  stroke-width: 1.5;
-}
-.graph .key {
-  fill: var(--paper);
-  stroke: var(--violet);
-  stroke-width: 2.5;
-}
-.graph .key-lime {
-  fill: var(--lime);
-  stroke: var(--midnight);
-}
-.graph .axis-label {
-  font-family: var(--font-body);
-  font-size: 12px;
-  fill: var(--muted);
-}
-.graph .key-g {
-  cursor: grab;
-  touch-action: none;
-  outline: none;
-}
-.graph .key-g.is-dragging {
-  cursor: grabbing;
-}
-.graph .key-hit {
-  fill: transparent;
-}
-.graph .key {
-  transition: stroke-width 0.15s ease;
-}
-.graph .key-g:hover .key,
-.graph .key-g.is-active .key {
-  stroke-width: 3.5;
-}
-.graph .key-g:focus-visible .key-hit {
-  fill: none;
-  stroke: var(--violet);
-  stroke-width: 2;
-  stroke-dasharray: 3 4;
-}
-.graph .marker {
-  fill: var(--lime);
-  stroke: var(--midnight);
-  stroke-width: 2;
-}
-.graph-editor {
-  display: grid;
-  gap: 10px;
-}
-.graph .playhead {
-  stroke: var(--violet);
-  stroke-width: 2;
-}
-.graph .playhead-cap {
-  fill: var(--violet);
-}
-
 
 /* Full-width 16:9 reel directly under the hero */
 .reel {
@@ -1352,8 +1240,8 @@ main > .section:last-child {
 }
 
 /* ==================================================================
-   Motion: only the hero graph moves (its playhead plays on load and after
-   each edit, from GraphEditor.tsx). Nothing animates on scroll.
+   Motion: the logo reel is the only thing that moves on its own.
+   Nothing animates on scroll.
 ================================================================== */
 @media (prefers-reduced-motion: reduce) {
   html {
