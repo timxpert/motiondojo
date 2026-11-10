@@ -22,9 +22,6 @@ export function CourseHero() {
           </p>
           <div className="btn-pair">
             <EnrolButton>Enrol now</EnrolButton>
-            <a href="#curriculum" className="btn btn-lime">
-              See the curriculum
-            </a>
           </div>
           <p className="bb-price-note">
             Pay {ENROL.priceLabel} one-time, or 2 payments of {ENROL.instalmentLabel}.
