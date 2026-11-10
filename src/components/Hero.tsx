@@ -52,8 +52,7 @@ export function Hero() {
         <div className="hero-copy">
           <h1 className="display" id="hero-title">
             <span className="line">You were never meant</span>
-            <span className="line">to figure it all</span>
-            <span className="line">out alone.</span>
+            <span className="line">to figure it all out alone.</span>
           </h1>
 
           <p className="lede">

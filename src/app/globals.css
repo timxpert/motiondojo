@@ -445,8 +445,14 @@ p {
   gap: 28px;
   justify-items: start;
 }
+/* Two lines at every width: below desktop the size follows the screen so
+   "to figure it all out alone." (about 10.5em wide) always fits the column */
+.hero .display {
+  font-size: min(3.75rem, calc((100vw - 2 * var(--gutter)) / 10.8));
+}
 .hero .display .line {
   display: block;
+  white-space: nowrap;
 }
 .hero .lede {
   max-width: 46ch;
@@ -463,8 +469,8 @@ p {
     grid-template-columns: auto minmax(0, 1fr);
     gap: clamp(40px, 5vw, 72px);
   }
-  .hero .display .line {
-    white-space: nowrap;
+  .hero .display {
+    font-size: clamp(2.6rem, 4vw, 3.75rem);
   }
   .hero-art {
     justify-self: end;
