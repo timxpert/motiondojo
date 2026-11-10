@@ -1,5 +1,7 @@
-import React from 'react';
-import { TEAM } from '@/data/content';
+'use client';
+
+import React, { useState } from 'react';
+import { TEAM, TeamMember } from '@/data/content';
 
 function WhatsAppIcon() {
   return (
@@ -9,43 +11,76 @@ function WhatsAppIcon() {
   );
 }
 
+/** Front: photo, name and role. Back: bio and a WhatsApp link. Tap to flip either way. */
+function FlipCard({ m }: { m: TeamMember }) {
+  const [flipped, setFlipped] = useState(false);
+
+  return (
+    <li className={flipped ? 'flip is-flipped' : 'flip'}>
+      <div className="flip-inner">
+        <div className="flip-face flip-front" aria-hidden={flipped}>
+          <img src={m.photo} alt="" loading="lazy" style={{ objectPosition: m.focus }} />
+          <div className="flip-caption">
+            <h3 className="flip-name">{m.name}</h3>
+            <p className="flip-role">{m.role}</p>
+          </div>
+          <button
+            type="button"
+            className="flip-hit"
+            onClick={() => setFlipped(true)}
+            tabIndex={flipped ? -1 : 0}
+            aria-label={`Read about ${m.short} and connect`}
+          />
+        </div>
+
+        <div className="flip-face flip-back" aria-hidden={!flipped}>
+          <button
+            type="button"
+            className="flip-hit"
+            onClick={() => setFlipped(false)}
+            tabIndex={flipped ? 0 : -1}
+            aria-label={`Flip back to ${m.short}’s photo`}
+          />
+          <div className="flip-back-body">
+            <p className="flip-name">{m.name}</p>
+            <p className="flip-role">{m.role}</p>
+            <p className="flip-bio">{m.bio}</p>
+          </div>
+          <div className="flip-actions">
+            <a
+              className="btn btn-lime"
+              href={m.whatsapp}
+              target="_blank"
+              rel="noopener noreferrer"
+              tabIndex={flipped ? 0 : -1}
+            >
+              <WhatsAppIcon />
+              Connect with {m.short}
+            </a>
+            <span className="flip-hint" aria-hidden="true">
+              Tap to flip back
+            </span>
+          </div>
+        </div>
+      </div>
+    </li>
+  );
+}
+
 export function Team() {
   return (
-    <section className="section dark-section team-section" id="team" aria-labelledby="team-title">
+    <section className="section team-section" id="team" aria-labelledby="team-title">
       <div className="wrap">
-        <div className="team-head">
+        <div className="section-head">
           <h2 className="h2" id="team-title">
             Meet the team
           </h2>
-          <p className="lede">
-            These are the people who keep the dojo running. Say hello on WhatsApp, they’re happy to hear from you.
-          </p>
+          <p className="lede">Tap a card to read their story and connect directly on WhatsApp.</p>
         </div>
 
-        <ul className="team-grid">
+        <ul className="flip-grid">
           {TEAM.map((m) => (
-            <li className="member" key={m.name}>
-              <a
-                className="member-photo"
-                href={m.whatsapp}
-                target="_blank"
-                rel="noopener noreferrer"
-                tabIndex={-1}
-                aria-hidden="true"
-              >
-                <img src={m.photo} alt="" loading="lazy" style={{ objectPosition: m.focus }} />
-              </a>
-              <div className="member-text">
-                <h3 className="member-name">{m.name}</h3>
-                <p className="member-role">{m.role}</p>
-                <p className="member-bio">{m.bio}</p>
-                <a className="member-link" href={m.whatsapp} target="_blank" rel="noopener noreferrer">
-                  <WhatsAppIcon />
-                  Message {m.short}
-                  <span className="wa-suffix"> on WhatsApp</span>
-                </a>
-              </div>
-            </li>
+            <FlipCard key={m.name} m={m} />
           ))}
         </ul>
       </div>

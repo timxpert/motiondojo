@@ -602,111 +602,140 @@ p {
 }
 
 /* ==================================================================
-   Meet the team: a dark band; portraits step down one after another
-   like keyframes on a timeline, each with a direct WhatsApp link
+   Meet the team: flip cards (photo on the front; bio and WhatsApp on
+   the back), as on joinmotiondojo
 ================================================================== */
-.team-head {
+.flip-grid {
   display: grid;
-  gap: 18px;
-  margin-bottom: clamp(40px, 5vw, 64px);
+  gap: 20px;
 }
-@media (min-width: 960px) {
-  .team-head {
-    grid-template-columns: 1fr 1fr;
-    gap: 80px;
-    align-items: end;
+@media (min-width: 760px) {
+  .flip-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
   }
 }
-.team-grid {
+.flip {
+  perspective: 1400px;
+}
+.flip-inner {
+  position: relative;
   display: grid;
-  gap: 36px;
-}
-.member {
-  display: grid;
-  grid-template-columns: 112px minmax(0, 1fr);
-  gap: 18px;
-  align-items: start;
-}
-.member-photo {
-  display: block;
-  border-radius: var(--r-sm);
-  overflow: hidden;
-  background: rgba(247, 245, 255, 0.06);
-}
-.member-photo img {
-  width: 100%;
   aspect-ratio: 4 / 5;
-  object-fit: cover;
+  transform-style: preserve-3d;
+  transition: transform 0.7s var(--ease);
 }
-.member-text {
-  display: grid;
-  gap: 6px;
-  justify-items: start;
+.flip.is-flipped .flip-inner {
+  transform: rotateY(180deg);
 }
-.member-name {
-  font-family: var(--font-display);
-  font-weight: 600;
-  font-size: clamp(1.3rem, 2vw, 1.6rem);
-  line-height: 1.15;
-  letter-spacing: -0.015em;
+/* only the face that is showing takes taps */
+.flip.is-flipped .flip-front,
+.flip:not(.is-flipped) .flip-back {
+  pointer-events: none;
 }
-.member-role {
-  font-weight: 500;
-  color: var(--lime);
+.flip-face {
+  grid-area: 1 / 1;
+  position: relative;
+  border-radius: var(--r-lg);
+  overflow: hidden;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
 }
-.member-bio {
-  margin-top: 6px;
-  color: var(--on-dark-muted);
-  max-width: 38ch;
+.flip-hit {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  width: 100%;
+  border-radius: inherit;
+  cursor: pointer;
 }
-.member-link {
-  margin-top: 10px;
-  display: inline-flex;
-  align-items: center;
-  gap: 10px;
-  min-height: 44px;
-  font-weight: 600;
-  color: var(--on-dark);
-  text-decoration: underline;
-  text-decoration-color: var(--lime);
-  text-decoration-thickness: 2px;
-  text-underline-offset: 6px;
-}
-.member-link svg {
-  color: var(--lime);
-  flex: none;
-}
-.member-link:hover {
-  color: var(--lime);
-}
-/* phones: the icon already says WhatsApp, so keep the link on one line */
-@media (max-width: 759px) {
-  .wa-suffix {
-    position: absolute;
-    width: 1px;
-    height: 1px;
-    overflow: hidden;
-    clip: rect(0 0 0 0);
-    white-space: nowrap;
-  }
+.flip-hit:focus-visible {
+  outline: 3px solid var(--violet);
+  outline-offset: -3px;
 }
 
-@media (min-width: 760px) {
-  .team-grid {
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-    gap: 28px;
-    padding-bottom: 96px;
+/* front */
+.flip-front {
+  background: var(--tint);
+}
+.flip-front img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.flip-caption {
+  position: absolute;
+  left: 12px;
+  right: 12px;
+  bottom: 12px;
+  padding: 14px 16px;
+  border-radius: var(--r);
+  background: var(--white);
+}
+.flip-name {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 1.2rem;
+  line-height: 1.2;
+  letter-spacing: -0.01em;
+}
+.flip-role {
+  margin-top: 2px;
+  font-size: 0.9375rem;
+  color: var(--violet);
+  font-weight: 500;
+}
+
+/* back */
+.flip-back {
+  transform: rotateY(180deg);
+  display: grid;
+  align-content: space-between;
+  gap: 20px;
+  padding: clamp(22px, 2.6vw, 32px);
+  background: var(--midnight);
+  color: var(--on-dark);
+}
+.flip-back .flip-name {
+  font-size: clamp(1.3rem, 2vw, 1.6rem);
+}
+.flip-back .flip-role {
+  color: var(--lime);
+}
+.flip-bio {
+  margin-top: 16px;
+  color: var(--on-dark-muted);
+}
+.flip-actions {
+  position: relative;
+  z-index: 2;
+  display: grid;
+  gap: 12px;
+  justify-items: start;
+}
+.flip-actions .btn {
+  gap: 10px;
+}
+.flip-hint {
+  font-size: 0.875rem;
+  color: var(--on-dark-muted);
+}
+
+/* reduced motion: swap faces without the turn */
+@media (prefers-reduced-motion: reduce) {
+  .flip-inner {
+    transform: none !important;
   }
-  .member {
-    grid-template-columns: 1fr;
-    gap: 22px;
+  .flip-back {
+    transform: none;
+    visibility: hidden;
   }
-  /* each portrait sits one step lower than the one before it */
-  .member:nth-child(2) {
-    transform: translateY(48px);
+  .flip.is-flipped .flip-back {
+    visibility: visible;
   }
-  .member:nth-child(3) {
-    transform: translateY(96px);
+  .flip.is-flipped .flip-front {
+    visibility: hidden;
   }
 }
 
