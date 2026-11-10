@@ -7,13 +7,13 @@
 
 /**
  * Where "Join the community" sends people.
- * Joining currently happens through the Black Belt page (the community manager gives
- * access once payment is confirmed). Replace with a dedicated invite link when one exists.
+ * Joining happens by enrolling in Black Belt (the community manager gives access once
+ * payment is confirmed). Replace with a dedicated invite link when one exists.
  */
-export const COMMUNITY_JOIN_URL = 'https://joinmotiondojo.vercel.app';
+export const COMMUNITY_JOIN_URL = '/blackbelt#pricing';
 
-/** Black Belt in Motion Design — the course platform. */
-export const COURSE_URL = 'https://joinmotiondojo.vercel.app';
+/** Black Belt in Motion Design: the course page on this site. */
+export const COURSE_URL = '/blackbelt';
 
 /** Dojo's AI — access link. Empty until the tool is ready to share. */
 export const DOJO_AI_URL = '';
@@ -42,10 +42,10 @@ export const SITE_METADATA = {
 
 /** Main navigation (header, mobile menu and footer). */
 export const NAV = [
-  { href: '#top', label: 'Home' },
-  { href: '#intro', label: 'About' },
-  { href: '#community', label: 'Community' },
-  { href: '#resources', label: 'Resources' },
+  { href: '/', label: 'Home' },
+  { href: '/#intro', label: 'About' },
+  { href: '/#community', label: 'Community' },
+  { href: '/#resources', label: 'Resources' },
 ];
 
 export const isExternal = (url: string) => /^https?:\/\//.test(url);

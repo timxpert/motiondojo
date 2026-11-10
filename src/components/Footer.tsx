@@ -67,21 +67,21 @@ export function Footer() {
   ];
 
   const ecosystem = [
-    { label: 'Black Belt in Motion Design', href: COURSE_URL },
-    { label: 'Dojo’s AI', href: DOJO_AI_URL || '#dojo-ai' },
+    { label: 'Black Belt in Motion Design', href: COURSE_URL, newTab: true },
+    { label: 'Dojo’s AI', href: DOJO_AI_URL || '/#dojo-ai' },
     { label: 'Keyframe Ninjas', href: NINJAS_SHOWCASE_URL, newTab: true },
   ];
   const site = [
-    { label: 'About', href: '#intro' },
-    { label: 'Community', href: '#community' },
-    { label: 'Meet the team', href: '#team' },
+    { label: 'About', href: '/#intro' },
+    { label: 'Community', href: '/#community' },
+    { label: 'Meet the team', href: '/#team' },
   ];
 
   return (
     <footer className="footer">
       <div className="footer-box">
         <div className="footer-brand">
-          <a href="#top" className="footer-logo" aria-label="Motion Dojo, back to top">
+          <a href="/" className="footer-logo" aria-label="Motion Dojo home">
             <img src="/assets/favicon-128.png" alt="" width={48} height={48} />
             Motion Dojo
           </a>

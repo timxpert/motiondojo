@@ -14,7 +14,7 @@ export function Community() {
               Great things happen when creatives grow together. Motion Dojo brings people together to share ideas,
               learn from one another, create meaningful work, and celebrate progress.
             </p>
-            <a href={COMMUNITY_JOIN_URL} className="btn btn-primary">
+            <a href={COMMUNITY_JOIN_URL} target="_blank" rel="noopener" className="btn btn-primary">
               Join the community
             </a>
           </div>

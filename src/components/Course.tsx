@@ -17,7 +17,7 @@ export function Course() {
           <p className="lede">
             From your first keyframe to building a portfolio, you’ll have a structured path to follow.
           </p>
-          <a href={COURSE_URL} className="btn btn-primary">
+          <a href={COURSE_URL} target="_blank" rel="noopener" className="btn btn-primary">
             Explore the course
           </a>
         </div>

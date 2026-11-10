@@ -25,7 +25,7 @@ export function Inside() {
                 build strong foundations, master your tools, execute creative projects, and prepare for professional
                 opportunities.
               </p>
-              <a href={COURSE_URL} className="btn btn-lime">
+              <a href={COURSE_URL} target="_blank" rel="noopener" className="btn btn-lime">
                 Explore the course
               </a>
             </div>

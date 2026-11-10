@@ -7,7 +7,7 @@ import { Close, Play } from './Icons';
 
 type T = (typeof TESTIMONIALS)[number];
 
-export function Testimonials() {
+export function Testimonials({ title = 'Real people. Real creative growth.' }: { title?: string }) {
   const [active, setActive] = useState(0);
   const [playing, setPlaying] = useState<T | null>(null);
   const playRef = useRef<HTMLButtonElement>(null);
@@ -33,7 +33,7 @@ export function Testimonials() {
       <div className="wrap">
         <div className="section-head">
           <h2 className="h2" id="voices-title">
-            Real people. Real creative growth.
+            {title}
           </h2>
         </div>
 

@@ -16,7 +16,7 @@ export function Hero() {
           </p>
 
           <div className="btn-pair">
-            <a href={COMMUNITY_JOIN_URL} className="btn btn-primary">
+            <a href={COMMUNITY_JOIN_URL} target="_blank" rel="noopener" className="btn btn-primary">
               Join the community
             </a>
             <a href="#intro" className="btn btn-lime">

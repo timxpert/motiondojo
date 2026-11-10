@@ -32,6 +32,18 @@ npm run build
 
 Hero + 16:9 reel → Introduction → What's inside the dojo → Black Belt in Motion Design → Dojo's AI → The community → Testimonials → Final call to action → Footer.
 
+## Course page — `/blackbelt`
+
+Black Belt in Motion Design has its own page at `/blackbelt` (`src/app/blackbelt/page.tsx`). Links to it from the homepage open it in a new tab. Course copy, curriculum, sample projects, pricing and FAQs live in `src/data/blackbelt.ts`.
+
+Payment uses Paystack. Only the **public** key is in the code (`ENROL.paystackPublicKey`). Before going live:
+
+1. In Vercel → this project → Settings → Environment Variables, add `PAYSTACK_SECRET_KEY` (never commit it).
+2. In the Paystack dashboard, set the webhook URL to `https://<your domain>/api/paystack-webhook`.
+3. To serve the page at `joinmotiondojo.com/blackbelt`, add `joinmotiondojo.com` as a domain of this Vercel project.
+
+Payments are confirmed on the server by `/api/verify-payment` (₦40,000, NGN) before the visitor sees "Payment received".
+
 ## Fonts
 
 Sora (Google Fonts) for text and Clash Display (Fontshare) for headings, both loaded in `src/app/layout.tsx`.

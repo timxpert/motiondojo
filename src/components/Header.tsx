@@ -3,8 +3,12 @@
 import React, { useEffect, useState } from 'react';
 import { COMMUNITY_JOIN_URL, NAV } from '@/config/site';
 
-export function Header() {
+type Link = { href: string; label: string };
+
+export function Header({ nav = NAV, cta = { href: COMMUNITY_JOIN_URL, label: 'Join the community' } }: { nav?: Link[]; cta?: Link }) {
   const [open, setOpen] = useState(false);
+  // Links to the course page open it in a new tab; in-page links (#pricing) don't
+  const ctaTab = cta.href.startsWith('/blackbelt') ? { target: '_blank', rel: 'noopener' } : {};
   const [scrolled, setScrolled] = useState(false);
 
   useEffect(() => {
@@ -33,21 +37,21 @@ export function Header() {
     <>
       <header className={['header', scrolled ? 'is-scrolled' : '', open ? 'is-open' : ''].join(' ').trim()}>
         <div className="wrap header-row">
-          <a href="#top" className="brand" aria-label="Motion Dojo home" onClick={() => setOpen(false)}>
+          <a href="/" className="brand" aria-label="Motion Dojo home" onClick={() => setOpen(false)}>
             <img src="/assets/favicon-128.png" alt="" width={34} height={34} />
             Motion Dojo
           </a>
 
           <nav className="nav" aria-label="Main">
-            {NAV.map((n) => (
+            {nav.map((n) => (
               <a key={n.href} href={n.href}>
                 {n.label}
               </a>
             ))}
           </nav>
 
-          <a href={COMMUNITY_JOIN_URL} className="btn btn-primary btn-sm">
-            Join the community
+          <a href={cta.href} {...ctaTab} className="btn btn-primary btn-sm">
+            {cta.label}
           </a>
 
           <button
@@ -67,7 +71,7 @@ export function Header() {
       <div id="mobile-nav" className={open ? 'mobile-nav is-open' : 'mobile-nav'} aria-hidden={!open}>
         <nav aria-label="Mobile">
           <ul>
-            {NAV.map((n) => (
+            {nav.map((n) => (
               <li key={n.href}>
                 <a href={n.href} tabIndex={open ? 0 : -1} onClick={() => setOpen(false)}>
                   {n.label}
@@ -76,8 +80,8 @@ export function Header() {
             ))}
           </ul>
         </nav>
-        <a href={COMMUNITY_JOIN_URL} className="btn btn-lime" tabIndex={open ? 0 : -1}>
-          Join the community
+        <a href={cta.href} {...ctaTab} className="btn btn-lime" tabIndex={open ? 0 : -1} onClick={() => setOpen(false)}>
+          {cta.label}
         </a>
       </div>
     </>

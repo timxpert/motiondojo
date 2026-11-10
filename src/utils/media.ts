@@ -5,11 +5,13 @@
 export function getVimeoEmbedUrl(url: string, autoplay: boolean = true): string {
   if (!url) return '';
   // Extract digits from vimeo url
-  const match = url.match(/vimeo\.com\/(?:video\/)?([0-9]+)/);
+  // vimeo.com/ID, vimeo.com/ID/HASH or player.vimeo.com/video/ID?h=HASH (unlisted videos need the hash)
+  const match = url.match(/vimeo\.com\/(?:video\/)?([0-9]+)(?:\/([0-9a-f]+))?/);
   const id = match ? match[1] : url.replace(/\D/g, '');
   if (!id) return url;
+  const hash = (match && match[2]) || (url.match(/[?&]h=([0-9a-f]+)/) || [])[1];
   const autoplayParam = autoplay ? '1' : '0';
-  return `https://player.vimeo.com/video/${id}?autoplay=${autoplayParam}&badge=0&autopause=0&player_id=0&app_id=58479`;
+  return `https://player.vimeo.com/video/${id}?${hash ? `h=${hash}&` : ''}autoplay=${autoplayParam}&badge=0&autopause=0&player_id=0&app_id=58479`;
 }
 
 export function formatSocialUrl(network: string, handleOrUrl: string): string {
