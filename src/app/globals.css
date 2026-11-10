@@ -602,84 +602,112 @@ p {
 }
 
 /* ==================================================================
-   Meet the team
+   Meet the team: a dark band; portraits step down one after another
+   like keyframes on a timeline, each with a direct WhatsApp link
 ================================================================== */
-#team {
-  padding-top: 0;
+.team-head {
+  display: grid;
+  gap: 18px;
+  margin-bottom: clamp(40px, 5vw, 64px);
+}
+@media (min-width: 960px) {
+  .team-head {
+    grid-template-columns: 1fr 1fr;
+    gap: 80px;
+    align-items: end;
+  }
 }
 .team-grid {
   display: grid;
-  gap: 40px 20px;
+  gap: 36px;
 }
-@media (min-width: 760px) {
-  .team-grid {
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-  }
-}
-/* phones: photo beside the text; wider screens: photo on top */
 .member {
   display: grid;
   grid-template-columns: 112px minmax(0, 1fr);
-  gap: 14px 18px;
+  gap: 18px;
   align-items: start;
 }
 .member-photo {
-  grid-row: span 2;
-}
-@media (min-width: 760px) {
-  .member {
-    grid-template-columns: 1fr;
-    grid-template-rows: auto 1fr auto;
-    gap: 16px;
-  }
-  .member-photo {
-    grid-row: auto;
-  }
-}
-.member-photo {
   display: block;
-  border-radius: var(--r);
+  border-radius: var(--r-sm);
   overflow: hidden;
-  background: var(--tint);
+  background: rgba(247, 245, 255, 0.06);
 }
 .member-photo img {
   width: 100%;
   aspect-ratio: 4 / 5;
   object-fit: cover;
 }
+.member-text {
+  display: grid;
+  gap: 6px;
+  justify-items: start;
+}
 .member-name {
   font-family: var(--font-display);
   font-weight: 600;
-  font-size: 1.3rem;
-  line-height: 1.2;
-  letter-spacing: -0.01em;
+  font-size: clamp(1.3rem, 2vw, 1.6rem);
+  line-height: 1.15;
+  letter-spacing: -0.015em;
 }
 .member-role {
-  margin-top: 4px;
-  font-size: 0.9375rem;
   font-weight: 500;
-  color: var(--violet);
+  color: var(--lime);
 }
 .member-bio {
-  margin-top: 10px;
-  color: var(--muted);
+  margin-top: 6px;
+  color: var(--on-dark-muted);
+  max-width: 38ch;
 }
 .member-link {
-  justify-self: start;
+  margin-top: 10px;
   display: inline-flex;
   align-items: center;
   gap: 10px;
-  min-height: 48px;
-  padding: 0 20px;
-  border-radius: 999px;
-  border: 1.5px solid var(--midnight);
+  min-height: 44px;
   font-weight: 600;
-  font-size: 0.95rem;
-  transition: background-color 0.2s ease, color 0.2s ease;
+  color: var(--on-dark);
+  text-decoration: underline;
+  text-decoration-color: var(--lime);
+  text-decoration-thickness: 2px;
+  text-underline-offset: 6px;
+}
+.member-link svg {
+  color: var(--lime);
+  flex: none;
 }
 .member-link:hover {
-  background: var(--midnight);
-  color: var(--white);
+  color: var(--lime);
+}
+/* phones: the icon already says WhatsApp, so keep the link on one line */
+@media (max-width: 759px) {
+  .wa-suffix {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    white-space: nowrap;
+  }
+}
+
+@media (min-width: 760px) {
+  .team-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 28px;
+    padding-bottom: 96px;
+  }
+  .member {
+    grid-template-columns: 1fr;
+    gap: 22px;
+  }
+  /* each portrait sits one step lower than the one before it */
+  .member:nth-child(2) {
+    transform: translateY(48px);
+  }
+  .member:nth-child(3) {
+    transform: translateY(96px);
+  }
 }
 
 /* ==================================================================

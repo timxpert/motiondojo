@@ -11,13 +11,15 @@ function WhatsAppIcon() {
 
 export function Team() {
   return (
-    <section className="section" id="team" aria-labelledby="team-title">
+    <section className="section dark-section team-section" id="team" aria-labelledby="team-title">
       <div className="wrap">
-        <div className="section-head">
+        <div className="team-head">
           <h2 className="h2" id="team-title">
             Meet the team
           </h2>
-          <p className="lede">The people who keep the dojo running. Message any of them on WhatsApp to say hello.</p>
+          <p className="lede">
+            These are the people who keep the dojo running. Say hello on WhatsApp, they’re happy to hear from you.
+          </p>
         </div>
 
         <ul className="team-grid">
@@ -28,7 +30,8 @@ export function Team() {
                 href={m.whatsapp}
                 target="_blank"
                 rel="noopener noreferrer"
-                aria-label={`Message ${m.short} on WhatsApp`}
+                tabIndex={-1}
+                aria-hidden="true"
               >
                 <img src={m.photo} alt="" loading="lazy" style={{ objectPosition: m.focus }} />
               </a>
@@ -36,11 +39,12 @@ export function Team() {
                 <h3 className="member-name">{m.name}</h3>
                 <p className="member-role">{m.role}</p>
                 <p className="member-bio">{m.bio}</p>
+                <a className="member-link" href={m.whatsapp} target="_blank" rel="noopener noreferrer">
+                  <WhatsAppIcon />
+                  Message {m.short}
+                  <span className="wa-suffix"> on WhatsApp</span>
+                </a>
               </div>
-              <a className="member-link" href={m.whatsapp} target="_blank" rel="noopener noreferrer">
-                <WhatsAppIcon />
-                Message {m.short}
-              </a>
             </li>
           ))}
         </ul>
