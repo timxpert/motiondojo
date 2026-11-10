@@ -847,40 +847,15 @@ p {
   background: var(--paper);
   border-block: 1px solid var(--line);
 }
-.course-grid {
-  display: grid;
-  gap: 56px;
-  align-items: center;
-}
-@media (min-width: 960px) {
-  .course-grid {
-    grid-template-columns: 1.3fr 1fr;
-    gap: 72px;
-  }
-}
 .course-copy {
   display: grid;
   gap: 22px;
   justify-items: start;
+  max-width: 760px;
 }
 .course-copy .btn {
   margin-top: 8px;
 }
-.course-phone {
-  position: relative;
-  justify-self: center;
-  width: min(320px, 74%);
-  aspect-ratio: 9 / 16;
-  border-radius: var(--r-lg);
-  background: var(--white);
-}
-.course-phone img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  transform: scale(1.12);
-}
-
 /* Four phases on a timeline */
 .phases {
   position: relative;
@@ -1102,12 +1077,11 @@ p {
 }
 
 /* ==================================================================
-   Community gallery: editorial grid
+   Community
 ================================================================== */
 .community-head {
   display: grid;
   gap: 24px;
-  margin-bottom: clamp(44px, 6vw, 72px);
 }
 @media (min-width: 960px) {
   .community-head {
@@ -1126,120 +1100,6 @@ p {
   gap: 22px;
   justify-items: start;
 }
-.gallery {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  grid-auto-rows: clamp(140px, 22vw, 230px);
-  grid-auto-flow: dense;
-  gap: 12px;
-}
-@media (min-width: 900px) {
-  .gallery {
-    grid-template-columns: repeat(4, 1fr);
-    gap: 16px;
-  }
-}
-.tile {
-  position: relative;
-  margin: 0;
-  border-radius: var(--r);
-  overflow: hidden;
-  background: var(--tint);
-}
-.tile.tall {
-  grid-row: span 2;
-}
-.tile.wide {
-  grid-column: span 2;
-}
-.tile img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
-.tile figcaption {
-  position: absolute;
-  left: 10px;
-  bottom: 10px;
-  max-width: calc(100% - 20px);
-  padding: 5px 12px;
-  border-radius: 999px;
-  background: var(--white);
-  font-size: 0.8125rem;
-  font-weight: 600;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
-
-/* ==================================================================
-   Keyframe Ninjas
-================================================================== */
-.ninjas {
-  background: var(--paper);
-  border-top: 1px solid var(--line);
-}
-.ninja-grid {
-  display: grid;
-  gap: 20px;
-}
-@media (min-width: 760px) {
-  .ninja-grid {
-    grid-template-columns: repeat(3, 1fr);
-  }
-  .ninja-photo {
-    aspect-ratio: 4 / 5;
-  }
-}
-.ninja {
-  display: grid;
-  gap: 14px;
-  align-content: start;
-}
-.ninja-photo {
-  position: relative;
-  aspect-ratio: 5 / 4;
-  border-radius: var(--r-lg);
-  overflow: hidden;
-  background: var(--midnight);
-}
-.ninja-photo img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  transform: scale(1.5);
-}
-.ninja-cohort {
-  margin-top: -10px;
-  font-size: 0.875rem;
-  color: var(--muted);
-}
-.ninja h3 {
-  font-family: var(--font-display);
-  font-weight: 600;
-  font-size: 1.35rem;
-  letter-spacing: -0.01em;
-  line-height: 1.2;
-}
-.ninja p {
-  color: var(--muted);
-  font-size: 1rem;
-}
-.ninjas-foot {
-  margin-top: clamp(40px, 5vw, 56px);
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  justify-content: space-between;
-  gap: 20px;
-  padding-top: 28px;
-  border-top: 1px solid var(--line);
-}
-.ninjas-foot p {
-  color: var(--muted);
-  max-width: 52ch;
-}
-
 /* ==================================================================
    Testimonials
 ================================================================== */

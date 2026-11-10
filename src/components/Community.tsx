@@ -1,6 +1,5 @@
 import React from 'react';
 import { COMMUNITY_JOIN_URL } from '@/config/site';
-import { GALLERY } from '@/data/content';
 
 export function Community() {
   return (
@@ -19,15 +18,6 @@ export function Community() {
               Join the community
             </a>
           </div>
-        </div>
-
-        <div className="gallery">
-          {GALLERY.map((g) => (
-            <figure className={`tile ${g.shape}`} key={g.src}>
-              <img src={g.src} alt={g.alt} loading="lazy" style={g.focus ? { objectPosition: g.focus } : undefined} />
-              <figcaption>{g.caption}</figcaption>
-            </figure>
-          ))}
         </div>
       </div>
     </section>

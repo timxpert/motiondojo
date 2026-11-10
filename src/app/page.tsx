@@ -7,7 +7,6 @@ import { Inside } from '@/components/Inside';
 import { Course } from '@/components/Course';
 import { DojoAI } from '@/components/DojoAI';
 import { Community } from '@/components/Community';
-import { Ninjas } from '@/components/Ninjas';
 import { Testimonials } from '@/components/Testimonials';
 import { Philosophy } from '@/components/Philosophy';
 import { FinalCTA } from '@/components/FinalCTA';
@@ -28,7 +27,6 @@ export default function HomePage() {
         <Course />
         <DojoAI />
         <Community />
-        <Ninjas />
         <Testimonials />
         <Philosophy />
         <FinalCTA />
