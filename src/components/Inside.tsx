@@ -25,7 +25,7 @@ export function Inside() {
                 build strong foundations, master your tools, execute creative projects, and prepare for professional
                 opportunities.
               </p>
-              <a href={COURSE_URL} className="tile-link">
+              <a href={COURSE_URL} className="btn btn-lime">
                 Explore the course
               </a>
             </div>
@@ -38,7 +38,7 @@ export function Inside() {
                 <strong>Dojo’s AI</strong> is our in-house tool, built to support the Motion Dojo community and make
                 the creative workflow easier.
               </p>
-              <a href={DOJO_AI_URL || '#dojo-ai'} className="tile-link">
+              <a href={DOJO_AI_URL || '#dojo-ai'} className="btn btn-light">
                 Discover Dojo’s AI
               </a>
             </div>
@@ -51,7 +51,7 @@ export function Inside() {
                 <strong>The community</strong> is where you connect with other motion designers, share your work,
                 exchange ideas, collaborate, and grow alongside people who understand your journey.
               </p>
-              <a href="#community" className="tile-link">
+              <a href="#community" className="btn btn-primary">
                 Explore the community
               </a>
             </div>

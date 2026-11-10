@@ -220,6 +220,13 @@ p {
 .btn-lime:hover {
   background: #d8ff70;
 }
+.btn-light {
+  background: var(--white);
+  color: var(--midnight);
+}
+.btn-light:hover {
+  background: #fff;
+}
 .btn-sm {
   --btn-h: 44px;
   padding: 0 20px;
@@ -776,14 +783,11 @@ p {
   justify-items: start;
   max-width: 48ch;
 }
+.tile-copy .btn {
+  margin-top: 10px;
+}
 .tile-copy strong {
   font-weight: 600;
-}
-.tile-link {
-  font-weight: 600;
-  text-decoration: underline;
-  text-decoration-thickness: 2px;
-  text-underline-offset: 6px;
 }
 
 .tile-learn {
@@ -793,9 +797,6 @@ p {
 .tile-learn p {
   color: rgba(255, 255, 255, 0.86);
 }
-.tile-learn .tile-link {
-  text-decoration-color: var(--lime);
-}
 
 .tile-ai {
   background: var(--midnight);
@@ -804,9 +805,6 @@ p {
 .tile-ai p {
   color: var(--on-dark-muted);
 }
-.tile-ai .tile-link {
-  color: var(--lime);
-}
 
 .tile-grow {
   background: var(--lime);
@@ -814,9 +812,6 @@ p {
 }
 .tile-grow p {
   color: #2b2346;
-}
-.tile-grow .tile-link {
-  text-decoration-color: var(--violet);
 }
 
 @media (min-width: 900px) {
