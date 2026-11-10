@@ -2,7 +2,6 @@ import React from 'react';
 import { NINJAS_SHOWCASE_URL } from '@/config/site';
 import { NINJAS } from '@/data/content';
 import { SmartLink } from './SmartLink';
-import { ArrowRight } from './Icons';
 
 export function Ninjas() {
   if (NINJAS.length === 0) return null;
@@ -11,9 +10,6 @@ export function Ninjas() {
     <section className="section ninjas" id="keyframe-ninjas" aria-labelledby="ninjas-title">
       <div className="wrap">
         <div className="section-head">
-          <span className="kicker" data-reveal>
-            Keyframe Ninjas
-          </span>
           <h2 className="h2" id="ninjas-title" data-reveal>
             Meet the creatives making moves.
           </h2>
@@ -28,12 +24,9 @@ export function Ninjas() {
             <li className="ninja" key={n.name} data-reveal style={{ ['--d' as string]: `${i * 0.08}s` }}>
               <div className="ninja-photo">
                 <img src={n.photo} alt={n.name} loading="lazy" style={{ objectPosition: n.focus }} />
-                <span className="ninja-tag">
-                  <i aria-hidden="true" />
-                  {n.cohort}
-                </span>
               </div>
               <h3>{n.name}</h3>
+              <span className="ninja-cohort">{n.cohort}</span>
               <p>{n.note}</p>
             </li>
           ))}
@@ -43,7 +36,6 @@ export function Ninjas() {
           <p>Every Keyframe Ninja gets a showcase page with their story, projects and links to share.</p>
           <SmartLink href={NINJAS_SHOWCASE_URL} newTab className="text-link">
             <span>See all Keyframe Ninjas</span>
-            <ArrowRight />
           </SmartLink>
         </div>
       </div>

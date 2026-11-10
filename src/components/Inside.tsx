@@ -1,6 +1,5 @@
 import React from 'react';
 import { COURSE_URL, DOJO_AI_URL } from '@/config/site';
-import { ArrowRight } from './Icons';
 
 export function Inside() {
   return (
@@ -8,7 +7,7 @@ export function Inside() {
       <div className="wrap">
         <div className="section-head">
           <h2 className="h2" id="inside-title" data-reveal>
-            Everything you need to keep <span className="grad-text">growing.</span>
+            Everything you need to keep growing.
           </h2>
           <p className="lede" data-reveal style={{ ['--d' as string]: '0.08s' }}>
             From learning new skills to finding better ways to work, Motion Dojo brings together opportunities, tools,
@@ -38,13 +37,20 @@ export function Inside() {
             </p>
             <a href={COURSE_URL} className="text-link">
               <span>Explore the course</span>
-              <ArrowRight />
             </a>
           </article>
 
           <article className="card card-dark" data-reveal style={{ ['--d' as string]: '0.08s' }}>
             <div className="card-visual cv-ai" aria-hidden="true">
-              <span className="spark" />
+              <svg viewBox="0 0 200 110" className="ai-curve">
+                <path d="M16 92 C 70 92, 80 18, 184 18" />
+                <line x1="16" y1="92" x2="62" y2="92" />
+                <line x1="184" y1="18" x2="130" y2="18" />
+                <circle cx="62" cy="92" r="4" />
+                <circle cx="130" cy="18" r="4" />
+                <rect x="10" y="86" width="12" height="12" rx="2" transform="rotate(45 16 92)" />
+                <rect x="178" y="12" width="12" height="12" rx="2" transform="rotate(45 184 18)" />
+              </svg>
             </div>
             <span className="kicker">Work smarter</span>
             <h3 className="h3">Dojo’s AI</h3>
@@ -54,7 +60,6 @@ export function Inside() {
             </p>
             <a href={DOJO_AI_URL || '#dojo-ai'} className="text-link">
               <span>Discover Dojo’s AI</span>
-              <ArrowRight />
             </a>
           </article>
 
@@ -73,7 +78,6 @@ export function Inside() {
             </p>
             <a href="#community" className="text-link">
               <span>Explore the community</span>
-              <ArrowRight />
             </a>
           </article>
         </div>

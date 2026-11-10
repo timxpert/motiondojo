@@ -30,9 +30,9 @@
 
   --gutter: clamp(20px, 5vw, 56px);
   --max: 1200px;
-  --r-lg: 28px;
-  --r: 20px;
-  --r-sm: 12px;
+  --r-lg: 20px;
+  --r: 14px;
+  --r-sm: 10px;
   --ease: cubic-bezier(0.22, 1, 0.36, 1);
   --header-h: 72px;
 }
@@ -158,17 +158,13 @@ button {
 .kicker {
   display: inline-block;
   font-size: 0.9rem;
-  font-weight: 600;
-  color: var(--violet);
-}
-.dark-section .kicker {
-  color: var(--lime);
+  font-weight: 500;
+  color: var(--muted);
 }
 
 /* Brand gradient text. On light backgrounds the lime end is dropped for legibility. */
 .grad-text {
   background: var(--grad-light);
-  background-size: 200% 100%;
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
@@ -565,54 +561,6 @@ button {
   fill: var(--violet);
 }
 
-.float-chip {
-  position: absolute;
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  padding: 8px 14px 8px 8px;
-  border-radius: 999px;
-  background: var(--paper);
-  border: 1px solid var(--line);
-  box-shadow: 0 18px 40px -24px rgba(20, 10, 46, 0.45);
-  font-size: 0.82rem;
-  font-weight: 600;
-  white-space: nowrap;
-}
-.float-chip img {
-  width: 34px;
-  height: 34px;
-  border-radius: 50%;
-  object-fit: cover;
-}
-.float-chip small {
-  display: block;
-  font-weight: 400;
-  color: var(--muted);
-  font-size: 0.74rem;
-  line-height: 1.2;
-}
-.chip-a {
-  left: -4%;
-  top: 6%;
-}
-.chip-b {
-  right: -2%;
-  bottom: 10%;
-}
-@media (max-width: 520px) {
-  .float-chip {
-    transform: scale(0.88);
-  }
-  .chip-a {
-    left: 0;
-    transform-origin: left top;
-  }
-  .chip-b {
-    right: 0;
-    transform-origin: right bottom;
-  }
-}
 
 /* Full-width 16:9 reel directly under the hero */
 .reel {
@@ -703,7 +651,6 @@ button {
   overflow: hidden;
   background: var(--paper);
   border: 1px solid var(--line);
-  box-shadow: 0 40px 80px -40px rgba(20, 10, 46, 0.5);
 }
 .orbit-phone img {
   width: 100%;
@@ -724,7 +671,6 @@ button {
   object-position: 50% 25%;
   border-radius: 50%;
   border: 4px solid var(--white);
-  box-shadow: 0 14px 30px -18px rgba(20, 10, 46, 0.6);
 }
 .orbit-face span {
   position: absolute;
@@ -738,15 +684,6 @@ button {
   font-size: 0.72rem;
   font-weight: 600;
   white-space: nowrap;
-}
-.orbit-key {
-  position: absolute;
-  width: 14px;
-  height: 14px;
-  transform: translate(-50%, -50%) rotate(45deg);
-  background: var(--lime);
-  border: 2px solid var(--midnight);
-  border-radius: 2px;
 }
 
 /* ==================================================================
@@ -772,12 +709,10 @@ button {
   border: 1px solid var(--line);
   background: var(--paper);
   overflow: hidden;
-  transition: transform 0.45s var(--ease), border-color 0.3s ease, box-shadow 0.45s var(--ease);
+  transition: border-color 0.3s ease;
 }
 .card:hover {
-  transform: translateY(-6px);
   border-color: var(--lavender);
-  box-shadow: 0 30px 60px -40px rgba(109, 50, 232, 0.55);
 }
 .card .card-visual {
   margin: -8px -8px 10px;
@@ -806,7 +741,7 @@ button {
   color: var(--on-dark-muted);
 }
 .card-dark .kicker {
-  color: var(--lime);
+  color: var(--on-dark-muted);
 }
 .card-tint {
   background: var(--tint);
@@ -864,31 +799,33 @@ button {
 }
 
 .cv-ai {
-  background: radial-gradient(120% 90% at 85% 10%, rgba(167, 123, 255, 0.35), transparent 60%),
-    radial-gradient(80% 70% at 10% 100%, rgba(200, 255, 61, 0.14), transparent 60%), #1c1140;
+  background: #1d1240;
   display: grid;
   place-items: center;
+  padding: 8% 10%;
 }
-.cv-ai .spark {
-  width: 34%;
-  aspect-ratio: 1;
-  position: relative;
+.ai-curve {
+  width: 100%;
+  height: auto;
+  overflow: visible;
 }
-.cv-ai .spark::before,
-.cv-ai .spark::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background: var(--grad);
-  clip-path: polygon(50% 0, 61% 39%, 100% 50%, 61% 61%, 50% 100%, 39% 61%, 0 50%, 39% 39%);
-  transition: transform 0.8s var(--ease);
+.ai-curve path {
+  fill: none;
+  stroke: var(--lavender);
+  stroke-width: 3;
+  stroke-linecap: round;
 }
-.cv-ai .spark::after {
-  transform: scale(0.42) rotate(45deg);
-  background: var(--lime);
+.ai-curve line {
+  stroke: rgba(247, 245, 255, 0.35);
+  stroke-width: 1.5;
 }
-.card:hover .cv-ai .spark::before {
-  transform: rotate(90deg);
+.ai-curve circle {
+  fill: #1d1240;
+  stroke: rgba(247, 245, 255, 0.6);
+  stroke-width: 1.5;
+}
+.ai-curve rect {
+  fill: var(--lime);
 }
 
 .cv-community {
@@ -956,30 +893,6 @@ button {
   height: 100%;
   object-fit: cover;
   transform: scale(1.12);
-}
-.course-phone .badge {
-  position: absolute;
-  left: -18%;
-  bottom: 12%;
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  padding: 10px 16px 10px 12px;
-  border-radius: 14px;
-  background: var(--paper);
-  border: 1px solid var(--line);
-  font-size: 0.82rem;
-  font-weight: 600;
-  box-shadow: 0 18px 40px -24px rgba(20, 10, 46, 0.45);
-}
-.course-phone .badge i {
-  width: 14px;
-  height: 14px;
-  transform: rotate(45deg);
-  border-radius: 2px;
-  background: var(--lime);
-  border: 2px solid var(--midnight);
-  flex: none;
 }
 
 /* Four phases on a timeline */
@@ -1100,13 +1013,6 @@ button {
 .ai {
   overflow: hidden;
 }
-.ai-glow {
-  position: absolute;
-  inset: auto -20% -40% -20%;
-  height: 80%;
-  background: radial-gradient(50% 50% at 50% 50%, rgba(109, 50, 232, 0.45), transparent 70%);
-  pointer-events: none;
-}
 .ai-head {
   display: grid;
   gap: 22px;
@@ -1118,36 +1024,14 @@ button {
 .ai-window {
   position: relative;
   border-radius: var(--r-lg);
-  border: 1px solid var(--line-dark);
-  background: rgba(247, 245, 255, 0.04);
+  border: 1px dashed rgba(247, 245, 255, 0.22);
   overflow: hidden;
-  box-shadow: 0 60px 120px -60px rgba(0, 0, 0, 0.8);
-}
-.ai-bar {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  padding: 14px 18px;
-  border-bottom: 1px solid var(--line-dark);
-  font-size: 0.82rem;
-  color: var(--on-dark-muted);
-}
-.ai-bar .dots {
-  display: flex;
-  gap: 6px;
-}
-.ai-bar .dots i {
-  width: 10px;
-  height: 10px;
-  border-radius: 50%;
-  background: rgba(247, 245, 255, 0.18);
 }
 .ai-stage {
   position: relative;
   aspect-ratio: 16 / 9;
   display: grid;
   place-items: center;
-  background: radial-gradient(70% 90% at 50% 0%, rgba(167, 123, 255, 0.22), transparent 70%);
 }
 .ai-stage > img,
 .ai-stage > video,
@@ -1157,18 +1041,16 @@ button {
   object-fit: cover;
   border: 0;
 }
+.ai-stage.is-empty {
+  aspect-ratio: auto;
+  min-height: 200px;
+}
 .ai-placeholder {
   display: grid;
   justify-items: center;
   gap: 18px;
   text-align: center;
   padding: 24px;
-}
-.ai-placeholder .spark-lg {
-  width: clamp(72px, 12vw, 120px);
-  aspect-ratio: 1;
-  background: var(--grad);
-  clip-path: polygon(50% 0, 61% 39%, 100% 50%, 61% 61%, 50% 100%, 39% 61%, 0 50%, 39% 39%);
 }
 .ai-placeholder p {
   color: var(--on-dark-muted);
@@ -1243,7 +1125,6 @@ button {
   height: 8px;
   border-radius: 50%;
   background: var(--lime);
-  box-shadow: 0 0 0 4px rgba(200, 255, 61, 0.18);
 }
 
 /* ==================================================================
@@ -1363,26 +1244,10 @@ button {
 .ninja:hover .ninja-photo img {
   transform: scale(1.56);
 }
-.ninja-tag {
-  position: absolute;
-  top: 14px;
-  left: 14px;
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  padding: 6px 12px;
-  border-radius: 999px;
-  background: var(--midnight);
-  color: var(--lime);
-  font-size: 0.75rem;
-  font-weight: 600;
-}
-.ninja-tag i {
-  width: 8px;
-  height: 8px;
-  transform: rotate(45deg);
-  background: var(--lime);
-  border-radius: 1px;
+.ninja-cohort {
+  margin-top: -10px;
+  font-size: 0.85rem;
+  color: var(--muted);
 }
 .ninja h3 {
   font-family: var(--font-display);
@@ -1629,10 +1494,6 @@ button {
 }
 .principle .lesser {
   color: var(--muted);
-  opacity: 0.55;
-  text-decoration: line-through;
-  text-decoration-thickness: 2px;
-  text-decoration-color: var(--lavender);
 }
 
 .loop {
@@ -1693,28 +1554,6 @@ button {
   color: var(--muted);
   font-size: 0.93rem;
 }
-.loop-curve {
-  display: none;
-}
-@media (min-width: 760px) {
-  .loop-curve {
-    display: block;
-    width: 100%;
-    height: 56px;
-    margin-bottom: 20px;
-    overflow: visible;
-  }
-  .loop-curve path {
-    fill: none;
-    stroke: url(#loopGrad);
-    stroke-width: 2.5;
-    stroke-linecap: round;
-  }
-  .loop-curve .back {
-    stroke: var(--line);
-    stroke-dasharray: 4 7;
-  }
-}
 
 /* ==================================================================
    Final CTA
@@ -1754,11 +1593,6 @@ button {
   stroke: url(#finalGrad);
   stroke-width: 3;
   stroke-linecap: round;
-}
-.final-art path.ghost {
-  fill: none;
-  stroke: rgba(247, 245, 255, 0.1);
-  stroke-width: 1.5;
 }
 .final-art .k {
   fill: var(--midnight);
@@ -1841,7 +1675,7 @@ button {
 }
 
 /* ==================================================================
-   Motion — reveals, drawing, gradient drift, parallax
+   Motion — reveals, drawing, parallax
    Everything here is disabled for prefers-reduced-motion.
 ================================================================== */
 @media (prefers-reduced-motion: no-preference) {
@@ -1891,22 +1725,10 @@ button {
   .graph .playhead-g {
     animation: scrub 6s ease-in-out 2.2s infinite alternate;
   }
-  .float-chip {
-    opacity: 0;
-    animation: line-in 0.9s var(--ease) forwards;
-  }
-  .chip-a { animation-delay: 1.2s; }
-  .chip-b { animation-delay: 1.8s; }
 
-  .grad-text {
-    animation: drift 8s ease-in-out infinite alternate;
-  }
 
   .js .phases:not(.is-in)::after {
     transform: scaleX(0);
-  }
-  .orbit-key {
-    animation: blink 2.4s ease-in-out infinite;
   }
 
   .final-art .trail {
@@ -1935,13 +1757,6 @@ button {
 @keyframes scrub {
   from { transform: translateX(0); }
   to { transform: translateX(340px); }
-}
-@keyframes drift {
-  from { background-position: 0% 50%; }
-  to { background-position: 100% 50%; }
-}
-@keyframes blink {
-  50% { transform: translate(-50%, -50%) rotate(45deg) scale(1.35); }
 }
 
 @media (prefers-reduced-motion: reduce) {

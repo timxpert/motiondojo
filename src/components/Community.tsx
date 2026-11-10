@@ -8,7 +8,7 @@ export function Community() {
       <div className="wrap">
         <div className="community-head">
           <h2 className="h2" id="community-title" data-reveal>
-            Different creatives. <span className="grad-text">One community.</span>
+            Different creatives. One community.
           </h2>
           <div className="side">
             <p className="lede" data-reveal style={{ ['--d' as string]: '0.08s' }}>

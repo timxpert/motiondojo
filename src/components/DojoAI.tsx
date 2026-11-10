@@ -24,7 +24,6 @@ function Stage() {
   }
   return (
     <div className="ai-placeholder">
-      <span className="spark-lg" aria-hidden="true" />
       <p>Screenshots and a short demo of Dojo’s AI will appear here.</p>
     </div>
   );
@@ -33,17 +32,14 @@ function Stage() {
 export function DojoAI() {
   const { features, screenshots, access } = DOJO_AI;
   const extraShots = DOJO_AI.demoVideo ? screenshots : screenshots.slice(1);
+  const hasMedia = Boolean(DOJO_AI.demoVideo) || screenshots.length > 0;
 
   return (
     <section className="section dark-section ai" id="dojo-ai" aria-labelledby="ai-title">
-      <div className="ai-glow" aria-hidden="true" />
       <div className="wrap">
         <div className="ai-head">
-          <span className="kicker" data-reveal>
-            Dojo’s AI
-          </span>
           <h2 className="h2" id="ai-title" data-reveal>
-            Meet your <span className="grad-text">creative companion.</span>
+            Meet your creative companion.
           </h2>
           <p className="lede" data-reveal style={{ ['--d' as string]: '0.08s' }}>
             We believe the right tools can make the creative process easier.
@@ -55,15 +51,7 @@ export function DojoAI() {
         </div>
 
         <div className="ai-window" data-reveal>
-          <div className="ai-bar" aria-hidden="true">
-            <span className="dots">
-              <i />
-              <i />
-              <i />
-            </span>
-            Dojo’s AI
-          </div>
-          <div className="ai-stage">
+          <div className={hasMedia ? 'ai-stage' : 'ai-stage is-empty'}>
             <Stage />
           </div>
         </div>

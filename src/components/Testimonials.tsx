@@ -33,7 +33,7 @@ export function Testimonials() {
       <div className="wrap">
         <div className="section-head">
           <h2 className="h2" id="voices-title" data-reveal>
-            Real people. <span className="grad-text">Real creative growth.</span>
+            Real people. Real creative growth.
           </h2>
         </div>
 

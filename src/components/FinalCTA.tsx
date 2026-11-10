@@ -12,8 +12,6 @@ export function FinalCTA() {
             <stop offset="1" stopColor="#C8FF3D" />
           </linearGradient>
         </defs>
-        <path className="ghost" d="M40 420 C 220 420, 260 120, 420 160 S 640 360, 760 80" />
-        <path className="ghost" d="M40 460 C 260 460, 300 220, 460 240 S 660 300, 760 160" />
         <path
           className="trail"
           pathLength={1}

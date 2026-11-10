@@ -43,8 +43,6 @@ export function Intro() {
               <span>{f.name}</span>
             </div>
           ))}
-          <span className="orbit-key" style={{ left: '50%', top: '10%' }} />
-          <span className="orbit-key" style={{ left: '50%', top: '90%' }} />
         </div>
       </div>
     </section>

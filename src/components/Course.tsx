@@ -8,9 +8,6 @@ export function Course() {
       <div className="wrap">
         <div className="course-grid">
           <div className="course-copy">
-            <span className="kicker" data-reveal>
-              Black Belt in Motion Design
-            </span>
             <h2 className="h2" id="course-title" data-reveal>
               Ready to take your motion design skills further?
             </h2>
@@ -28,10 +25,6 @@ export function Course() {
 
           <div className="course-phone" data-reveal data-parallax="0.05">
             <img src="/images/hero-poster.webp" alt="A Black Belt lesson project open in Alight Motion on a phone" loading="lazy" />
-            <span className="badge">
-              <i aria-hidden="true" />
-              Learn on your phone
-            </span>
           </div>
         </div>
 

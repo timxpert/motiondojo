@@ -20,11 +20,8 @@ export function Philosophy() {
       <div className="wrap">
         <div className="philosophy-grid">
           <div className="section-head" style={{ marginBottom: 0 }}>
-            <span className="kicker" data-reveal>
-              Our philosophy
-            </span>
             <h2 className="h2" id="about-title" data-reveal>
-              Growth is better when we grow <span className="grad-text">together.</span>
+              Growth is better when we grow together.
             </h2>
             <p className="lede" data-reveal style={{ ['--d' as string]: '0.08s' }}>
               Motion Dojo was built on a simple belief: you get better faster when you’re surrounded by people who
@@ -48,21 +45,10 @@ export function Philosophy() {
           <div className="loop-head">
             <h3 className="h3">How we learn</h3>
             <p>
-              Members apply what they learn, receive feedback, improve, and keep developing. Every project is one more
-              lap of the same loop.
+              Members apply what they learn, receive feedback, improve, and keep developing. After Progress, the loop
+              starts again with the next skill.
             </p>
           </div>
-
-          <svg className="loop-curve" viewBox="0 0 1000 56" preserveAspectRatio="none" aria-hidden="true">
-            <defs>
-              <linearGradient id="loopGrad" x1="0" x2="1">
-                <stop offset="0" stopColor="#6D32E8" />
-                <stop offset="1" stopColor="#A77BFF" />
-              </linearGradient>
-            </defs>
-            <path className="back" d="M875 40 C 700 70, 300 70, 125 40" vectorEffect="non-scaling-stroke" />
-            <path d="M125 40 C 200 0, 300 0, 375 40 S 550 80, 625 40 S 800 0, 875 40" vectorEffect="non-scaling-stroke" />
-          </svg>
 
           <ol className="loop-steps">
             {LOOP.map((l) => (

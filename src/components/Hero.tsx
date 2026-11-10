@@ -83,20 +83,6 @@ export function Hero() {
 
         <div className="hero-art" data-parallax="0.06" aria-hidden="false">
           <GraphArt />
-          <div className="float-chip chip-a" aria-hidden="true">
-            <img src="/assets/Timxpert.jpg" alt="" style={{ objectPosition: '50% 20%' }} />
-            <span>
-              Timxpert
-              <small>Founder</small>
-            </span>
-          </div>
-          <div className="float-chip chip-b" aria-hidden="true">
-            <img src="/assets/Muhammad Fatihi Abdullahi.jpg" alt="" style={{ objectPosition: '50% 25%' }} />
-            <span>
-              Fatihi
-              <small>Community manager</small>
-            </span>
-          </div>
         </div>
       </div>
     </section>
