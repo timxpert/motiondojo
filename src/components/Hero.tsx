@@ -57,8 +57,7 @@ export function Hero() {
           </h1>
 
           <p className="lede">
-            Motion design is more than animation. It’s about discovering your creative voice, developing your skills,
-            and growing alongside people who share your passion.
+            Motion design is about discovering your creative voice and finding people who understand your ambition.
           </p>
 
           <div className="btn-pair">

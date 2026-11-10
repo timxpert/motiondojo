@@ -458,9 +458,13 @@ p {
   justify-self: center;
 }
 @media (min-width: 1000px) {
+  /* Copy column sized to the headline's longest line, the curve takes the rest */
   .hero-grid {
-    grid-template-columns: 1.25fr 1fr;
-    gap: 40px;
+    grid-template-columns: auto minmax(0, 1fr);
+    gap: clamp(40px, 5vw, 72px);
+  }
+  .hero .display .line {
+    white-space: nowrap;
   }
   .hero-art {
     justify-self: end;
