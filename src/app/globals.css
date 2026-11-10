@@ -716,6 +716,7 @@ main > .section:last-child {
 .phase {
   position: relative;
   display: grid;
+  align-content: start;
   grid-template-columns: 52px 1fr;
   gap: 4px 18px;
   padding-bottom: 32px;

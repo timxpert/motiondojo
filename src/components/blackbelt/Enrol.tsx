@@ -47,6 +47,8 @@ function loadPaystack(): Promise<PaystackPopLike> {
     }
     tag.addEventListener('load', ready, { once: true });
     tag.addEventListener('error', () => reject(new Error('Paystack did not load')), { once: true });
+    // A slow or blocked network can leave the script hanging: give up after 15 seconds
+    window.setTimeout(() => reject(new Error('Paystack timed out')), 15000);
   });
 }
 

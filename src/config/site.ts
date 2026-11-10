@@ -10,7 +10,7 @@
  * Joining happens by enrolling in Black Belt (the community manager gives access once
  * payment is confirmed). Replace with a dedicated invite link when one exists.
  */
-export const COMMUNITY_JOIN_URL = '/blackbelt#pricing';
+export const COMMUNITY_JOIN_URL = '/blackbelt';
 
 /** Black Belt in Motion Design: the course page on this site. */
 export const COURSE_URL = '/blackbelt';
