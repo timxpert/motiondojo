@@ -5,7 +5,7 @@ import React, { useCallback, useEffect, useRef, useState } from 'react';
 /**
  * A small, working graph editor: drag the keyframes (or focus one and use the arrow keys) and the
  * curve updates. A marker rides the curve as the playhead plays, so visitors see the motion they
- * shaped. Plays once on load and again after each edit; never on its own after that.
+ * shaped. Plays once on load and again after each edit (or Enter on a focused keyframe).
  */
 
 type Key = { x: number; y: number };
@@ -238,24 +238,6 @@ export function GraphEditor() {
           );
         })}
       </svg>
-
-      <div className="graph-bar">
-        <span>Drag a keyframe to reshape the motion.</span>
-        <button type="button" className="graph-btn" onClick={play}>
-          Play
-        </button>
-        <button
-          type="button"
-          className="graph-btn"
-          onClick={() => {
-            setKeys(START);
-            setActive(null);
-            play();
-          }}
-        >
-          Reset
-        </button>
-      </div>
     </div>
   );
 }

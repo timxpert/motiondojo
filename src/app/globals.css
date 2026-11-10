@@ -550,32 +550,6 @@ p {
   display: grid;
   gap: 10px;
 }
-.graph-bar {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: 8px 12px;
-  padding-left: 8%;
-  font-size: 0.875rem;
-  color: var(--muted);
-}
-.graph-bar span {
-  margin-right: auto;
-}
-.graph-btn {
-  min-height: 36px;
-  padding: 0 14px;
-  border-radius: 999px;
-  border: 1px solid var(--line);
-  background: var(--paper);
-  color: var(--ink);
-  font-size: 0.875rem;
-  font-weight: 600;
-  transition: border-color 0.2s ease;
-}
-.graph-btn:hover {
-  border-color: var(--violet);
-}
 .graph .playhead {
   stroke: var(--violet);
   stroke-width: 2;
