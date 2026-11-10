@@ -3,6 +3,7 @@ import { Header } from '@/components/Header';
 import { Hero } from '@/components/Hero';
 import { Reel } from '@/components/Reel';
 import { Intro } from '@/components/Intro';
+import { Team } from '@/components/Team';
 import { Inside } from '@/components/Inside';
 import { Course } from '@/components/Course';
 import { DojoAI } from '@/components/DojoAI';
@@ -23,6 +24,7 @@ export default function HomePage() {
         <Hero />
         <Reel />
         <Intro />
+        <Team />
         <Inside />
         <Course />
         <DojoAI />

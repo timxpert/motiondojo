@@ -31,6 +31,50 @@ export const DOJO_AI = {
 };
 
 /* ------------------------------------------------------------------
+   Meet the team: names, roles, bios and WhatsApp links as published on
+   joinmotiondojo.vercel.app.
+------------------------------------------------------------------- */
+export type TeamMember = {
+  name: string;
+  short: string;
+  role: string;
+  bio: string;
+  photo: string;
+  focus: string;
+  whatsapp: string;
+};
+
+export const TEAM: TeamMember[] = [
+  {
+    name: 'Muhammad Fatihi Abdullahi',
+    short: 'Fatihi',
+    role: 'Community manager',
+    bio: 'I create engaging video ads for businesses and brands using AI video, professional editing, and motion design.',
+    photo: '/assets/Muhammad Fatihi Abdullahi.jpg',
+    focus: '50% 30%',
+    whatsapp: 'https://wa.link/be49ci',
+  },
+  {
+    name: 'Osho Elizabeth Oluwatobiloba',
+    short: 'Elizabeth',
+    role: 'Moderator',
+    bio: 'Founder of Growth Code Builders. I help young people build digital skills, grow with purpose, and turn their potential into impact.',
+    photo: '/assets/Osho Elizabeth Oluwatobiloba.jpg',
+    focus: '50% 25%',
+    whatsapp: 'https://wa.link/9z7uus',
+  },
+  {
+    name: 'George Junior',
+    short: 'Junior',
+    role: 'Social media manager',
+    bio: '2D animator and storyteller. Turning imagination into animation.',
+    photo: '/assets/George Junior.jpg',
+    focus: '50% 30%',
+    whatsapp: 'https://wa.link/fw3u5j',
+  },
+];
+
+/* ------------------------------------------------------------------
    Testimonials: supplied by the Motion Dojo team (video interviews on Vimeo).
 ------------------------------------------------------------------- */
 export const TESTIMONIALS: (Story & { portrait?: boolean })[] = [

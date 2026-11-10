@@ -581,78 +581,306 @@ p {
 /* ==================================================================
    Introduction
 ================================================================== */
-.split {
+.intro-grid {
   display: grid;
-  gap: 56px;
-  align-items: center;
-}
-@media (min-width: 960px) {
-  .split {
-    grid-template-columns: 1fr 1fr;
-    gap: 80px;
-  }
+  gap: 24px;
 }
 .intro-copy {
   display: grid;
-  gap: 22px;
+  gap: 18px;
   justify-items: start;
 }
 .intro-copy .btn {
   margin-top: 10px;
 }
-
-/* Layered composition: phone in the middle, team on a motion path around it */
-.team {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 24px 16px;
-}
-.team img {
-  width: 100%;
-  aspect-ratio: 4 / 5;
-  object-fit: cover;
-  border-radius: var(--r-sm);
-  background: var(--tint);
-}
-.team-name {
-  margin-top: 12px;
-  font-weight: 600;
-  line-height: 1.3;
-}
-.team-role {
-  font-size: 0.875rem;
-  color: var(--muted);
+@media (min-width: 960px) {
+  .intro-grid {
+    grid-template-columns: 1fr 1fr;
+    gap: 80px;
+    align-items: start;
+  }
 }
 
 /* ==================================================================
-   What's inside the dojo: three offers as a divided list
+   Meet the team
 ================================================================== */
-.offers {
-  border-top: 1px solid var(--line);
+#team {
+  padding-top: 0;
 }
-.offer {
+.team-grid {
   display: grid;
-  gap: 10px;
-  padding: 28px 0;
-  border-bottom: 1px solid var(--line);
+  gap: 40px 20px;
 }
-.offer p {
+@media (min-width: 760px) {
+  .team-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+/* phones: photo beside the text; wider screens: photo on top */
+.member {
+  display: grid;
+  grid-template-columns: 112px minmax(0, 1fr);
+  gap: 14px 18px;
+  align-items: start;
+}
+.member-photo {
+  grid-row: span 2;
+}
+@media (min-width: 760px) {
+  .member {
+    grid-template-columns: 1fr;
+    grid-template-rows: auto 1fr auto;
+    gap: 16px;
+  }
+  .member-photo {
+    grid-row: auto;
+  }
+}
+.member-photo {
+  display: block;
+  border-radius: var(--r);
+  overflow: hidden;
+  background: var(--tint);
+}
+.member-photo img {
+  width: 100%;
+  aspect-ratio: 4 / 5;
+  object-fit: cover;
+}
+.member-name {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 1.3rem;
+  line-height: 1.2;
+  letter-spacing: -0.01em;
+}
+.member-role {
+  margin-top: 4px;
+  font-size: 0.9375rem;
+  font-weight: 500;
+  color: var(--violet);
+}
+.member-bio {
+  margin-top: 10px;
   color: var(--muted);
-  max-width: 60ch;
 }
-.offer p strong {
-  color: var(--ink);
+.member-link {
+  justify-self: start;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  min-height: 48px;
+  padding: 0 20px;
+  border-radius: 999px;
+  border: 1.5px solid var(--midnight);
+  font-weight: 600;
+  font-size: 0.95rem;
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+.member-link:hover {
+  background: var(--midnight);
+  color: var(--white);
+}
+
+/* ==================================================================
+   What's inside the dojo: three offers, each in its own brand colour
+   and with its own picture (the course path, an eased curve, the people)
+================================================================== */
+.bento {
+  display: grid;
+  gap: 16px;
+}
+.bento article {
+  position: relative;
+  display: grid;
+  gap: 28px;
+  align-content: space-between;
+  padding: clamp(24px, 3.4vw, 40px);
+  border-radius: var(--r-lg);
+  overflow: hidden;
+}
+.tile-copy {
+  display: grid;
+  gap: 12px;
+  justify-items: start;
+  max-width: 52ch;
+}
+.tile-copy .h3 {
+  font-size: clamp(1.5rem, 2.6vw, 2.1rem);
+}
+.tile-copy strong {
   font-weight: 600;
 }
-.offer .text-link {
-  justify-self: start;
+.tile-link {
+  margin-top: 6px;
+  font-weight: 600;
+  text-decoration: underline;
+  text-decoration-thickness: 2px;
+  text-underline-offset: 6px;
 }
+
+/* Learn: Motion Violet */
+.tile-learn {
+  background: var(--violet);
+  color: #fff;
+}
+.tile-learn p {
+  color: rgba(255, 255, 255, 0.86);
+}
+.tile-learn .tile-link {
+  text-decoration-color: var(--lime);
+}
+.path {
+  position: relative;
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 8px;
+  padding-top: 8px;
+}
+.path::before {
+  content: "";
+  position: absolute;
+  left: 9px;
+  right: 9px;
+  top: 17px;
+  height: 2px;
+  background: rgba(255, 255, 255, 0.45);
+}
+.path li {
+  position: relative;
+  display: grid;
+  gap: 14px;
+  justify-items: start;
+}
+@media (min-width: 600px) {
+  .path::before {
+    right: calc(25% - 9px);
+  }
+}
+.path-key {
+  width: 18px;
+  height: 18px;
+  border-radius: 3px;
+  transform: rotate(45deg);
+  background: var(--violet);
+  border: 2.5px solid #fff;
+}
+.path li:last-child .path-key {
+  background: var(--lime);
+  border-color: var(--lime);
+}
+.path-label {
+  font-size: 0.875rem;
+  line-height: 1.3;
+  color: rgba(255, 255, 255, 0.86);
+}
+/* on small screens only the start and end of the path are labelled */
+@media (max-width: 599px) {
+  .path li:nth-child(2) .path-label,
+  .path li:nth-child(3) .path-label {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    white-space: nowrap;
+  }
+  .path li:last-child {
+    justify-items: end;
+  }
+  .path li:last-child .path-label {
+    position: absolute;
+    right: 0;
+    top: 32px;
+    white-space: nowrap;
+  }
+}
+
+/* Work smarter: Dojo Midnight */
+.tile-ai {
+  background: var(--midnight);
+  color: var(--on-dark);
+}
+.tile-ai p {
+  color: var(--on-dark-muted);
+}
+.tile-ai .tile-link {
+  color: var(--lime);
+}
+.tile-curve {
+  width: min(100%, 320px);
+  height: auto;
+  overflow: visible;
+}
+.t-grid {
+  stroke: rgba(247, 245, 255, 0.12);
+  stroke-width: 1;
+}
+.t-curve {
+  fill: none;
+  stroke: var(--lavender);
+  stroke-width: 3.5;
+  stroke-linecap: round;
+}
+.t-handle {
+  stroke: rgba(247, 245, 255, 0.4);
+  stroke-width: 1.5;
+}
+.t-dot {
+  fill: var(--midnight);
+  stroke: rgba(247, 245, 255, 0.7);
+  stroke-width: 1.5;
+}
+.t-key {
+  fill: var(--lime);
+}
+
+/* Grow together: Kinetic Lime */
+.tile-grow {
+  background: var(--lime);
+  color: var(--midnight);
+}
+.tile-grow p {
+  color: #2b2346;
+}
+.tile-grow .tile-link {
+  text-decoration-color: var(--violet);
+}
+.faces {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+}
+.faces li {
+  border-radius: var(--r-sm);
+  overflow: hidden;
+  background: var(--midnight);
+}
+/* the stills are framed video thumbnails; zoom in to the person */
+.faces img {
+  width: 100%;
+  aspect-ratio: 3 / 4;
+  object-fit: cover;
+  transform: scale(1.55);
+}
+
 @media (min-width: 900px) {
-  .offer {
-    grid-template-columns: 1fr 2fr auto;
-    align-items: baseline;
-    gap: 48px;
-    padding: 36px 0;
+  .bento {
+    grid-template-columns: 1.35fr 1fr;
+    gap: 20px;
+  }
+  .bento article {
+    min-height: 380px;
+  }
+  .tile-grow {
+    grid-column: 1 / -1;
+    grid-template-columns: 1fr 1.2fr;
+    align-items: center;
+    gap: 56px;
+    min-height: 0 !important;
+  }
+  .faces img {
+    aspect-ratio: 4 / 5;
   }
 }
 
