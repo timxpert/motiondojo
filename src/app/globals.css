@@ -204,11 +204,7 @@ p {
   font-weight: 600;
   letter-spacing: -0.005em;
   white-space: nowrap;
-  transition: background-color 0.25s var(--ease), color 0.25s var(--ease), border-color 0.25s var(--ease),
-    transform 0.25s var(--ease);
-}
-.btn:active {
-  transform: scale(0.98);
+  transition: background-color 0.25s var(--ease), color 0.25s var(--ease), border-color 0.25s var(--ease);
 }
 .btn-primary {
   background: var(--violet);
@@ -435,7 +431,7 @@ p {
 }
 .hero-grid {
   display: grid;
-  gap: 48px;
+  gap: 20px;
   align-items: center;
 }
 .hero-copy {
@@ -521,6 +517,65 @@ p {
   font-family: var(--font-body);
   font-size: 12px;
   fill: var(--muted);
+}
+.graph .key-g {
+  cursor: grab;
+  touch-action: none;
+  outline: none;
+}
+.graph .key-g.is-dragging {
+  cursor: grabbing;
+}
+.graph .key-hit {
+  fill: transparent;
+}
+.graph .key {
+  transition: stroke-width 0.15s ease;
+}
+.graph .key-g:hover .key,
+.graph .key-g.is-active .key {
+  stroke-width: 3.5;
+}
+.graph .key-g:focus-visible .key-hit {
+  fill: none;
+  stroke: var(--violet);
+  stroke-width: 2;
+  stroke-dasharray: 3 4;
+}
+.graph .marker {
+  fill: var(--lime);
+  stroke: var(--midnight);
+  stroke-width: 2;
+}
+.graph-editor {
+  display: grid;
+  gap: 10px;
+}
+.graph-bar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px 12px;
+  padding-left: 8%;
+  font-size: 0.875rem;
+  color: var(--muted);
+}
+.graph-bar span {
+  margin-right: auto;
+}
+.graph-btn {
+  min-height: 36px;
+  padding: 0 14px;
+  border-radius: 999px;
+  border: 1px solid var(--line);
+  background: var(--paper);
+  color: var(--ink);
+  font-size: 0.875rem;
+  font-weight: 600;
+  transition: border-color 0.2s ease;
+}
+.graph-btn:hover {
+  border-color: var(--violet);
 }
 .graph .playhead {
   stroke: var(--violet);
@@ -1397,67 +1452,9 @@ p {
 }
 
 /* ==================================================================
-   Motion: one load sequence in the hero, nothing on scroll
-   Everything here is disabled for prefers-reduced-motion.
+   Motion: only the hero graph moves (its playhead plays on load and after
+   each edit, from GraphEditor.tsx). Nothing animates on scroll.
 ================================================================== */
-@media (prefers-reduced-motion: no-preference) {
-
-  /* Hero load sequence */
-  .hero .line {
-    opacity: 0;
-    transform: translateY(0.4em);
-    animation: line-in 1s var(--ease) forwards;
-  }
-  .hero .line:nth-child(2) { animation-delay: 0.1s; }
-  .hero .line:nth-child(3) { animation-delay: 0.2s; }
-  .hero .hero-copy > :not(h1) {
-    opacity: 0;
-    animation: line-in 1s var(--ease) 0.35s forwards;
-  }
-  .hero .hero-copy > .btn-pair {
-    animation-delay: 0.45s;
-  }
-  .graph .curve {
-    stroke-dasharray: 1;
-    stroke-dashoffset: 1;
-    animation: draw 1.8s var(--ease) 0.4s forwards;
-  }
-  .graph .key-g,
-  .graph .handle,
-  .graph .handle-dot {
-    opacity: 0;
-    transform-box: fill-box;
-    transform-origin: center;
-    animation: pop 0.6s var(--ease) forwards;
-  }
-  .graph .k1 { animation-delay: 0.5s; }
-  .graph .k2 { animation-delay: 1s; }
-  .graph .k3 { animation-delay: 1.5s; }
-  .graph .k4 { animation-delay: 2s; }
-  .graph .playhead-g {
-    animation: scrub 2.4s var(--ease) 0.5s both;
-  }
-
-
-
-
-}
-
-@keyframes line-in {
-  to { opacity: 1; transform: none; }
-}
-@keyframes draw {
-  to { stroke-dashoffset: 0; }
-}
-@keyframes pop {
-  from { opacity: 0; transform: scale(0.3); }
-  to { opacity: 1; transform: scale(1); }
-}
-@keyframes scrub {
-  from { transform: translateX(0); }
-  to { transform: translateX(380px); }
-}
-
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;
