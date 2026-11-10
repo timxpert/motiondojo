@@ -38,7 +38,7 @@ Sora (Google Fonts) for text and Clash Display (Fontshare) for headings, both lo
 
 ## Motion
 
-One load sequence in the hero: the headline rises in, the animation curve draws, the keyframes appear and the playhead sweeps once. Nothing animates on scroll. Hover states change colour only. All motion is off for visitors who prefer reduced motion. Styles are at the end of `globals.css`.
+The logo reel under the hero is the only thing that moves on its own. Nothing animates on scroll. Hover states change colour only. All motion is off for visitors who prefer reduced motion. Styles are at the end of `globals.css`.
 
 ## Design context
 
