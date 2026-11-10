@@ -65,7 +65,7 @@ export function Hero() {
             <a href={COMMUNITY_JOIN_URL} className="btn btn-primary">
               Join the community
             </a>
-            <a href="#intro" className="btn btn-outline">
+            <a href="#intro" className="btn btn-lime">
               Learn more
             </a>
           </div>

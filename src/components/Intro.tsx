@@ -25,7 +25,7 @@ export function Intro() {
             Whether you’re just starting out or looking to take your skills further, you’ll find an environment that
             encourages you to keep creating and getting better.
           </p>
-          <a href="#about" className="btn btn-outline">
+          <a href="#about" className="btn btn-primary">
             Get to know us
           </a>
         </div>

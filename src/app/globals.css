@@ -217,15 +217,6 @@ p {
 .btn-primary:hover {
   background: var(--violet-hover);
 }
-.btn-outline {
-  border-color: var(--violet);
-  color: var(--violet);
-  background: transparent;
-}
-.btn-outline:hover {
-  background: var(--violet);
-  color: #fff;
-}
 .btn-lime {
   background: var(--lime);
   color: var(--midnight);
