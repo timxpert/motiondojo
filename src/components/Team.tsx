@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState } from 'react';
-import { TEAM, TeamMember } from '@/data/content';
+import { TEAM } from '@/data/content';
 
 function WhatsAppIcon() {
   return (
@@ -11,98 +11,62 @@ function WhatsAppIcon() {
   );
 }
 
-/** Bio and WhatsApp button: on the back of the card (desktop) or in the panel below (phones and tablets). */
-function Details({ m, active }: { m: TeamMember; active: boolean }) {
-  return (
-    <>
-      <div className="flip-back-body">
-        <p className="flip-name">{m.name}</p>
-        <p className="flip-role">{m.role}</p>
-        <p className="flip-bio">{m.bio}</p>
-      </div>
-      <a
-        className="btn btn-lime flip-connect"
-        href={m.whatsapp}
-        target="_blank"
-        rel="noopener noreferrer"
-        tabIndex={active ? 0 : -1}
-      >
-        <WhatsAppIcon />
-        Connect with {m.short}
-      </a>
-    </>
-  );
-}
-
 /**
- * Three small cards in one row at every width.
- * Desktop: tap a card to flip it to the bio and WhatsApp button.
- * Phones and tablets: the cards are too small to flip, so the tapped person's details open in a panel below the row.
+ * Three round portraits in one row with name and role.
+ * Tapping one shows that person's bio and WhatsApp button underneath. The first person starts selected,
+ * so visitors see straight away what tapping does.
  */
 export function Team() {
-  const [open, setOpen] = useState<number | null>(null);
-  const toggle = (i: number) => setOpen((o) => (o === i ? null : i));
-  const current = open === null ? null : TEAM[open];
+  const [active, setActive] = useState(0);
+  const m = TEAM[active];
 
   return (
     <section className="section team-section" id="team" aria-labelledby="team-title">
-      <div className="wrap">
-        <div className="team-layout">
-          <h2 className="h2" id="team-title">
-            Meet the team
-          </h2>
+      <div className="wrap team-layout">
+        <h2 className="h2" id="team-title">
+          Meet the team
+        </h2>
 
-          <ul className="flip-grid">
-            {TEAM.map((m, i) => {
-              const flipped = open === i;
-              return (
-                <li key={m.name} className={flipped ? 'flip is-flipped' : 'flip'}>
-                  <div className="flip-inner">
-                    <div className="flip-face flip-front">
-                      <img src={m.photo} alt="" loading="lazy" style={{ objectPosition: m.focus }} />
-                      <div className="flip-caption">
-                        <div>
-                          <h3 className="flip-name">
-                            <span className="name-full">{m.name}</span>
-                            <span className="name-short">{m.short}</span>
-                          </h3>
-                          <p className="flip-role">{m.role}</p>
-                        </div>
-                        <span className="flip-mark" aria-hidden="true">
-                          <WhatsAppIcon />
-                        </span>
-                      </div>
-                      <button
-                        type="button"
-                        className="flip-hit"
-                        onClick={() => toggle(i)}
-                        aria-expanded={flipped}
-                        aria-controls="team-panel"
-                        aria-label={flipped ? `Close ${m.short}’s details` : `Read about ${m.short} and connect`}
-                      />
-                    </div>
-
-                    <div className="flip-face flip-back" aria-hidden={!flipped}>
-                      <button
-                        type="button"
-                        className="flip-hit"
-                        onClick={() => toggle(i)}
-                        tabIndex={flipped ? 0 : -1}
-                        aria-label={`Flip back to ${m.short}’s photo`}
-                      />
-                      <Details m={m} active={flipped} />
-                    </div>
-                  </div>
-                </li>
-              );
-            })}
+        <div className="team-body">
+          <ul className="team-row" role="tablist" aria-label="Team members">
+            {TEAM.map((t, i) => (
+              <li key={t.name} role="presentation">
+                <button
+                  type="button"
+                  role="tab"
+                  id={`team-tab-${i}`}
+                  aria-selected={i === active}
+                  aria-controls="team-panel"
+                  tabIndex={i === active ? 0 : -1}
+                  className="team-pick"
+                  onClick={() => setActive(i)}
+                  onKeyDown={(e) => {
+                    const n = TEAM.length;
+                    if (e.key === 'ArrowRight') setActive((active + 1) % n);
+                    if (e.key === 'ArrowLeft') setActive((active - 1 + n) % n);
+                  }}
+                >
+                  <span className="team-photo">
+                    <img src={t.photo} alt="" loading="lazy" style={{ objectPosition: t.focus }} />
+                  </span>
+                  <span className="team-name">{t.short}</span>
+                  <span className="team-role">{t.role}</span>
+                </button>
+              </li>
+            ))}
           </ul>
 
-        </div>
-
-        {/* phones and tablets: details of the tapped person */}
-        <div id="team-panel" className="team-panel" hidden={!current} aria-live="polite">
-          {current && <Details m={current} active />}
+          <div className="team-panel" id="team-panel" role="tabpanel" aria-labelledby={`team-tab-${active}`}>
+            <div>
+              <p className="team-panel-name">{m.name}</p>
+              <p className="team-panel-role">{m.role}</p>
+            </div>
+            <p className="team-panel-bio">{m.bio}</p>
+            <a className="btn btn-lime" href={m.whatsapp} target="_blank" rel="noopener noreferrer">
+              <WhatsAppIcon />
+              Connect with {m.short}
+            </a>
+          </div>
         </div>
       </div>
     </section>
