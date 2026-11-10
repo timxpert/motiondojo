@@ -88,8 +88,7 @@ button {
   outline-offset: 3px;
   border-radius: 8px;
 }
-.dark-section :focus-visible,
-.footer :focus-visible {
+.dark-section :focus-visible {
   outline-color: var(--lime);
 }
 ::selection {
@@ -656,7 +655,8 @@ p {
 
 /* front */
 .flip-front {
-  background: var(--tint);
+  background: var(--paper);
+  border: 1px solid var(--line);
 }
 .flip-front img {
   position: absolute;
@@ -665,14 +665,22 @@ p {
   height: 100%;
   object-fit: cover;
 }
+/* name strip attached to the bottom of the photo, not a box floating on it */
 .flip-caption {
   position: absolute;
-  left: 12px;
-  right: 12px;
-  bottom: 12px;
-  padding: 14px 16px;
-  border-radius: var(--r);
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 16px 20px;
   background: var(--white);
+}
+.flip-turn {
+  flex: none;
+  color: var(--violet);
 }
 .flip-name {
   font-family: var(--font-display);
@@ -1297,17 +1305,13 @@ p {
 }
 
 /* ==================================================================
-   Footer: continues the dark final section; icons for social links and
-   for the three parts of the ecosystem
+   Footer: light, after the dark final section; icons for social links
+   and for the three parts of the ecosystem
 ================================================================== */
 .footer {
-  background: var(--midnight);
-  color: var(--on-dark);
-  padding: 0 0 28px;
-}
-.footer .wrap {
-  border-top: 1px solid var(--line-dark);
-  padding-top: clamp(48px, 6vw, 72px);
+  background: var(--white);
+  color: var(--ink);
+  padding: clamp(48px, 6vw, 72px) 0 28px;
 }
 .footer-top {
   display: grid;
@@ -1319,12 +1323,9 @@ p {
     grid-template-columns: 1fr auto;
   }
 }
-.footer .brand {
-  color: var(--on-dark);
-}
 .footer-brand p {
   margin-top: 14px;
-  color: var(--on-dark-muted);
+  color: var(--muted);
   max-width: 38ch;
 }
 .socials {
@@ -1337,14 +1338,15 @@ p {
   width: 48px;
   height: 48px;
   border-radius: 50%;
-  border: 1px solid var(--line-dark);
-  color: var(--on-dark);
+  border: 1px solid var(--line);
+  background: var(--paper);
+  color: var(--ink);
   transition: background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease;
 }
 .socials a:hover {
-  background: var(--lime);
-  border-color: var(--lime);
-  color: var(--midnight);
+  background: var(--violet);
+  border-color: var(--violet);
+  color: #fff;
 }
 
 .footer-links {
@@ -1362,7 +1364,7 @@ p {
   margin-bottom: 14px;
   font-size: 0.875rem;
   font-weight: 600;
-  color: var(--on-dark-muted);
+  color: var(--muted);
 }
 .footer-nav,
 .footer-eco {
@@ -1375,41 +1377,41 @@ p {
   align-items: center;
   gap: 12px;
   min-height: 40px;
-  color: var(--on-dark);
+  color: var(--ink);
   transition: color 0.2s ease;
 }
 .footer-nav a:hover,
 .footer-eco a:hover {
-  color: var(--lime);
+  color: var(--violet);
 }
 .eco-icon {
   display: grid;
   place-items: center;
   flex: none;
-  color: var(--lime);
+  color: var(--violet);
 }
 
 .footer-bottom {
   margin-top: clamp(40px, 5vw, 56px);
   padding-top: 20px;
-  border-top: 1px solid var(--line-dark);
+  border-top: 1px solid var(--line);
   display: flex;
   flex-wrap: wrap;
   align-items: center;
   justify-content: space-between;
   gap: 12px;
   font-size: 0.875rem;
-  color: var(--on-dark-muted);
+  color: var(--muted);
 }
 .to-top {
   display: inline-flex;
   align-items: center;
   gap: 8px;
   min-height: 40px;
-  color: var(--on-dark);
+  color: var(--ink);
 }
 .to-top:hover {
-  color: var(--lime);
+  color: var(--violet);
 }
 
 /* ==================================================================

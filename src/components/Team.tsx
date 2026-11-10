@@ -21,8 +21,15 @@ function FlipCard({ m }: { m: TeamMember }) {
         <div className="flip-face flip-front" aria-hidden={flipped}>
           <img src={m.photo} alt="" loading="lazy" style={{ objectPosition: m.focus }} />
           <div className="flip-caption">
-            <h3 className="flip-name">{m.name}</h3>
-            <p className="flip-role">{m.role}</p>
+            <div>
+              <h3 className="flip-name">{m.name}</h3>
+              <p className="flip-role">{m.role}</p>
+            </div>
+            {/* tells people the card turns over */}
+            <svg className="flip-turn" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.8} strokeLinecap="round" strokeLinejoin="round" aria-hidden="true" focusable="false">
+              <path d="M20 12a8 8 0 1 1-2.3-5.6" />
+              <path d="M20 4v4.5h-4.5" />
+            </svg>
           </div>
           <button
             type="button"
@@ -75,7 +82,6 @@ export function Team() {
           <h2 className="h2" id="team-title">
             Meet the team
           </h2>
-          <p className="lede">Tap a card to read their story and connect directly on WhatsApp.</p>
         </div>
 
         <ul className="flip-grid">
