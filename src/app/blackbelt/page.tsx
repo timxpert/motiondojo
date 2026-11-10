@@ -11,7 +11,6 @@ import {
   Curriculum,
   Experience,
   Faq,
-  FounderNote,
   Pricing,
   WhoFor,
 } from '@/components/blackbelt/Sections';
@@ -50,7 +49,6 @@ export default function BlackBeltPage() {
         <Projects />
         <Experience />
         <Testimonials title="Hear what community members are saying." />
-        <FounderNote />
         <Pricing />
         <Faq />
         <FinalCTA

@@ -1349,37 +1349,6 @@ details[open] > summary .bb-chev {
   transform: rotate(45deg);
 }
 
-/* Founder's note */
-.bb-founder {
-  display: grid;
-  gap: 32px;
-}
-@media (min-width: 960px) {
-  .bb-founder {
-    grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.2fr);
-    align-items: start;
-  }
-}
-.bb-letter {
-  display: grid;
-  gap: 1em;
-  max-width: 62ch;
-  color: var(--muted);
-}
-.bb-letter p:nth-last-child(2) {
-  color: var(--ink);
-  font-weight: 600;
-}
-.bb-sign {
-  display: grid;
-  margin-top: 8px;
-}
-.bb-sign strong {
-  font-family: var(--font-display);
-  font-size: 1.4rem;
-  color: var(--ink);
-}
-
 /* Pricing */
 .bb-plans {
   display: grid;

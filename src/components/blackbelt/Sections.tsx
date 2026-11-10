@@ -1,5 +1,5 @@
 import React from 'react';
-import { CURRICULUM, ENROL, FAQS, FOUNDER_MESSAGE, INCLUDED, PERKS, WHO_FOR } from '@/data/blackbelt';
+import { CURRICULUM, ENROL, FAQS, INCLUDED, PERKS, WHO_FOR } from '@/data/blackbelt';
 import { TEAM } from '@/data/content';
 import { EnrolButton } from './Enrol';
 
@@ -125,27 +125,6 @@ export function Experience() {
             <li key={p}>{p}</li>
           ))}
         </ul>
-      </div>
-    </section>
-  );
-}
-
-export function FounderNote() {
-  return (
-    <section className="section" id="founder" aria-labelledby="founder-title">
-      <div className="wrap bb-founder">
-        <h2 className="h2" id="founder-title">
-          Nothing replaces persistence.
-        </h2>
-        <div className="bb-letter">
-          {FOUNDER_MESSAGE.map((para, i) => (
-            <p key={i}>{para}</p>
-          ))}
-          <p className="bb-sign">
-            <strong>Timxpert</strong>
-            <span>Founder, Motion Dojo</span>
-          </p>
-        </div>
       </div>
     </section>
   );

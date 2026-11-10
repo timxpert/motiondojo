@@ -99,15 +99,6 @@ export const PERKS = [
   'Expand your commercial network, discover paid referrals, and collaborate with like-minded ninjas.',
 ];
 
-export const FOUNDER_MESSAGE = [
-  'I built the place I wish I had. It’s called a dojo, not an academy, because in an academy you memorise, but in a dojo you train, you sweat, you get corrected and you level up.',
-  'Talent gets wasted every day, genius goes unnoticed, and education alone doesn’t take anyone far. What takes you all the way is showing up again and again until the work is actually good, because talent is common and showing up is rare.',
-  'That’s what the Dojo is built for. We don’t promise you overnight success. We promise you this: if you bring the fire and persistence, we will give you the structure, the projects, and a community that is genuinely obsessed with your growth.',
-  'We don’t just train you to become a master smartphone motion designer. We train you until you can create with purpose, until your work speaks.',
-  'At first, you’re going to suck, then you’ll be okay, then good, then great, and one day you’ll become a master. The master you see today was once a beginner whose work was rejected for being subpar. We believe you can do something extraordinary.',
-  'Welcome to the Dojo’s Experience.',
-];
-
 export const INCLUDED = [
   'All four phases',
   'Video tutorials and assignments',
