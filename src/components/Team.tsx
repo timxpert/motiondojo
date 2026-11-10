@@ -62,7 +62,7 @@ export function Team() {
               <p className="team-panel-role">{m.role}</p>
             </div>
             <p className="team-panel-bio">{m.bio}</p>
-            <a className="btn btn-lime" href={m.whatsapp} target="_blank" rel="noopener noreferrer">
+            <a className="btn btn-primary btn-sm" href={m.whatsapp} target="_blank" rel="noopener noreferrer">
               <WhatsAppIcon />
               Connect with {m.short}
             </a>
