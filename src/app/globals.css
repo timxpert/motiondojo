@@ -683,43 +683,43 @@ p {
 }
 
 /* ==================================================================
-   What's inside the dojo: three offers, each in its own brand colour
-   and with its own picture (the course path, an eased curve, the people)
+   What's inside the dojo: three offers set apart by colour and size.
+   The course leads (larger, violet); the tool and the community follow.
 ================================================================== */
 .bento {
   display: grid;
   gap: 16px;
 }
 .bento article {
-  position: relative;
   display: grid;
-  gap: 28px;
   align-content: space-between;
-  padding: clamp(24px, 3.4vw, 40px);
+  gap: 40px;
+  padding: clamp(24px, 3.4vw, 44px);
   border-radius: var(--r-lg);
-  overflow: hidden;
+}
+.tile-title {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: clamp(2rem, 4.2vw, 3.5rem);
+  line-height: 1;
+  letter-spacing: -0.03em;
 }
 .tile-copy {
   display: grid;
-  gap: 12px;
+  gap: 14px;
   justify-items: start;
-  max-width: 52ch;
-}
-.tile-copy .h3 {
-  font-size: clamp(1.5rem, 2.6vw, 2.1rem);
+  max-width: 48ch;
 }
 .tile-copy strong {
   font-weight: 600;
 }
 .tile-link {
-  margin-top: 6px;
   font-weight: 600;
   text-decoration: underline;
   text-decoration-thickness: 2px;
   text-underline-offset: 6px;
 }
 
-/* Learn: Motion Violet */
 .tile-learn {
   background: var(--violet);
   color: #fff;
@@ -730,73 +730,7 @@ p {
 .tile-learn .tile-link {
   text-decoration-color: var(--lime);
 }
-.path {
-  position: relative;
-  display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
-  gap: 8px;
-  padding-top: 8px;
-}
-.path::before {
-  content: "";
-  position: absolute;
-  left: 9px;
-  right: 9px;
-  top: 17px;
-  height: 2px;
-  background: rgba(255, 255, 255, 0.45);
-}
-.path li {
-  position: relative;
-  display: grid;
-  gap: 14px;
-  justify-items: start;
-}
-@media (min-width: 600px) {
-  .path::before {
-    right: calc(25% - 9px);
-  }
-}
-.path-key {
-  width: 18px;
-  height: 18px;
-  border-radius: 3px;
-  transform: rotate(45deg);
-  background: var(--violet);
-  border: 2.5px solid #fff;
-}
-.path li:last-child .path-key {
-  background: var(--lime);
-  border-color: var(--lime);
-}
-.path-label {
-  font-size: 0.875rem;
-  line-height: 1.3;
-  color: rgba(255, 255, 255, 0.86);
-}
-/* on small screens only the start and end of the path are labelled */
-@media (max-width: 599px) {
-  .path li:nth-child(2) .path-label,
-  .path li:nth-child(3) .path-label {
-    position: absolute;
-    width: 1px;
-    height: 1px;
-    overflow: hidden;
-    clip: rect(0 0 0 0);
-    white-space: nowrap;
-  }
-  .path li:last-child {
-    justify-items: end;
-  }
-  .path li:last-child .path-label {
-    position: absolute;
-    right: 0;
-    top: 32px;
-    white-space: nowrap;
-  }
-}
 
-/* Work smarter: Dojo Midnight */
 .tile-ai {
   background: var(--midnight);
   color: var(--on-dark);
@@ -807,35 +741,7 @@ p {
 .tile-ai .tile-link {
   color: var(--lime);
 }
-.tile-curve {
-  width: min(100%, 320px);
-  height: auto;
-  overflow: visible;
-}
-.t-grid {
-  stroke: rgba(247, 245, 255, 0.12);
-  stroke-width: 1;
-}
-.t-curve {
-  fill: none;
-  stroke: var(--lavender);
-  stroke-width: 3.5;
-  stroke-linecap: round;
-}
-.t-handle {
-  stroke: rgba(247, 245, 255, 0.4);
-  stroke-width: 1.5;
-}
-.t-dot {
-  fill: var(--midnight);
-  stroke: rgba(247, 245, 255, 0.7);
-  stroke-width: 1.5;
-}
-.t-key {
-  fill: var(--lime);
-}
 
-/* Grow together: Kinetic Lime */
 .tile-grow {
   background: var(--lime);
   color: var(--midnight);
@@ -846,41 +752,19 @@ p {
 .tile-grow .tile-link {
   text-decoration-color: var(--violet);
 }
-.faces {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 10px;
-}
-.faces li {
-  border-radius: var(--r-sm);
-  overflow: hidden;
-  background: var(--midnight);
-}
-/* the stills are framed video thumbnails; zoom in to the person */
-.faces img {
-  width: 100%;
-  aspect-ratio: 3 / 4;
-  object-fit: cover;
-  transform: scale(1.55);
-}
 
 @media (min-width: 900px) {
   .bento {
-    grid-template-columns: 1.35fr 1fr;
+    grid-template-columns: 1.4fr 1fr;
+    grid-template-rows: auto auto;
     gap: 20px;
   }
-  .bento article {
-    min-height: 380px;
+  /* the course spans both rows; tool and community stack beside it */
+  .tile-learn {
+    grid-row: span 2;
   }
-  .tile-grow {
-    grid-column: 1 / -1;
-    grid-template-columns: 1fr 1.2fr;
-    align-items: center;
-    gap: 56px;
-    min-height: 0 !important;
-  }
-  .faces img {
-    aspect-ratio: 4 / 5;
+  .tile-learn .tile-title {
+    font-size: clamp(3rem, 5.4vw, 4.75rem);
   }
 }
 
