@@ -1254,14 +1254,62 @@ details[open] > summary .bb-chev {
   text-underline-offset: 3px;
 }
 
-/* Sample projects */
-.projects {
+/* Sample projects: horizontal carousel (swipe, or the arrow buttons) */
+.carousel-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: end;
+  justify-content: space-between;
+  gap: 20px 32px;
+  margin-bottom: clamp(32px, 4vw, 48px);
+}
+.carousel-head .section-head {
+  margin-bottom: 0;
+}
+.carousel-nav {
+  display: flex;
+  gap: 10px;
+}
+.carousel-btn {
   display: grid;
+  place-items: center;
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  background: var(--midnight);
+  color: var(--paper);
+  transition: background 0.2s ease, opacity 0.2s ease;
+}
+.carousel-btn:hover:not(:disabled) {
+  background: var(--violet);
+}
+.carousel-btn:disabled {
+  opacity: 0.25;
+  cursor: default;
+}
+.carousel-btn.prev svg {
+  transform: rotate(180deg);
+}
+.projects {
+  display: flex;
   gap: 16px;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  scroll-padding-inline: 0;
+  overscroll-behavior-x: contain;
+  scrollbar-width: none;
+  padding-bottom: 4px;
+}
+.projects::-webkit-scrollbar {
+  display: none;
+}
+.projects li {
+  flex: 0 0 min(78%, 300px);
+  scroll-snap-align: start;
 }
 @media (min-width: 760px) {
-  .projects {
-    grid-template-columns: repeat(3, minmax(0, 1fr));
+  .projects li {
+    flex-basis: calc((100% - 32px) / 2.4);
   }
 }
 .project {
