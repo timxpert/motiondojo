@@ -35,13 +35,6 @@ export const WHO_FOR = [
   },
 ];
 
-export const VALUES = [
-  { term: 'Progressive growth', body: 'Building real skills instead of chasing quick results.' },
-  { term: 'Community', body: 'Growing with people who challenge and support you.' },
-  { term: 'Mastery', body: 'Becoming intentional about the quality of your craft.' },
-  { term: 'Consistent practice', body: 'Turning knowledge into skill through regular practice.' },
-];
-
 export const CURRICULUM = [
   {
     title: 'Foundations',

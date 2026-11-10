@@ -1136,29 +1136,6 @@ main > .section:last-child {
   display: grid;
   gap: 20px;
 }
-.bb-values {
-  display: grid;
-  margin: 0;
-}
-.bb-values > div {
-  display: grid;
-  gap: 4px;
-  padding-block: 20px;
-  border-top: 1px solid var(--line);
-}
-.bb-values > div:last-child {
-  border-bottom: 1px solid var(--line);
-}
-.bb-values dt {
-  font-family: var(--font-display);
-  font-weight: 600;
-  font-size: 1.25rem;
-}
-.bb-values dd {
-  margin: 0;
-  color: var(--muted);
-}
-
 /* Curriculum and FAQ: native disclosure, so it works without JavaScript */
 .bb-phases,
 .bb-faq {

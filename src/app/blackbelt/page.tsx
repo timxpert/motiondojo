@@ -2,7 +2,6 @@ import type { Metadata } from 'next';
 import React from 'react';
 import { Header } from '@/components/Header';
 import { Footer } from '@/components/Footer';
-import { Team } from '@/components/Team';
 import { Testimonials } from '@/components/Testimonials';
 import { FinalCTA } from '@/components/FinalCTA';
 import { Projects } from '@/components/blackbelt/Projects';
@@ -15,7 +14,6 @@ import {
   FounderNote,
   Pricing,
   WhoFor,
-  WhyDojo,
 } from '@/components/blackbelt/Sections';
 
 const title = 'Black Belt in Motion Design | Motion Dojo';
@@ -48,13 +46,11 @@ export default function BlackBeltPage() {
       <main id="main">
         <CourseHero />
         <WhoFor />
-        <WhyDojo />
         <Curriculum />
         <Projects />
         <Experience />
         <Testimonials title="Hear what community members are saying." />
         <FounderNote />
-        <Team />
         <Pricing />
         <Faq />
         <FinalCTA

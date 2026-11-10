@@ -1,5 +1,5 @@
 import React from 'react';
-import { CURRICULUM, ENROL, FAQS, FOUNDER_MESSAGE, INCLUDED, PERKS, VALUES, WHO_FOR } from '@/data/blackbelt';
+import { CURRICULUM, ENROL, FAQS, FOUNDER_MESSAGE, INCLUDED, PERKS, WHO_FOR } from '@/data/blackbelt';
 import { TEAM } from '@/data/content';
 import { EnrolButton } from './Enrol';
 
@@ -66,36 +66,6 @@ export function WhoFor() {
         <p className="bb-aside">
           Not for you if you want overnight results without practice. This is a dojo. We train.
         </p>
-      </div>
-    </section>
-  );
-}
-
-export function WhyDojo() {
-  return (
-    <section className="section" id="why" aria-labelledby="why-title">
-      <div className="wrap bb-split">
-        <div className="bb-split-copy">
-          <h2 className="h2" id="why-title">
-            Why Motion Dojo?
-          </h2>
-          <p className="lede">
-            Motion Dojo exists because learning motion design should be more than watching tutorials. It should be a
-            journey toward mastery.
-          </p>
-          <p className="lede">
-            We help aspiring motion designers bridge the gap between learning the craft, creating meaningful work,
-            building a strong portfolio, and turning their skills into opportunities.
-          </p>
-        </div>
-        <dl className="bb-values">
-          {VALUES.map((v) => (
-            <div key={v.term}>
-              <dt>{v.term}</dt>
-              <dd>{v.body}</dd>
-            </div>
-          ))}
-        </dl>
       </div>
     </section>
   );
