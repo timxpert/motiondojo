@@ -609,17 +609,15 @@ p {
 }
 
 /* ==================================================================
-   Meet the team: flip cards (photo on the front; bio and WhatsApp on
-   the back), as on joinmotiondojo
+   Meet the team: three small cards in one row at every width.
+   Desktop flips a card to its bio and WhatsApp button; phones and tablets,
+   where the cards are too small to hold a bio, open a panel under the row.
 ================================================================== */
 .flip-grid {
   display: grid;
-  gap: 20px;
-}
-@media (min-width: 760px) {
-  .flip-grid {
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-  }
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+  max-width: 820px;
 }
 .flip {
   perspective: 1400px;
@@ -628,24 +626,12 @@ p {
   position: relative;
   display: grid;
   aspect-ratio: 4 / 5;
-  transform-style: preserve-3d;
-  transition: transform 0.7s var(--ease);
-}
-.flip.is-flipped .flip-inner {
-  transform: rotateY(180deg);
-}
-/* only the face that is showing takes taps */
-.flip.is-flipped .flip-front,
-.flip:not(.is-flipped) .flip-back {
-  pointer-events: none;
 }
 .flip-face {
   grid-area: 1 / 1;
   position: relative;
-  border-radius: var(--r-lg);
+  border-radius: var(--r);
   overflow: hidden;
-  backface-visibility: hidden;
-  -webkit-backface-visibility: hidden;
 }
 .flip-hit {
   position: absolute;
@@ -672,7 +658,6 @@ p {
   height: 100%;
   object-fit: cover;
 }
-/* name strip attached to the bottom of the photo, not a box floating on it */
 .flip-caption {
   position: absolute;
   left: 0;
@@ -681,67 +666,144 @@ p {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 12px;
-  padding: 16px 20px;
+  gap: 8px;
+  padding: 8px 10px;
   background: var(--white);
-}
-.flip-turn {
-  flex: none;
-  color: var(--violet);
 }
 .flip-name {
   font-family: var(--font-display);
   font-weight: 600;
-  font-size: 1.2rem;
+  font-size: 0.95rem;
   line-height: 1.2;
   letter-spacing: -0.01em;
 }
 .flip-role {
   margin-top: 2px;
-  font-size: 0.9375rem;
+  font-size: 0.8125rem;
   color: var(--violet);
   font-weight: 500;
 }
-
-/* back */
+.flip-turn {
+  flex: none;
+  color: var(--violet);
+}
+.name-full,
+.flip-front .flip-role,
 .flip-back {
-  transform: rotateY(180deg);
+  display: none;
+}
+.flip.is-flipped .flip-front {
+  outline: 3px solid var(--violet);
+  outline-offset: 2px;
+}
+
+/* phones: details panel under the row */
+.team-panel {
   display: grid;
-  align-content: space-between;
-  gap: 20px;
-  padding: clamp(22px, 2.6vw, 32px);
+  gap: 18px;
+  justify-items: start;
+  margin-top: 16px;
+  padding: 22px;
+  border-radius: var(--r);
   background: var(--midnight);
   color: var(--on-dark);
 }
-.flip-back .flip-name {
-  font-size: clamp(1.3rem, 2vw, 1.6rem);
+.team-panel[hidden] {
+  display: none;
 }
-.flip-back .flip-role {
+.flip-back-body .flip-name {
+  font-size: 1.3rem;
+}
+.flip-back-body .flip-role {
   color: var(--lime);
+  font-size: 0.9375rem;
 }
 .flip-bio {
-  margin-top: 16px;
+  margin-top: 12px;
   color: var(--on-dark-muted);
 }
-.flip-actions {
+.flip-connect {
   position: relative;
   z-index: 2;
-  display: grid;
-  gap: 12px;
-  justify-items: start;
-}
-.flip-actions .btn {
   gap: 10px;
 }
-.flip-hint {
-  font-size: 0.875rem;
-  color: var(--on-dark-muted);
+
+/* wider screens: real flip cards, no panel */
+@media (min-width: 1000px) {
+  .flip-grid {
+    gap: 20px;
+  }
+  .team-panel {
+    display: none !important;
+  }
+  .flip.is-flipped .flip-front {
+    outline: none;
+  }
+  .flip-inner {
+    transform-style: preserve-3d;
+    transition: transform 0.7s var(--ease);
+  }
+  .flip.is-flipped .flip-inner {
+    transform: rotateY(180deg);
+  }
+  .flip-face {
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
+  }
+  .flip.is-flipped .flip-front,
+  .flip:not(.is-flipped) .flip-back {
+    pointer-events: none;
+  }
+  .flip-caption {
+    padding: 12px 16px;
+  }
+  .flip-name {
+    font-size: 1.05rem;
+  }
+  .name-full,
+  .flip-front .flip-role {
+    display: block;
+  }
+  .name-short {
+    display: none;
+  }
+  .flip-back {
+    display: grid;
+    align-content: space-between;
+    gap: 14px;
+    transform: rotateY(180deg);
+    padding: 20px;
+    background: var(--midnight);
+    color: var(--on-dark);
+  }
+  .flip-back .flip-name {
+    font-size: 1.1rem;
+  }
+  .flip-back .flip-bio {
+    margin-top: 8px;
+    font-size: 0.9375rem;
+    line-height: 1.55;
+  }
+  .flip-back .btn {
+    --btn-h: 44px;
+    padding: 0 18px;
+    font-size: 0.9rem;
+  }
+  .flip-hint {
+    position: relative;
+    z-index: 2;
+    margin-top: -6px;
+    font-size: 0.8125rem;
+    color: var(--on-dark-muted);
+    pointer-events: none;
+  }
 }
 
 /* reduced motion: swap faces without the turn */
-@media (prefers-reduced-motion: reduce) {
-  .flip-inner {
-    transform: none !important;
+@media (prefers-reduced-motion: reduce) and (min-width: 1000px) {
+  .flip-inner,
+  .flip.is-flipped .flip-inner {
+    transform: none;
   }
   .flip-back {
     transform: none;
