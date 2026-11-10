@@ -54,14 +54,10 @@ export function Projects() {
         <ul className="projects" ref={track} onScroll={update} aria-label="Sample projects">
           {PROJECTS.map((p) => (
             <li key={p.title}>
-              <button type="button" className="project" onClick={() => setPlaying(p)}>
+              <button type="button" className="project" onClick={() => setPlaying(p)} aria-label={`Play ${p.title}`}>
                 <img src={p.poster} alt="" loading="lazy" />
-                <span className="project-label">
-                  <span className="disc">
-                    <Play size={14} />
-                  </span>
-                  {p.title}
-                  <span className="sr-only"> (play video)</span>
+                <span className="project-play" aria-hidden="true">
+                  <Play size={20} />
                 </span>
               </button>
             </li>
