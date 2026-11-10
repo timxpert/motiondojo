@@ -1,23 +1,23 @@
 import React from 'react';
-import { CONTACT, COURSE_URL, DOJO_AI_URL, NAV, NINJAS_SHOWCASE_URL, SOCIAL_LINKS } from '@/config/site';
+import { CONTACT, COURSE_URL, DOJO_AI_URL, NINJAS_SHOWCASE_URL, SOCIAL_LINKS } from '@/config/site';
 import { SmartLink } from './SmartLink';
 
-type IconName = 'instagram' | 'youtube' | 'whatsapp' | 'mail' | 'course' | 'ai' | 'keyframe' | 'up';
+type IconName = 'instagram' | 'youtube' | 'whatsapp' | 'mail';
 
-/** One stroke family for every footer icon (24px grid, 1.8 stroke). */
+/** Outline social icons, drawn on one 24px grid. */
 function Icon({ name }: { name: IconName }) {
   const paths: Record<IconName, React.ReactNode> = {
     instagram: (
       <>
         <rect x="3" y="3" width="18" height="18" rx="5" />
         <circle cx="12" cy="12" r="4" />
-        <circle cx="17.5" cy="6.5" r="0.8" fill="currentColor" stroke="none" />
+        <circle cx="17.5" cy="6.5" r="0.9" fill="currentColor" stroke="none" />
       </>
     ),
     youtube: (
       <>
         <rect x="2.5" y="5" width="19" height="14" rx="4" />
-        <path d="m10 9 5 3-5 3V9Z" fill="currentColor" stroke="none" />
+        <path d="m10 9 5 3-5 3V9Z" />
       </>
     ),
     whatsapp: (
@@ -32,30 +32,15 @@ function Icon({ name }: { name: IconName }) {
         <path d="m4 7 8 6 8-6" />
       </>
     ),
-    course: (
-      <>
-        <path d="M2.5 9 12 4.5 21.5 9 12 13.5 2.5 9Z" />
-        <path d="M6.5 11v4.5c1.5 1.3 3.3 2 5.5 2s4-.7 5.5-2V11" />
-      </>
-    ),
-    ai: (
-      <>
-        <path d="M4 17c4 0 5-10 9-10s4.5 6 7 6" />
-        <circle cx="4" cy="17" r="1.6" fill="currentColor" stroke="none" />
-        <circle cx="20" cy="13" r="1.6" fill="currentColor" stroke="none" />
-      </>
-    ),
-    keyframe: <rect x="6.5" y="6.5" width="11" height="11" rx="1.5" transform="rotate(45 12 12)" />,
-    up: <path d="M12 19V5M6 11l6-6 6 6" />,
   };
   return (
     <svg
-      width="20"
-      height="20"
+      width="30"
+      height="30"
       viewBox="0 0 24 24"
       fill="none"
       stroke="currentColor"
-      strokeWidth={1.8}
+      strokeWidth={2}
       strokeLinecap="round"
       strokeLinejoin="round"
       aria-hidden="true"
@@ -69,80 +54,72 @@ function Icon({ name }: { name: IconName }) {
 const SOCIAL_ICON: Record<string, IconName> = { Instagram: 'instagram', YouTube: 'youtube' };
 
 export function Footer() {
-  const contacts = [
-    ...SOCIAL_LINKS.map((s) => ({ label: s.label, href: s.url, icon: SOCIAL_ICON[s.label] ?? 'keyframe' })),
+  const socials = [
+    ...SOCIAL_LINKS.filter((s) => SOCIAL_ICON[s.label]).map((s) => ({
+      label: s.label,
+      href: s.url,
+      icon: SOCIAL_ICON[s.label],
+    })),
     ...(CONTACT.whatsapp
       ? [{ label: 'WhatsApp', href: `https://wa.me/${CONTACT.whatsapp.replace(/\D/g, '')}`, icon: 'whatsapp' as IconName }]
       : []),
     ...(CONTACT.email ? [{ label: 'Email', href: `mailto:${CONTACT.email}`, icon: 'mail' as IconName }] : []),
   ];
 
-  const ecosystem: { label: string; href: string; icon: IconName; newTab?: boolean }[] = [
-    { label: 'Black Belt in Motion Design', href: COURSE_URL, icon: 'course' },
-    { label: 'Dojo’s AI', href: DOJO_AI_URL || '#dojo-ai', icon: 'ai' },
-    { label: 'Keyframe Ninjas', href: NINJAS_SHOWCASE_URL, icon: 'keyframe', newTab: true },
+  const ecosystem = [
+    { label: 'Black Belt in Motion Design', href: COURSE_URL },
+    { label: 'Dojo’s AI', href: DOJO_AI_URL || '#dojo-ai' },
+    { label: 'Keyframe Ninjas', href: NINJAS_SHOWCASE_URL, newTab: true },
+  ];
+  const site = [
+    { label: 'About', href: '#about' },
+    { label: 'Community', href: '#community' },
+    { label: 'Meet the team', href: '#team' },
   ];
 
   return (
     <footer className="footer">
-      <div className="wrap">
-        <div className="footer-top">
-          <div className="footer-brand">
-            <a href="#top" className="brand" aria-label="Motion Dojo, back to top">
-              <img src="/assets/favicon-128.png" alt="" width={36} height={36} />
-              Motion Dojo
-            </a>
-            <p>A community where motion designers and creatives learn, create, connect, and grow together.</p>
-          </div>
+      <div className="footer-box">
+        <div className="footer-brand">
+          <a href="#top" className="footer-logo" aria-label="Motion Dojo, back to top">
+            <img src="/assets/favicon-128.png" alt="" width={48} height={48} />
+            Motion Dojo
+          </a>
+          <p className="footer-tagline">Train like a ninja. Create like a master.</p>
 
-          <ul className="socials" aria-label="Follow Motion Dojo">
-            {contacts.map((c) => (
-              <li key={c.label}>
-                <SmartLink href={c.href} newTab={c.href.startsWith('http')} aria-label={c.label} title={c.label}>
-                  <Icon name={c.icon} />
+          <p className="footer-follow">Follow us</p>
+          <ul className="footer-socials">
+            {socials.map((s) => (
+              <li key={s.label}>
+                <SmartLink href={s.href} newTab={s.href.startsWith('http')} aria-label={s.label} title={s.label}>
+                  <Icon name={s.icon} />
                 </SmartLink>
               </li>
             ))}
           </ul>
         </div>
 
-        <div className="footer-links">
-          <nav aria-label="Footer">
-            <h3>Explore</h3>
-            <ul className="footer-nav">
-              {NAV.map((n) => (
-                <li key={n.href}>
-                  <a href={n.href}>{n.label}</a>
-                </li>
-              ))}
-            </ul>
-          </nav>
-
-          <div>
-            <h3>Ecosystem</h3>
-            <ul className="footer-eco">
-              {ecosystem.map((e) => (
-                <li key={e.label}>
-                  <SmartLink href={e.href} newTab={e.newTab}>
-                    <span className="eco-icon">
-                      <Icon name={e.icon} />
-                    </span>
-                    {e.label}
-                  </SmartLink>
-                </li>
-              ))}
-            </ul>
-          </div>
-        </div>
-
-        <div className="footer-bottom">
-          <span>© {new Date().getFullYear()} Motion Dojo. All rights reserved.</span>
-          <a href="#top" className="to-top">
-            Back to top
-            <Icon name="up" />
-          </a>
-        </div>
+        <nav className="footer-cols" aria-label="Footer">
+          <ul>
+            {ecosystem.map((l) => (
+              <li key={l.label}>
+                <SmartLink href={l.href} newTab={l.newTab}>
+                  {l.label}
+                </SmartLink>
+              </li>
+            ))}
+          </ul>
+          <ul>
+            {site.map((l) => (
+              <li key={l.label}>
+                <a href={l.href}>{l.label}</a>
+              </li>
+            ))}
+          </ul>
+        </nav>
       </div>
+
+      <p className="footer-copy">Motion Dojo {new Date().getFullYear()}. © All rights reserved.</p>
     </footer>
   );
 }

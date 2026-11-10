@@ -3,7 +3,7 @@ import { COURSE_URL, DOJO_AI_URL } from '@/config/site';
 
 export function Inside() {
   return (
-    <section className="section" id="resources" aria-labelledby="inside-title">
+    <section className="section section-flat" id="resources" aria-labelledby="inside-title">
       <div className="wrap">
         <div className="section-head">
           <h2 className="h2" id="inside-title">
