@@ -38,9 +38,11 @@ export function Inside() {
                 <strong>Dojo’s AI</strong> is our in-house tool, built to support the Motion Dojo community and make
                 the creative workflow easier.
               </p>
-              <a href={DOJO_AI_URL || '#dojo-ai'} className="btn btn-light">
-                Discover Dojo’s AI
-              </a>
+              {DOJO_AI_URL && (
+                <a href={DOJO_AI_URL} className="btn btn-light">
+                  Discover Dojo’s AI
+                </a>
+              )}
             </div>
           </article>
 

@@ -68,7 +68,7 @@ export function Footer() {
 
   const ecosystem = [
     { label: 'Black Belt in Motion Design', href: COURSE_URL, newTab: true },
-    { label: 'Dojo’s AI', href: DOJO_AI_URL || '/#dojo-ai' },
+    ...(DOJO_AI_URL ? [{ label: 'Dojo’s AI', href: DOJO_AI_URL, newTab: false }] : []),
     { label: 'Keyframe Ninjas', href: NINJAS_SHOWCASE_URL, newTab: true },
   ];
   const site = [

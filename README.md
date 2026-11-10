@@ -16,7 +16,7 @@ npm run build
 | --- | --- |
 | `COMMUNITY_JOIN_URL` | Every "Join the community" / "Join Motion Dojo" button |
 | `COURSE_URL` | "Explore the course" (Black Belt in Motion Design) |
-| `DOJO_AI_URL` | "Discover Dojo's AI". While empty, the section shows "Access opens soon" and other links scroll to the Dojo's AI section |
+| `DOJO_AI_URL` | "Discover Dojo's AI" button and footer link. Both stay hidden while it's empty |
 | `NINJAS_SHOWCASE_URL` | Footer link to the Keyframe Ninjas showcase |
 | `SOCIAL_LINKS` | Footer social links |
 | `CONTACT` | Footer contact details (hidden while empty) |
@@ -24,13 +24,12 @@ npm run build
 
 ## Updating content — `src/data/content.ts`
 
-- **`DOJO_AI`** — add `features`, `screenshots`, `demoVideo` and `access` when they're ready. Nothing renders for empty fields, and the product window shows a placeholder until a screenshot or demo is added.
 - **`TESTIMONIALS`** — video testimonials supplied by the team (Vimeo links).
 - **`COURSE_PHASES`** — the four Black Belt phases.
 
 ## Homepage sections (in order)
 
-Hero + 16:9 reel → Introduction → What's inside the dojo → Black Belt in Motion Design → Dojo's AI → The community → Testimonials → Final call to action → Footer.
+Hero + 16:9 reel → Introduction → Meet the team → What's inside the dojo → Black Belt in Motion Design → The community → Testimonials → Final call to action → Footer.
 
 ## Course page — `/blackbelt`
 

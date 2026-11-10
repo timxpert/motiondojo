@@ -16,21 +16,6 @@ export const COURSE_PHASES = [
 ];
 
 /* ------------------------------------------------------------------
-   Dojo's AI
-   Nothing below is invented. Add real details when they're ready:
-   - features: short title + one-line description each
-   - screenshots: image paths in /public (e.g. '/images/dojo-ai-1.webp')
-   - demoVideo: a Vimeo/YouTube URL or '/videos/dojo-ai.mp4'
-   - access: one line on who can use it and how
-------------------------------------------------------------------- */
-export const DOJO_AI = {
-  features: [] as { title: string; body: string }[],
-  screenshots: [] as { src: string; alt: string }[],
-  demoVideo: '',
-  access: '',
-};
-
-/* ------------------------------------------------------------------
    Meet the team: names, roles, bios and WhatsApp links as published on
    joinmotiondojo.vercel.app.
 ------------------------------------------------------------------- */

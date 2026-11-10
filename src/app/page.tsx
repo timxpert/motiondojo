@@ -6,7 +6,6 @@ import { Intro } from '@/components/Intro';
 import { Team } from '@/components/Team';
 import { Inside } from '@/components/Inside';
 import { Course } from '@/components/Course';
-import { DojoAI } from '@/components/DojoAI';
 import { Community } from '@/components/Community';
 import { Testimonials } from '@/components/Testimonials';
 import { FinalCTA } from '@/components/FinalCTA';
@@ -26,7 +25,6 @@ export default function HomePage() {
         <Team />
         <Inside />
         <Course />
-        <DojoAI />
         <Community />
         <Testimonials />
         <FinalCTA />
