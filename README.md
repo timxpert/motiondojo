@@ -30,7 +30,7 @@ npm run build
 
 ## Homepage sections (in order)
 
-Hero + 16:9 reel → Introduction → What's inside the dojo → Black Belt in Motion Design → Dojo's AI → The community → Testimonials → Philosophy → Final call to action → Footer.
+Hero + 16:9 reel → Introduction → What's inside the dojo → Black Belt in Motion Design → Dojo's AI → The community → Testimonials → Final call to action → Footer.
 
 ## Fonts
 

@@ -9,7 +9,6 @@ import { Course } from '@/components/Course';
 import { DojoAI } from '@/components/DojoAI';
 import { Community } from '@/components/Community';
 import { Testimonials } from '@/components/Testimonials';
-import { Philosophy } from '@/components/Philosophy';
 import { FinalCTA } from '@/components/FinalCTA';
 import { Footer } from '@/components/Footer';
 
@@ -30,7 +29,6 @@ export default function HomePage() {
         <DojoAI />
         <Community />
         <Testimonials />
-        <Philosophy />
         <FinalCTA />
       </main>
       <Footer />

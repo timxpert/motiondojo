@@ -72,7 +72,7 @@ export function Footer() {
     { label: 'Keyframe Ninjas', href: NINJAS_SHOWCASE_URL, newTab: true },
   ];
   const site = [
-    { label: 'About', href: '#about' },
+    { label: 'About', href: '#intro' },
     { label: 'Community', href: '#community' },
     { label: 'Meet the team', href: '#team' },
   ];

@@ -43,7 +43,7 @@ export const SITE_METADATA = {
 /** Main navigation (header, mobile menu and footer). */
 export const NAV = [
   { href: '#top', label: 'Home' },
-  { href: '#about', label: 'About' },
+  { href: '#intro', label: 'About' },
   { href: '#community', label: 'Community' },
   { href: '#resources', label: 'Resources' },
 ];
