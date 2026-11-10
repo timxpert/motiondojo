@@ -17,8 +17,8 @@ export function CourseHero() {
             Become a dangerously good motion designer
           </h1>
           <p className="lede">
-            The complete smartphone motion design course. Master Alight Motion and create pro animations on your
-            phone.
+            <strong>Black Belt in Motion Design</strong> is the Motion Dojo community’s complete course. Master Alight
+            Motion and create professional animations, all on your phone.
           </p>
           <div className="btn-pair">
             <EnrolButton>Enrol now</EnrolButton>

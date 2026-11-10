@@ -1078,6 +1078,10 @@ main > .section:last-child {
   font-size: clamp(2.25rem, 4.2vw, 3.5rem);
   max-width: 14ch;
 }
+.bb-hero .lede strong {
+  color: var(--ink);
+  font-weight: 600;
+}
 .bb-price-note {
   font-size: 0.95rem;
   color: var(--muted);
