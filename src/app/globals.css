@@ -256,8 +256,7 @@ p {
 .text-link:hover span {
   background-size: 100% 2px;
 }
-.dark-section .text-link,
-.card-dark .text-link {
+.dark-section .text-link {
   color: var(--lime);
 }
 
@@ -594,15 +593,15 @@ p {
   overflow: hidden;
   background: #fff;
 }
-/* The video's white card covers 57% of its frame (x 295-1028 of 1280).
-   Scaling by 1.746 around this origin makes the card fill the full width. */
+/* The video's white card grows from x 311-1009 to 276-1046 of 1280 over the clip.
+   Scaling by 1.85 around this origin keeps even the smallest card edge to edge. */
 .reel video,
 .reel img {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  transform: scale(1.746);
-  transform-origin: 53.84% 55.2%;
+  transform: scale(1.85);
+  transform-origin: 53.4% 54.7%;
 }
 
 /* ==================================================================
@@ -629,255 +628,58 @@ p {
 }
 
 /* Layered composition: phone in the middle, team on a motion path around it */
-.orbit {
-  position: relative;
-  aspect-ratio: 1 / 1;
+.team {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 24px 16px;
+}
+.team img {
   width: 100%;
-  max-width: 540px;
-  justify-self: center;
-}
-.orbit-path {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-}
-.orbit-path path {
-  fill: none;
-  stroke: var(--lavender);
-  stroke-width: 1.5;
-  stroke-dasharray: 3 7;
-}
-.orbit-phone {
-  position: absolute;
-  left: 50%;
-  top: 50%;
-  width: 50%;
-  aspect-ratio: 1;
-  transform: translate(-50%, -50%) rotate(-4deg);
-  border-radius: 28px;
-  overflow: hidden;
-  background: var(--paper);
-  border: 1px solid var(--line);
-}
-.orbit-phone img {
-  width: 100%;
-  height: 100%;
+  aspect-ratio: 4 / 5;
   object-fit: cover;
-  transform: scale(1.5);
+  border-radius: var(--r-sm);
+  background: var(--tint);
 }
-.orbit-face {
-  position: absolute;
-  width: 21%;
-  aspect-ratio: 1;
-  transform: translate(-50%, -50%);
-}
-.orbit-face img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  object-position: 50% 25%;
-  border-radius: 50%;
-  border: 4px solid var(--white);
-}
-.orbit-face span {
-  position: absolute;
-  left: 50%;
-  top: 100%;
-  transform: translate(-50%, 6px);
-  padding: 3px 10px;
-  border-radius: 999px;
-  background: var(--paper);
-  border: 1px solid var(--line);
-  font-size: 0.8125rem;
+.team-name {
+  margin-top: 12px;
   font-weight: 600;
-  white-space: nowrap;
+  line-height: 1.3;
+}
+.team-role {
+  font-size: 0.875rem;
+  color: var(--muted);
 }
 
 /* ==================================================================
-   What's inside the dojo: three related, distinct cards
+   What's inside the dojo: three offers as a divided list
 ================================================================== */
-.inside-grid {
+.offers {
+  border-top: 1px solid var(--line);
+}
+.offer {
   display: grid;
-  gap: 20px;
-}
-@media (min-width: 900px) {
-  .inside-grid {
-    grid-template-columns: 1fr 1fr;
-  }
-  /* The course leads: a wide card across the top, its track beside the text */
-  .card.card-feature {
-    grid-column: 1 / -1;
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    grid-template-rows: auto auto 1fr;
-    column-gap: clamp(32px, 4vw, 56px);
-    row-gap: 14px;
-    align-content: start;
-  }
-  .card.card-feature .card-visual {
-    grid-row: 1 / -1;
-    margin: calc(var(--pad) * -1) 0 calc(var(--pad) * -1) calc(var(--pad) * -1);
-    aspect-ratio: auto;
-    min-height: 240px;
-    border-bottom: 0;
-    border-right: 1px solid var(--line);
-  }
-  .card-feature .h3 {
-    padding-top: 8px;
-  }
-  .card-feature .text-link {
-    margin-top: 0;
-    align-self: start;
-  }
-}
-.card {
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  gap: 14px;
-  padding: clamp(24px, 3vw, 32px);
-  border-radius: var(--r-lg);
-  border: 1px solid var(--line);
-  background: var(--paper);
-  overflow: hidden;
-  transition: border-color 0.3s ease;
-}
-.card:hover {
-  border-color: var(--lavender);
-}
-.card .card-visual {
-  --pad: clamp(24px, 3vw, 32px);
-  margin: calc(var(--pad) * -1) calc(var(--pad) * -1) 12px;
-  overflow: hidden;
-  aspect-ratio: 16 / 9;
-  position: relative;
+  gap: 10px;
+  padding: 28px 0;
   border-bottom: 1px solid var(--line);
 }
-.card-dark .card-visual {
-  border-bottom-color: transparent;
-}
-.card-tint .card-visual {
-  border-bottom-color: rgba(109, 50, 232, 0.14);
-}
-.card p {
+.offer p {
   color: var(--muted);
-  font-size: 1rem;
+  max-width: 60ch;
 }
-.card p strong {
+.offer p strong {
   color: var(--ink);
   font-weight: 600;
 }
-.card-dark p strong {
-  color: var(--on-dark);
+.offer .text-link {
+  justify-self: start;
 }
-.card .text-link {
-  margin-top: auto;
-  padding-top: 10px;
-}
-.card-dark {
-  background: var(--midnight);
-  border-color: var(--midnight);
-  color: var(--on-dark);
-}
-.card-dark p {
-  color: var(--on-dark-muted);
-}
-.card-tint {
-  background: var(--tint);
-  border-color: var(--tint);
-}
-
-/* card visuals */
-.cv-course {
-  background: transparent;
-  display: grid;
-  align-content: center;
-  padding: 0 8%;
-}
-.cv-course .mini-track {
-  position: relative;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-.cv-course .mini-track::before {
-  content: "";
-  position: absolute;
-  left: 0;
-  right: 0;
-  top: 50%;
-  height: 2px;
-  background: var(--violet);
-}
-.cv-course .mini-track i {
-  position: relative;
-  width: 18px;
-  height: 18px;
-  transform: rotate(45deg);
-  border-radius: 3px;
-  background: var(--paper);
-  border: 2.5px solid var(--violet);
-}
-.cv-course .mini-track i:last-child {
-  background: var(--lime);
-  border-color: var(--midnight);
-}
-.cv-course .mini-labels {
-  display: flex;
-  justify-content: space-between;
-  margin-top: 16px;
-  font-size: 0.8125rem;
-  color: var(--muted);
-}
-
-.cv-ai {
-  background: #1d1240;
-  display: grid;
-  place-items: center;
-  padding: 8% 10%;
-}
-.ai-curve {
-  width: 100%;
-  height: auto;
-  overflow: visible;
-}
-.ai-curve path {
-  fill: none;
-  stroke: var(--lavender);
-  stroke-width: 3;
-  stroke-linecap: round;
-}
-.ai-curve line {
-  stroke: rgba(247, 245, 255, 0.35);
-  stroke-width: 1.5;
-}
-.ai-curve circle {
-  fill: #1d1240;
-  stroke: rgba(247, 245, 255, 0.6);
-  stroke-width: 1.5;
-}
-.ai-curve rect {
-  fill: var(--lime);
-}
-
-.cv-community {
-  background: transparent;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-.cv-community img {
-  width: 26%;
-  aspect-ratio: 1;
-  border-radius: 50%;
-  object-fit: cover;
-  object-position: 50% 25%;
-  border: 4px solid var(--tint);
-  margin-left: -6%;
-}
-.cv-community img:first-child {
-  margin-left: 0;
+@media (min-width: 900px) {
+  .offer {
+    grid-template-columns: 1fr 2fr auto;
+    align-items: baseline;
+    gap: 48px;
+    padding: 36px 0;
+  }
 }
 
 /* ==================================================================
@@ -1030,22 +832,6 @@ p {
   object-fit: cover;
   border: 0;
 }
-.ai-stage.is-empty {
-  aspect-ratio: auto;
-  min-height: 200px;
-}
-.ai-placeholder {
-  display: grid;
-  justify-items: center;
-  gap: 18px;
-  text-align: center;
-  padding: 24px;
-}
-.ai-placeholder p {
-  color: var(--on-dark-muted);
-  max-width: 34ch;
-  font-size: 1rem;
-}
 .ai-shots {
   display: grid;
   gap: 16px;
@@ -1089,31 +875,12 @@ p {
   font-size: 1rem;
 }
 .ai-access {
-  margin-top: 36px;
+  margin-top: 8px;
   display: flex;
   flex-wrap: wrap;
   align-items: center;
   gap: 16px 28px;
   color: var(--on-dark-muted);
-}
-.status {
-  display: inline-flex;
-  align-items: center;
-  gap: 10px;
-  height: 56px;
-  padding: 0 24px;
-  border-radius: 999px;
-  border: 1px dashed rgba(247, 245, 255, 0.3);
-  color: var(--on-dark);
-  font-weight: 600;
-  font-size: 0.95rem;
-}
-.status::before {
-  content: "";
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
-  background: var(--lime);
 }
 
 /* ==================================================================
@@ -1206,7 +973,7 @@ p {
 }
 .voice-list {
   display: grid;
-  gap: 4px;
+  border-top: 1px solid var(--line);
 }
 .voice-item {
   display: grid;
@@ -1214,20 +981,19 @@ p {
   gap: 4px 16px;
   align-items: center;
   width: 100%;
-  padding: 16px;
-  border-radius: var(--r);
+  padding: 18px 0;
+  border-bottom: 1px solid var(--line);
   text-align: left;
-  transition: background-color 0.3s ease;
 }
-.voice-item:hover {
-  background: var(--tint);
+.voice-item .voice-name {
+  color: var(--muted);
+  transition: color 0.2s ease;
 }
-.voice-item[aria-selected="true"] {
-  background: var(--paper);
-  box-shadow: inset 0 0 0 1px var(--line);
+.voice-item:hover .voice-name,
+.voice-item[aria-selected="true"] .voice-name {
+  color: var(--ink);
 }
 .voice-item img {
-  grid-row: span 2;
   width: 52px;
   height: 52px;
   border-radius: 50%;
@@ -1239,10 +1005,6 @@ p {
   font-weight: 600;
   font-size: 1.1rem;
   line-height: 1.2;
-}
-.voice-role {
-  font-size: 0.875rem;
-  color: var(--muted);
 }
 .voice-quote {
   grid-column: 1 / -1;

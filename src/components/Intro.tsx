@@ -1,12 +1,10 @@
 import React from 'react';
 
-const ORBIT = 'M6 50 A44 40 0 1 1 94 50 A44 40 0 1 1 6 50';
-
-const FACES = [
-  { src: '/assets/Timxpert.jpg', name: 'Timxpert', x: 14, y: 28 },
-  { src: '/assets/Osho Elizabeth Oluwatobiloba.jpg', name: 'Elizabeth', x: 86, y: 28 },
-  { src: '/assets/George Junior.jpg', name: 'Junior', x: 84, y: 74 },
-  { src: '/assets/Muhammad Fatihi Abdullahi.jpg', name: 'Fatihi', x: 14, y: 72 },
+const TEAM = [
+  { src: '/assets/Timxpert.jpg', name: 'Timxpert', role: 'Founder', focus: '50% 20%' },
+  { src: '/assets/Muhammad Fatihi Abdullahi.jpg', name: 'Muhammad Fatihi', role: 'Community manager', focus: '50% 30%' },
+  { src: '/assets/Osho Elizabeth Oluwatobiloba.jpg', name: 'Elizabeth', role: 'Moderator', focus: '50% 25%' },
+  { src: '/assets/George Junior.jpg', name: 'George Junior', role: 'Social media manager', focus: '50% 30%' },
 ];
 
 export function Intro() {
@@ -30,20 +28,15 @@ export function Intro() {
           </a>
         </div>
 
-        <div className="orbit" aria-hidden="true">
-          <svg className="orbit-path" viewBox="0 0 100 100" preserveAspectRatio="none">
-            <path d={ORBIT} vectorEffect="non-scaling-stroke" />
-          </svg>
-          <div className="orbit-phone">
-            <img src="/images/hero-video-poster.webp" alt="" loading="lazy" />
-          </div>
-          {FACES.map((f) => (
-            <div className="orbit-face" key={f.name} style={{ left: `${f.x}%`, top: `${f.y}%` }}>
-              <img src={f.src} alt="" loading="lazy" />
-              <span>{f.name}</span>
-            </div>
+        <ul className="team" aria-label="The Motion Dojo team">
+          {TEAM.map((t) => (
+            <li key={t.name}>
+              <img src={t.src} alt={t.name} loading="lazy" style={{ objectPosition: t.focus }} />
+              <p className="team-name">{t.name}</p>
+              <p className="team-role">{t.role}</p>
+            </li>
           ))}
-        </div>
+        </ul>
       </div>
     </section>
   );

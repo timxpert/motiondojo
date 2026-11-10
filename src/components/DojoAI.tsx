@@ -22,11 +22,7 @@ function Stage() {
   if (screenshots.length > 0) {
     return <img src={screenshots[0].src} alt={screenshots[0].alt} loading="lazy" />;
   }
-  return (
-    <div className="ai-placeholder">
-      <p>Screenshots and a short demo of Dojo’s AI will appear here.</p>
-    </div>
-  );
+  return null;
 }
 
 export function DojoAI() {
@@ -50,11 +46,13 @@ export function DojoAI() {
           </p>
         </div>
 
-        <div className="ai-window">
-          <div className={hasMedia ? 'ai-stage' : 'ai-stage is-empty'}>
-            <Stage />
+        {hasMedia && (
+          <div className="ai-window">
+            <div className="ai-stage">
+              <Stage />
+            </div>
           </div>
-        </div>
+        )}
 
         {extraShots.length > 0 && (
           <div className="ai-shots">
@@ -81,7 +79,7 @@ export function DojoAI() {
               Discover Dojo’s AI
             </a>
           ) : (
-            <span className="status">Access opens soon</span>
+            <p>Access details are coming soon.</p>
           )}
           {access && <p>{access}</p>}
         </div>

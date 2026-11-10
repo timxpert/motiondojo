@@ -2,7 +2,8 @@
 
 import React, { useEffect, useRef, useState } from 'react';
 
-const POSTER = '/images/hero-video-poster.webp';
+// A frame from the reel itself, so the poster lines up with the video when zoomed
+const POSTER = '/images/reel-poster.webp';
 
 /**
  * Full-width 16:9 reel under the hero. The source video has the animation on a white card with a

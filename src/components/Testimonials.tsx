@@ -74,7 +74,6 @@ export function Testimonials() {
               >
                 <img src={t.poster} alt="" loading="lazy" style={{ objectPosition: t.portrait ? '50% 35%' : '50% 45%' }} />
                 <span className="voice-name">{t.name}</span>
-                <span className="voice-role">{t.role}</span>
                 <span className="voice-quote">
                   <span>{t.summary}</span>
                 </span>
