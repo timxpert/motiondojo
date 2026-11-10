@@ -613,11 +613,14 @@ p {
    Desktop flips a card to its bio and WhatsApp button; phones and tablets,
    where the cards are too small to hold a bio, open a panel under the row.
 ================================================================== */
+.team-layout {
+  display: grid;
+  gap: clamp(28px, 4vw, 48px);
+}
 .flip-grid {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 12px;
-  max-width: 820px;
 }
 .flip {
   perspective: 1400px;
@@ -683,7 +686,8 @@ p {
   color: var(--violet);
   font-weight: 500;
 }
-.flip-turn {
+.flip-mark {
+  display: grid;
   flex: none;
   color: var(--violet);
 }
@@ -727,9 +731,18 @@ p {
   z-index: 2;
   gap: 10px;
 }
+.flip-connect svg {
+  flex: none;
+}
 
 /* wider screens: real flip cards, no panel */
 @media (min-width: 1000px) {
+  /* heading on the left, the three cards filling the rest of the row */
+  .team-layout {
+    grid-template-columns: 1fr 2.4fr;
+    align-items: start;
+    gap: 56px;
+  }
   .flip-grid {
     gap: 20px;
   }
@@ -788,14 +801,6 @@ p {
     --btn-h: 44px;
     padding: 0 18px;
     font-size: 0.9rem;
-  }
-  .flip-hint {
-    position: relative;
-    z-index: 2;
-    margin-top: -6px;
-    font-size: 0.8125rem;
-    color: var(--on-dark-muted);
-    pointer-events: none;
   }
 }
 

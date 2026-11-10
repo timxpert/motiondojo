@@ -11,27 +11,6 @@ function WhatsAppIcon() {
   );
 }
 
-function TurnIcon() {
-  return (
-    <svg
-      className="flip-turn"
-      width="20"
-      height="20"
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth={1.8}
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      aria-hidden="true"
-      focusable="false"
-    >
-      <path d="M20 12a8 8 0 1 1-2.3-5.6" />
-      <path d="M20 4v4.5h-4.5" />
-    </svg>
-  );
-}
-
 /** Bio and WhatsApp button: on the back of the card (desktop) or in the panel below (phones and tablets). */
 function Details({ m, active }: { m: TeamMember; active: boolean }) {
   return (
@@ -68,60 +47,60 @@ export function Team() {
   return (
     <section className="section team-section" id="team" aria-labelledby="team-title">
       <div className="wrap">
-        <div className="section-head">
+        <div className="team-layout">
           <h2 className="h2" id="team-title">
             Meet the team
           </h2>
+
+          <ul className="flip-grid">
+            {TEAM.map((m, i) => {
+              const flipped = open === i;
+              return (
+                <li key={m.name} className={flipped ? 'flip is-flipped' : 'flip'}>
+                  <div className="flip-inner">
+                    <div className="flip-face flip-front">
+                      <img src={m.photo} alt="" loading="lazy" style={{ objectPosition: m.focus }} />
+                      <div className="flip-caption">
+                        <div>
+                          <h3 className="flip-name">
+                            <span className="name-full">{m.name}</span>
+                            <span className="name-short">{m.short}</span>
+                          </h3>
+                          <p className="flip-role">{m.role}</p>
+                        </div>
+                        <span className="flip-mark" aria-hidden="true">
+                          <WhatsAppIcon />
+                        </span>
+                      </div>
+                      <button
+                        type="button"
+                        className="flip-hit"
+                        onClick={() => toggle(i)}
+                        aria-expanded={flipped}
+                        aria-controls="team-panel"
+                        aria-label={flipped ? `Close ${m.short}’s details` : `Read about ${m.short} and connect`}
+                      />
+                    </div>
+
+                    <div className="flip-face flip-back" aria-hidden={!flipped}>
+                      <button
+                        type="button"
+                        className="flip-hit"
+                        onClick={() => toggle(i)}
+                        tabIndex={flipped ? 0 : -1}
+                        aria-label={`Flip back to ${m.short}’s photo`}
+                      />
+                      <Details m={m} active={flipped} />
+                    </div>
+                  </div>
+                </li>
+              );
+            })}
+          </ul>
+
         </div>
 
-        <ul className="flip-grid">
-          {TEAM.map((m, i) => {
-            const flipped = open === i;
-            return (
-              <li key={m.name} className={flipped ? 'flip is-flipped' : 'flip'}>
-                <div className="flip-inner">
-                  <div className="flip-face flip-front">
-                    <img src={m.photo} alt="" loading="lazy" style={{ objectPosition: m.focus }} />
-                    <div className="flip-caption">
-                      <div>
-                        <h3 className="flip-name">
-                          <span className="name-full">{m.name}</span>
-                          <span className="name-short">{m.short}</span>
-                        </h3>
-                        <p className="flip-role">{m.role}</p>
-                      </div>
-                      <TurnIcon />
-                    </div>
-                    <button
-                      type="button"
-                      className="flip-hit"
-                      onClick={() => toggle(i)}
-                      aria-expanded={flipped}
-                      aria-controls="team-panel"
-                      aria-label={flipped ? `Close ${m.short}’s details` : `Read about ${m.short} and connect`}
-                    />
-                  </div>
-
-                  <div className="flip-face flip-back" aria-hidden={!flipped}>
-                    <button
-                      type="button"
-                      className="flip-hit"
-                      onClick={() => toggle(i)}
-                      tabIndex={flipped ? 0 : -1}
-                      aria-label={`Flip back to ${m.short}’s photo`}
-                    />
-                    <Details m={m} active={flipped} />
-                    <span className="flip-hint" aria-hidden="true">
-                      Tap to flip back
-                    </span>
-                  </div>
-                </div>
-              </li>
-            );
-          })}
-        </ul>
-
-        {/* phones only: details of the tapped person */}
+        {/* phones and tablets: details of the tapped person */}
         <div id="team-panel" className="team-panel" hidden={!current} aria-live="polite">
           {current && <Details m={current} active />}
         </div>
