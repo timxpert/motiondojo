@@ -57,7 +57,10 @@ export function Stories() {
     <section className="section" id="stories" aria-labelledby="stories-title">
       <div className="wrap stories">
         <h2 className="h2 stories-title" id="stories-title">
-          Hear what community members <span>are saying.</span>
+          <span className="line">Hear what community</span>{' '}
+          <span className="line">
+            members <span className="accent">are saying.</span>
+          </span>
         </h2>
 
         <ul className="stories-track" ref={track} onScroll={onScroll} aria-label="Member stories">

@@ -1331,12 +1331,23 @@ details[open] > summary .bb-chev {
   overflow: hidden;
 }
 .stories-title {
-  max-width: 18ch;
+  max-width: none;
   margin: 0 auto clamp(36px, 5vw, 56px);
   text-align: center;
 }
-.stories-title span {
+.stories-title .accent {
   color: var(--violet);
+}
+/* Two lines at every width: the size follows the screen so the longer line always fits */
+.stories-title .line {
+  display: block;
+  white-space: nowrap;
+}
+@media (max-width: 760px) {
+  .stories-title {
+    max-width: none;
+    font-size: calc((100vw - 2 * var(--gutter) - 32px) / 11);
+  }
 }
 .stories-track {
   /* the track runs edge to edge of the panel; the padding centres the first and last cards */
