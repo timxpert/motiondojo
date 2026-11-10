@@ -536,33 +536,18 @@ p {
   position: relative;
   width: 100%;
   aspect-ratio: 16 / 9;
-  max-height: 90vh;
   overflow: hidden;
-  background: var(--paper);
+  background: #fff;
 }
+/* The video's white card covers 57% of its frame (x 295-1028 of 1280).
+   Scaling by 1.746 around this origin makes the card fill the full width. */
 .reel video,
 .reel img {
   width: 100%;
   height: 100%;
   object-fit: cover;
-}
-.reel-sound {
-  position: absolute;
-  right: 16px;
-  bottom: 16px;
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  min-height: 40px;
-  padding: 0 16px;
-  border-radius: 999px;
-  background: var(--midnight);
-  color: var(--white);
-  font-size: 0.875rem;
-  font-weight: 500;
-}
-.reel-sound svg {
-  color: var(--lime);
+  transform: scale(1.746);
+  transform-origin: 53.84% 55.2%;
 }
 
 /* ==================================================================

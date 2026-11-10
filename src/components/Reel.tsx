@@ -1,17 +1,19 @@
 'use client';
 
 import React, { useEffect, useRef, useState } from 'react';
-import { SoundOff, SoundOn } from './Icons';
 
 const POSTER = '/images/hero-video-poster.webp';
 
-/** Full-width 16:9 video under the hero. Lazy-loads, and shows only the poster for reduced motion or data saver. */
+/**
+ * Full-width 16:9 reel under the hero. The source video has the animation on a white card with a
+ * margin around it; CSS zooms in so the card fills the full width. Muted, looping, no controls.
+ * Lazy-loads, and shows only the poster for reduced motion or data saver.
+ */
 export function Reel() {
   const box = useRef<HTMLDivElement>(null);
   const video = useRef<HTMLVideoElement>(null);
   const [load, setLoad] = useState(false);
   const [still, setStill] = useState(false);
-  const [muted, setMuted] = useState(true);
   const [failed, setFailed] = useState(false);
 
   useEffect(() => {
@@ -40,36 +42,22 @@ export function Reel() {
     if (load) video.current?.play().catch(() => {});
   }, [load]);
 
-  const toggle = () => {
-    const v = video.current;
-    if (!v) return;
-    v.muted = !muted;
-    setMuted(!muted);
-    if (v.paused) v.play().catch(() => {});
-  };
-
   return (
-    <section className="reel" ref={box} aria-label="Motion Dojo reel">
+    <section className="reel" ref={box} aria-label="Motion Dojo logo animation">
       {still || failed ? (
-        <img src={POSTER} alt="Motion Dojo" />
+        <img src={POSTER} alt="The Motion Dojo logo" />
       ) : (
-        <>
-          <video
-            ref={video}
-            src={load ? '/videos/hero.mp4' : undefined}
-            poster={POSTER}
-            muted={muted}
-            loop
-            playsInline
-            preload="none"
-            onError={() => setFailed(true)}
-            aria-label="Motion Dojo reel"
-          />
-          <button type="button" className="reel-sound" onClick={toggle} aria-pressed={!muted}>
-            {muted ? <SoundOff /> : <SoundOn />}
-            {muted ? 'Tap for sound' : 'Mute'}
-          </button>
-        </>
+        <video
+          ref={video}
+          src={load ? '/videos/hero.mp4' : undefined}
+          poster={POSTER}
+          muted
+          loop
+          playsInline
+          preload="none"
+          onError={() => setFailed(true)}
+          aria-label="The Motion Dojo logo animation"
+        />
       )}
     </section>
   );
