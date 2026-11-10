@@ -7,28 +7,23 @@ export function Community() {
     <section className="section" id="community" aria-labelledby="community-title">
       <div className="wrap">
         <div className="community-head">
-          <h2 className="h2" id="community-title" data-reveal>
+          <h2 className="h2" id="community-title">
             Different creatives. One community.
           </h2>
           <div className="side">
-            <p className="lede" data-reveal style={{ ['--d' as string]: '0.08s' }}>
+            <p className="lede">
               Great things happen when creatives grow together. Motion Dojo brings people together to share ideas,
               learn from one another, create meaningful work, and celebrate progress.
             </p>
-            <a href={COMMUNITY_JOIN_URL} className="btn btn-primary" data-reveal style={{ ['--d' as string]: '0.14s' }}>
+            <a href={COMMUNITY_JOIN_URL} className="btn btn-primary">
               Join the community
             </a>
           </div>
         </div>
 
         <div className="gallery">
-          {GALLERY.map((g, i) => (
-            <figure
-              className={`tile ${g.shape}`}
-              key={g.src}
-              data-reveal
-              style={{ ['--d' as string]: `${(i % 4) * 0.06}s` }}
-            >
+          {GALLERY.map((g) => (
+            <figure className={`tile ${g.shape}`} key={g.src}>
               <img src={g.src} alt={g.alt} loading="lazy" style={g.focus ? { objectPosition: g.focus } : undefined} />
               <figcaption>{g.caption}</figcaption>
             </figure>

@@ -40,4 +40,8 @@ Sora (Google Fonts) for text and Clash Display (Fontshare) for headings, both lo
 
 ## Motion
 
-Scroll reveals and the light parallax live in `src/components/MotionLayer.tsx`; animation styles are at the end of `globals.css`. All motion is switched off for visitors who prefer reduced motion.
+One load sequence in the hero: the headline rises in, the animation curve draws, the keyframes appear and the playhead sweeps once. Nothing animates on scroll. Hover states change colour only. All motion is off for visitors who prefer reduced motion. Styles are at the end of `globals.css`.
+
+## Design context
+
+`PRODUCT.md` records who the site is for, the brand commitments and what content must not be invented. Design tools such as Impeccable read it.

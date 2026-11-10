@@ -32,13 +32,13 @@ export function Testimonials() {
     <section className="section" id="stories" aria-labelledby="voices-title">
       <div className="wrap">
         <div className="section-head">
-          <h2 className="h2" id="voices-title" data-reveal>
+          <h2 className="h2" id="voices-title">
             Real people. Real creative growth.
           </h2>
         </div>
 
         <div className="voices">
-          <div className="voice-stage" data-reveal id="voice-panel" role="tabpanel" aria-label={`${current.name}’s story`}>
+          <div className="voice-stage" id="voice-panel" role="tabpanel" aria-label={`${current.name}’s story`}>
             {TESTIMONIALS.map((t, i) => (
               <img
                 key={t.id}
@@ -56,7 +56,7 @@ export function Testimonials() {
             </button>
           </div>
 
-          <div className="voice-list" role="tablist" aria-label="Member stories" aria-orientation="vertical" data-reveal>
+          <div className="voice-list" role="tablist" aria-label="Member stories" aria-orientation="vertical">
             {TESTIMONIALS.map((t, i) => (
               <button
                 key={t.id}

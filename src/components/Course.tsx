@@ -8,27 +8,27 @@ export function Course() {
       <div className="wrap">
         <div className="course-grid">
           <div className="course-copy">
-            <h2 className="h2" id="course-title" data-reveal>
+            <h2 className="h2" id="course-title">
               Ready to take your motion design skills further?
             </h2>
-            <p className="lede" data-reveal style={{ ['--d' as string]: '0.08s' }}>
+            <p className="lede">
               Black Belt in Motion Design is our structured training programme designed to help you build strong
               foundations, master your tools, execute creative projects, and prepare for professional opportunities.
             </p>
-            <p className="lede" data-reveal style={{ ['--d' as string]: '0.12s' }}>
+            <p className="lede">
               From your first keyframe to building a portfolio, you’ll have a structured path to follow.
             </p>
-            <a href={COURSE_URL} className="btn btn-primary" data-reveal style={{ ['--d' as string]: '0.16s' }}>
+            <a href={COURSE_URL} className="btn btn-primary">
               Explore the course
             </a>
           </div>
 
-          <div className="course-phone" data-reveal data-parallax="0.05">
+          <div className="course-phone">
             <img src="/images/hero-poster.webp" alt="A Black Belt lesson project open in Alight Motion on a phone" loading="lazy" />
           </div>
         </div>
 
-        <ol className="phases" data-reveal aria-label="The four learning phases">
+        <ol className="phases" aria-label="The four learning phases">
           {COURSE_PHASES.map((p, i) => (
             <li className="phase" key={p.title}>
               <span className="phase-key" aria-hidden="true">

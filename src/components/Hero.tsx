@@ -6,14 +6,6 @@ function GraphArt() {
   const frames = [0, 12, 24, 36, 48];
   return (
     <svg className="graph" viewBox="0 0 480 400" role="img" aria-label="An animation curve with keyframes">
-      <defs>
-        <linearGradient id="curveGrad" x1="0" x2="1" y1="0" y2="0">
-          <stop offset="0" stopColor="#6D32E8" />
-          <stop offset="0.6" stopColor="#A77BFF" />
-          <stop offset="1" stopColor="#C8FF3D" />
-        </linearGradient>
-      </defs>
-
       {frames.map((f, i) => {
         const x = 40 + i * 100;
         return (
@@ -60,10 +52,8 @@ export function Hero() {
         <div className="hero-copy">
           <h1 className="display" id="hero-title">
             <span className="line">You were never meant</span>
-            <span className="line">
-              to <span className="grad-text">figure it all</span>
-            </span>
-            <span className="line grad-text">out alone.</span>
+            <span className="line">to figure it all</span>
+            <span className="line">out alone.</span>
           </h1>
 
           <p className="lede">
@@ -81,7 +71,7 @@ export function Hero() {
           </div>
         </div>
 
-        <div className="hero-art" data-parallax="0.06" aria-hidden="false">
+        <div className="hero-art">
           <GraphArt />
         </div>
       </div>

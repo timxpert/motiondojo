@@ -6,7 +6,7 @@
 import { Story } from '@/types';
 
 /* ------------------------------------------------------------------
-   Black Belt in Motion Design — the four phases
+   Black Belt in Motion Design: the four phases
 ------------------------------------------------------------------- */
 export const COURSE_PHASES = [
   { title: 'Foundations', body: 'Principles of motion, typography, colour and your first animations.' },
@@ -82,7 +82,7 @@ export const GALLERY: GalleryItem[] = [
 ];
 
 /* ------------------------------------------------------------------
-   Keyframe Ninjas — students of Black Belt in Motion Design.
+   Keyframe Ninjas: students of Black Belt in Motion Design.
    Only real, approved members. `photo` can be a portrait or a video still;
    `focus` sets the crop (CSS object-position).
 ------------------------------------------------------------------- */
@@ -119,7 +119,7 @@ export const NINJAS: NinjaProfile[] = [
 ];
 
 /* ------------------------------------------------------------------
-   Testimonials — supplied by the Motion Dojo team (video interviews on Vimeo).
+   Testimonials: supplied by the Motion Dojo team (video interviews on Vimeo).
 ------------------------------------------------------------------- */
 export const TESTIMONIALS: (Story & { portrait?: boolean })[] = [
   {

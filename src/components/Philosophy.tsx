@@ -20,10 +20,10 @@ export function Philosophy() {
       <div className="wrap">
         <div className="philosophy-grid">
           <div className="section-head" style={{ marginBottom: 0 }}>
-            <h2 className="h2" id="about-title" data-reveal>
+            <h2 className="h2" id="about-title">
               Growth is better when we grow together.
             </h2>
-            <p className="lede" data-reveal style={{ ['--d' as string]: '0.08s' }}>
+            <p className="lede">
               Motion Dojo was built on a simple belief: you get better faster when you’re surrounded by people who
               are working on the same craft. Watching tutorials alone only takes you so far. Real growth comes from
               doing the work, showing it to others, and trying again.
@@ -31,8 +31,8 @@ export function Philosophy() {
           </div>
 
           <ul className="principles" aria-label="Our principles">
-            {PRINCIPLES.map(([win, lose], i) => (
-              <li className="principle" key={win} data-reveal style={{ ['--d' as string]: `${i * 0.06}s` }}>
+            {PRINCIPLES.map(([win, lose]) => (
+              <li className="principle" key={win}>
                 <span>{win}</span>
                 <span className="over">over</span>
                 <span className="lesser">{lose}</span>
@@ -41,7 +41,7 @@ export function Philosophy() {
           </ul>
         </div>
 
-        <div className="loop" data-reveal>
+        <div className="loop">
           <div className="loop-head">
             <h3 className="h3">How we learn</h3>
             <p>

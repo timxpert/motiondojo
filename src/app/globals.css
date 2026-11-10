@@ -1,7 +1,7 @@
 @import "tailwindcss";
 
 /* ==================================================================
-   Motion Dojo — brand tokens
+   Motion Dojo: brand tokens
 ================================================================== */
 :root {
   /* Official palette */
@@ -22,8 +22,6 @@
   --on-dark-muted: #b9b0d9;
   --line-dark: rgba(247, 245, 255, 0.12);
 
-  --grad: linear-gradient(90deg, #6d32e8 0%, #a77bff 55%, #c8ff3d 100%);
-  --grad-light: linear-gradient(90deg, #6d32e8 0%, #a77bff 100%);
 
   --font-display: 'Clash Display', 'Sora', system-ui, sans-serif;
   --font-body: 'Sora', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
@@ -132,7 +130,7 @@ button {
   text-wrap: balance;
 }
 .display {
-  font-size: clamp(2.6rem, 6.6vw, 5.4rem);
+  font-size: clamp(2.4rem, 5vw, 4.25rem);
   line-height: 0.98;
   letter-spacing: -0.03em;
 }
@@ -152,27 +150,13 @@ button {
   color: var(--muted);
   max-width: 50ch;
 }
+p {
+  text-wrap: pretty;
+}
 .lede + .lede {
   margin-top: 1em;
 }
-.kicker {
-  display: inline-block;
-  font-size: 0.9rem;
-  font-weight: 500;
-  color: var(--muted);
-}
 
-/* Brand gradient text. On light backgrounds the lime end is dropped for legibility. */
-.grad-text {
-  background: var(--grad-light);
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
-  padding-bottom: 0.08em;
-}
-.dark-section .grad-text {
-  background-image: var(--grad);
-}
 
 /* ==================================================================
    Layout
@@ -203,7 +187,7 @@ button {
 }
 
 /* ==================================================================
-   Buttons — every button shares one height; hero pair also shares width
+   Buttons: every button shares one height; hero pair also shares width
 ================================================================== */
 .btn {
   --btn-h: 56px;
@@ -254,12 +238,6 @@ button {
   padding: 0 20px;
   font-size: 0.9rem;
 }
-.btn .arrow {
-  transition: transform 0.25s var(--ease);
-}
-.btn:hover .arrow {
-  transform: translateX(3px);
-}
 
 .btn-pair {
   display: grid;
@@ -291,12 +269,6 @@ button {
 .text-link:hover span {
   background-size: 100% 2px;
 }
-.text-link .arrow {
-  transition: transform 0.25s var(--ease);
-}
-.text-link:hover .arrow {
-  transform: translateX(3px);
-}
 .dark-section .text-link,
 .card-dark .text-link {
   color: var(--lime);
@@ -310,9 +282,7 @@ button {
   top: 0;
   z-index: 50;
   height: var(--header-h);
-  background: rgba(247, 245, 255, 0.82);
-  backdrop-filter: saturate(160%) blur(16px);
-  -webkit-backdrop-filter: saturate(160%) blur(16px);
+  background: var(--white);
   border-bottom: 1px solid transparent;
   transition: border-color 0.3s ease, background-color 0.3s ease;
 }
@@ -323,8 +293,6 @@ button {
   z-index: 60;
   background: transparent;
   border-bottom-color: transparent;
-  backdrop-filter: none;
-  -webkit-backdrop-filter: none;
   color: var(--white);
 }
 .header-row {
@@ -356,7 +324,7 @@ button {
   position: relative;
   padding: 8px 14px;
   border-radius: 999px;
-  font-size: 0.93rem;
+  font-size: 1rem;
   font-weight: 500;
   color: var(--muted);
   transition: color 0.2s ease, background-color 0.2s ease;
@@ -520,7 +488,7 @@ button {
 }
 .graph .curve {
   fill: none;
-  stroke: url(#curveGrad);
+  stroke: var(--violet);
   stroke-width: 4;
   stroke-linecap: round;
 }
@@ -550,7 +518,7 @@ button {
 }
 .graph .axis-label {
   font-family: var(--font-body);
-  font-size: 11px;
+  font-size: 12px;
   fill: var(--muted);
 }
 .graph .playhead {
@@ -587,10 +555,9 @@ button {
   min-height: 40px;
   padding: 0 16px;
   border-radius: 999px;
-  background: rgba(20, 10, 46, 0.82);
-  backdrop-filter: blur(8px);
+  background: var(--midnight);
   color: var(--white);
-  font-size: 0.84rem;
+  font-size: 0.875rem;
   font-weight: 500;
 }
 .reel-sound svg {
@@ -681,13 +648,13 @@ button {
   border-radius: 999px;
   background: var(--paper);
   border: 1px solid var(--line);
-  font-size: 0.72rem;
+  font-size: 0.8125rem;
   font-weight: 600;
   white-space: nowrap;
 }
 
 /* ==================================================================
-   What's inside the dojo — three related, distinct cards
+   What's inside the dojo: three related, distinct cards
 ================================================================== */
 .inside-grid {
   display: grid;
@@ -695,8 +662,32 @@ button {
 }
 @media (min-width: 900px) {
   .inside-grid {
-    grid-template-columns: 1.15fr 1fr 1fr;
-    align-items: stretch;
+    grid-template-columns: 1fr 1fr;
+  }
+  /* The course leads: a wide card across the top, its track beside the text */
+  .card.card-feature {
+    grid-column: 1 / -1;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: auto auto 1fr;
+    column-gap: clamp(32px, 4vw, 56px);
+    row-gap: 14px;
+    align-content: start;
+  }
+  .card.card-feature .card-visual {
+    grid-row: 1 / -1;
+    margin: calc(var(--pad) * -1) 0 calc(var(--pad) * -1) calc(var(--pad) * -1);
+    aspect-ratio: auto;
+    min-height: 240px;
+    border-bottom: 0;
+    border-right: 1px solid var(--line);
+  }
+  .card-feature .h3 {
+    padding-top: 8px;
+  }
+  .card-feature .text-link {
+    margin-top: 0;
+    align-self: start;
   }
 }
 .card {
@@ -715,18 +706,29 @@ button {
   border-color: var(--lavender);
 }
 .card .card-visual {
-  margin: -8px -8px 10px;
-  border-radius: var(--r);
+  --pad: clamp(24px, 3vw, 32px);
+  margin: calc(var(--pad) * -1) calc(var(--pad) * -1) 12px;
   overflow: hidden;
-  aspect-ratio: 16 / 10;
+  aspect-ratio: 16 / 9;
   position: relative;
+  border-bottom: 1px solid var(--line);
 }
-.card .kicker {
-  margin-top: 4px;
+.card-dark .card-visual {
+  border-bottom-color: transparent;
+}
+.card-tint .card-visual {
+  border-bottom-color: rgba(109, 50, 232, 0.14);
 }
 .card p {
   color: var(--muted);
-  font-size: 0.97rem;
+  font-size: 1rem;
+}
+.card p strong {
+  color: var(--ink);
+  font-weight: 600;
+}
+.card-dark p strong {
+  color: var(--on-dark);
 }
 .card .text-link {
   margin-top: auto;
@@ -740,9 +742,6 @@ button {
 .card-dark p {
   color: var(--on-dark-muted);
 }
-.card-dark .kicker {
-  color: var(--on-dark-muted);
-}
 .card-tint {
   background: var(--tint);
   border-color: var(--tint);
@@ -750,7 +749,7 @@ button {
 
 /* card visuals */
 .cv-course {
-  background: var(--white);
+  background: transparent;
   display: grid;
   align-content: center;
   padding: 0 8%;
@@ -768,7 +767,7 @@ button {
   right: 0;
   top: 50%;
   height: 2px;
-  background: var(--grad-light);
+  background: var(--violet);
 }
 .cv-course .mini-track i {
   position: relative;
@@ -778,23 +777,16 @@ button {
   border-radius: 3px;
   background: var(--paper);
   border: 2.5px solid var(--violet);
-  transition: transform 0.5s var(--ease), background-color 0.3s ease;
 }
 .cv-course .mini-track i:last-child {
   background: var(--lime);
   border-color: var(--midnight);
 }
-.card:hover .cv-course .mini-track i {
-  transform: rotate(45deg) scale(1.2);
-}
-.card:hover .cv-course .mini-track i:nth-child(2) { transition-delay: 0.05s; }
-.card:hover .cv-course .mini-track i:nth-child(3) { transition-delay: 0.1s; }
-.card:hover .cv-course .mini-track i:nth-child(4) { transition-delay: 0.15s; }
 .cv-course .mini-labels {
   display: flex;
   justify-content: space-between;
   margin-top: 16px;
-  font-size: 0.72rem;
+  font-size: 0.8125rem;
   color: var(--muted);
 }
 
@@ -829,7 +821,7 @@ button {
 }
 
 .cv-community {
-  background: var(--paper);
+  background: transparent;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -840,18 +832,11 @@ button {
   border-radius: 50%;
   object-fit: cover;
   object-position: 50% 25%;
-  border: 4px solid var(--paper);
+  border: 4px solid var(--tint);
   margin-left: -6%;
-  transition: transform 0.5s var(--ease);
 }
 .cv-community img:first-child {
   margin-left: 0;
-}
-.card:hover .cv-community img:nth-child(odd) {
-  transform: translateY(-6px);
-}
-.card:hover .cv-community img:nth-child(even) {
-  transform: translateY(6px);
 }
 
 /* ==================================================================
@@ -962,7 +947,7 @@ button {
 }
 .phase p {
   color: var(--muted);
-  font-size: 0.94rem;
+  font-size: 1rem;
   max-width: 30ch;
 }
 @media (min-width: 900px) {
@@ -977,19 +962,7 @@ button {
     right: calc(25% - 26px);
     top: 25px;
     height: 2px;
-    background: var(--line);
-  }
-  .phases::after {
-    content: "";
-    position: absolute;
-    left: 26px;
-    top: 25px;
-    height: 2px;
-    width: calc(75% - 26px);
-    background: var(--grad-light);
-    transform-origin: left;
-    transform: scaleX(1);
-    transition: transform 1.6s var(--ease) 0.2s;
+    background: var(--lavender);
   }
   .phase {
     grid-template-columns: 1fr;
@@ -1055,7 +1028,7 @@ button {
 .ai-placeholder p {
   color: var(--on-dark-muted);
   max-width: 34ch;
-  font-size: 0.95rem;
+  font-size: 1rem;
 }
 .ai-shots {
   display: grid;
@@ -1097,7 +1070,7 @@ button {
 }
 .ai-features p {
   color: var(--on-dark-muted);
-  font-size: 0.94rem;
+  font-size: 1rem;
 }
 .ai-access {
   margin-top: 36px;
@@ -1128,7 +1101,7 @@ button {
 }
 
 /* ==================================================================
-   Community gallery — editorial grid
+   Community gallery: editorial grid
 ================================================================== */
 .community-head {
   display: grid;
@@ -1182,10 +1155,6 @@ button {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  transition: transform 0.9s var(--ease);
-}
-.tile:hover img {
-  transform: scale(1.04);
 }
 .tile figcaption {
   position: absolute;
@@ -1194,9 +1163,8 @@ button {
   max-width: calc(100% - 20px);
   padding: 5px 12px;
   border-radius: 999px;
-  background: rgba(247, 245, 255, 0.92);
-  backdrop-filter: blur(6px);
-  font-size: 0.75rem;
+  background: var(--white);
+  font-size: 0.8125rem;
   font-weight: 600;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -1239,14 +1207,10 @@ button {
   height: 100%;
   object-fit: cover;
   transform: scale(1.5);
-  transition: transform 0.9s var(--ease);
-}
-.ninja:hover .ninja-photo img {
-  transform: scale(1.56);
 }
 .ninja-cohort {
   margin-top: -10px;
-  font-size: 0.85rem;
+  font-size: 0.875rem;
   color: var(--muted);
 }
 .ninja h3 {
@@ -1258,7 +1222,7 @@ button {
 }
 .ninja p {
   color: var(--muted);
-  font-size: 0.95rem;
+  font-size: 1rem;
 }
 .ninjas-foot {
   margin-top: clamp(40px, 5vw, 56px);
@@ -1303,12 +1267,10 @@ button {
   height: 100%;
   object-fit: cover;
   opacity: 0;
-  transform: scale(1.04);
-  transition: opacity 0.6s ease, transform 1.2s var(--ease);
+  transition: opacity 0.5s ease;
 }
 .voice-stage img.is-active {
   opacity: 1;
-  transform: none;
 }
 .voice-stage img.portrait {
   object-fit: contain;
@@ -1327,10 +1289,10 @@ button {
   color: var(--midnight);
   font-weight: 600;
   font-size: 0.95rem;
-  transition: transform 0.3s var(--ease);
+  transition: background-color 0.2s ease;
 }
 .play-btn:hover {
-  transform: scale(1.03);
+  background: #d8ff70;
 }
 .play-btn .disc {
   width: 40px;
@@ -1378,7 +1340,7 @@ button {
   line-height: 1.2;
 }
 .voice-role {
-  font-size: 0.82rem;
+  font-size: 0.875rem;
   color: var(--muted);
 }
 .voice-quote {
@@ -1390,7 +1352,7 @@ button {
 .voice-quote > span {
   overflow: hidden;
   color: var(--muted);
-  font-size: 0.95rem;
+  font-size: 1rem;
 }
 .voice-item[aria-selected="true"] .voice-quote {
   grid-template-rows: 1fr;
@@ -1405,8 +1367,7 @@ button {
   display: grid;
   place-items: center;
   padding: 20px;
-  background: rgba(20, 10, 46, 0.86);
-  backdrop-filter: blur(8px);
+  background: rgba(20, 10, 46, 0.92);
   animation: fade 0.3s ease;
 }
 .modal-panel {
@@ -1488,7 +1449,7 @@ button {
 .principle .over {
   font-family: var(--font-body);
   font-weight: 400;
-  font-size: 0.95rem;
+  font-size: 1rem;
   letter-spacing: 0;
   color: var(--muted);
 }
@@ -1552,7 +1513,7 @@ button {
 }
 .loop-step p {
   color: var(--muted);
-  font-size: 0.93rem;
+  font-size: 1rem;
 }
 
 /* ==================================================================
@@ -1590,7 +1551,7 @@ button {
 }
 .final-art path.trail {
   fill: none;
-  stroke: url(#finalGrad);
+  stroke: var(--lavender);
   stroke-width: 3;
   stroke-linecap: round;
 }
@@ -1649,14 +1610,14 @@ button {
   }
 }
 .footer-col h3 {
-  font-size: 0.85rem;
+  font-size: 0.875rem;
   font-weight: 600;
   margin-bottom: 14px;
 }
 .footer-col ul {
   display: grid;
   gap: 10px;
-  font-size: 0.93rem;
+  font-size: 1rem;
   color: var(--muted);
 }
 .footer-col a:hover {
@@ -1670,25 +1631,15 @@ button {
   flex-wrap: wrap;
   justify-content: space-between;
   gap: 12px;
-  font-size: 0.85rem;
+  font-size: 0.875rem;
   color: var(--muted);
 }
 
 /* ==================================================================
-   Motion — reveals, drawing, parallax
+   Motion: one load sequence in the hero, nothing on scroll
    Everything here is disabled for prefers-reduced-motion.
 ================================================================== */
 @media (prefers-reduced-motion: no-preference) {
-  .js [data-reveal] {
-    opacity: 0;
-    transform: translateY(28px);
-    transition: opacity 0.9s var(--ease), transform 1s var(--ease);
-    transition-delay: var(--d, 0s);
-  }
-  .js [data-reveal].is-in {
-    opacity: 1;
-    transform: none;
-  }
 
   /* Hero load sequence */
   .hero .line {
@@ -1723,25 +1674,12 @@ button {
   .graph .k3 { animation-delay: 1.5s; }
   .graph .k4 { animation-delay: 2s; }
   .graph .playhead-g {
-    animation: scrub 6s ease-in-out 2.2s infinite alternate;
+    animation: scrub 2.4s var(--ease) 0.5s both;
   }
 
 
-  .js .phases:not(.is-in)::after {
-    transform: scaleX(0);
-  }
 
-  .final-art .trail {
-    stroke-dasharray: 1;
-    stroke-dashoffset: 1;
-  }
-  .final.is-in .final-art .trail {
-    animation: draw 2.2s var(--ease) forwards;
-  }
 
-  [data-parallax] {
-    will-change: transform;
-  }
 }
 
 @keyframes line-in {
@@ -1756,7 +1694,7 @@ button {
 }
 @keyframes scrub {
   from { transform: translateX(0); }
-  to { transform: translateX(340px); }
+  to { transform: translateX(380px); }
 }
 
 @media (prefers-reduced-motion: reduce) {

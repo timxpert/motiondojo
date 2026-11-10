@@ -33,7 +33,7 @@ export const CONTACT = {
 };
 
 export const SITE_METADATA = {
-  title: 'Motion Dojo — Where motion designers grow together',
+  title: 'Motion Dojo | Where motion designers grow together',
   description:
     'Motion Dojo is a community for motion designers and creatives who want to learn, improve, connect and build something meaningful.',
   url: 'https://motiondojo.vercel.app',

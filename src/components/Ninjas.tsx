@@ -10,18 +10,18 @@ export function Ninjas() {
     <section className="section ninjas" id="keyframe-ninjas" aria-labelledby="ninjas-title">
       <div className="wrap">
         <div className="section-head">
-          <h2 className="h2" id="ninjas-title" data-reveal>
+          <h2 className="h2" id="ninjas-title">
             Meet the creatives making moves.
           </h2>
-          <p className="lede" data-reveal style={{ ['--d' as string]: '0.08s' }}>
+          <p className="lede">
             Get to know some of the creatives learning, creating, and growing through Motion Dojo. Students of Black
             Belt in Motion Design are called Keyframe Ninjas.
           </p>
         </div>
 
         <ul className="ninja-grid">
-          {NINJAS.map((n, i) => (
-            <li className="ninja" key={n.name} data-reveal style={{ ['--d' as string]: `${i * 0.08}s` }}>
+          {NINJAS.map((n) => (
+            <li className="ninja" key={n.name}>
               <div className="ninja-photo">
                 <img src={n.photo} alt={n.name} loading="lazy" style={{ objectPosition: n.focus }} />
               </div>
@@ -32,7 +32,7 @@ export function Ninjas() {
           ))}
         </ul>
 
-        <div className="ninjas-foot" data-reveal>
+        <div className="ninjas-foot">
           <p>Every Keyframe Ninja gets a showcase page with their story, projects and links to share.</p>
           <SmartLink href={NINJAS_SHOWCASE_URL} newTab className="text-link">
             <span>See all Keyframe Ninjas</span>

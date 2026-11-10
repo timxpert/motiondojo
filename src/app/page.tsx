@@ -12,7 +12,6 @@ import { Testimonials } from '@/components/Testimonials';
 import { Philosophy } from '@/components/Philosophy';
 import { FinalCTA } from '@/components/FinalCTA';
 import { Footer } from '@/components/Footer';
-import { MotionLayer } from '@/components/MotionLayer';
 
 export default function HomePage() {
   return (
@@ -35,7 +34,6 @@ export default function HomePage() {
         <FinalCTA />
       </main>
       <Footer />
-      <MotionLayer />
     </>
   );
 }

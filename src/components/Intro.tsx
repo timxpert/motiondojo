@@ -14,27 +14,27 @@ export function Intro() {
     <section className="section" id="intro" aria-labelledby="intro-title">
       <div className="wrap split">
         <div className="intro-copy">
-          <h2 className="h2" id="intro-title" data-reveal>
+          <h2 className="h2" id="intro-title">
             More than a place to learn. A place to grow.
           </h2>
-          <p className="lede" data-reveal style={{ ['--d' as string]: '0.08s' }}>
+          <p className="lede">
             Motion Dojo is a community for motion designers and creatives who want to learn, improve, connect, and
             build something meaningful.
           </p>
-          <p className="lede" data-reveal style={{ ['--d' as string]: '0.14s' }}>
+          <p className="lede">
             Whether you’re just starting out or looking to take your skills further, you’ll find an environment that
             encourages you to keep creating and getting better.
           </p>
-          <a href="#about" className="btn btn-outline" data-reveal style={{ ['--d' as string]: '0.2s' }}>
+          <a href="#about" className="btn btn-outline">
             Get to know us
           </a>
         </div>
 
-        <div className="orbit" data-reveal aria-hidden="true">
+        <div className="orbit" aria-hidden="true">
           <svg className="orbit-path" viewBox="0 0 100 100" preserveAspectRatio="none">
             <path d={ORBIT} vectorEffect="non-scaling-stroke" />
           </svg>
-          <div className="orbit-phone" data-parallax="0.05">
+          <div className="orbit-phone">
             <img src="/images/hero-video-poster.webp" alt="" loading="lazy" />
           </div>
           {FACES.map((f) => (
