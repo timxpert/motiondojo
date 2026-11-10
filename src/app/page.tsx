@@ -1,53 +1,41 @@
 import React from 'react';
 import { Header } from '@/components/Header';
 import { Hero } from '@/components/Hero';
-import { HeroVideo } from '@/components/HeroVideo';
-import { AboutSection } from '@/components/AboutSection';
-import { MissionSection } from '@/components/MissionSection';
-import { StatementSection } from '@/components/StatementSection';
-import { NinjaPathSection } from '@/components/NinjaPathSection';
-import { NinjasSection } from '@/components/NinjasSection';
-import { StoriesSection } from '@/components/StoriesSection';
-import { FAQSection } from '@/components/FAQSection';
+import { Reel } from '@/components/Reel';
+import { Intro } from '@/components/Intro';
+import { Inside } from '@/components/Inside';
+import { Course } from '@/components/Course';
+import { DojoAI } from '@/components/DojoAI';
+import { Community } from '@/components/Community';
+import { Ninjas } from '@/components/Ninjas';
+import { Testimonials } from '@/components/Testimonials';
+import { Philosophy } from '@/components/Philosophy';
+import { FinalCTA } from '@/components/FinalCTA';
 import { Footer } from '@/components/Footer';
+import { MotionLayer } from '@/components/MotionLayer';
 
 export default function HomePage() {
   return (
-    <div className="min-h-screen flex flex-col bg-[var(--color-bg)] text-[var(--color-text)]">
-      {/* Sticky Navigation Header with Theme Toggle */}
+    <>
+      <a href="#main" className="skip-link">
+        Skip to content
+      </a>
       <Header />
-
-      <main className="flex-1">
-        {/* 1. Hero */}
+      <main id="main">
         <Hero />
-
-        {/* 2. Full-width 16:9 Video */}
-        <HeroVideo />
-
-        {/* 3. About Motion Dojo */}
-        <AboutSection />
-
-        {/* 4. Our Mission */}
-        <MissionSection />
-
-        {/* 5. Statement */}
-        <StatementSection />
-
-        {/* 6. The Ninja Path */}
-        <NinjaPathSection />
-
-        {/* 7. Spotlight: Meet the Keyframe Ninjas */}
-        <NinjasSection />
-
-        {/* 8. Stories from the Dojo */}
-        <StoriesSection />
-
-        {/* 9. Frequently Asked Questions */}
-        <FAQSection />
+        <Reel />
+        <Intro />
+        <Inside />
+        <Course />
+        <DojoAI />
+        <Community />
+        <Ninjas />
+        <Testimonials />
+        <Philosophy />
+        <FinalCTA />
       </main>
-
-      {/* 10. Footer */}
       <Footer />
-    </div>
+      <MotionLayer />
+    </>
   );
 }

@@ -1,34 +1,25 @@
-import type { Metadata } from 'next';
+import type { Metadata, Viewport } from 'next';
 import './globals.css';
+import { SITE_METADATA } from '@/config/site';
 
 export const metadata: Metadata = {
-  metadataBase: new URL('https://motiondojo.com'),
-  title: 'Motion Dojo — Exclusive Community for Smartphone Motion Designers',
-  description:
-    'Motion dojo is an exclusive community where smartphone motion designers learn, practice, share, and grow together.',
+  metadataBase: new URL(SITE_METADATA.url),
+  title: SITE_METADATA.title,
+  description: SITE_METADATA.description,
   openGraph: {
-    title: 'Motion Dojo — Exclusive Community for Smartphone Motion Designers',
-    description:
-      'Motion dojo is an exclusive community where smartphone motion designers learn, practice, share, and grow together.',
-    url: 'https://motiondojo.com',
+    title: SITE_METADATA.title,
+    description: SITE_METADATA.description,
+    url: SITE_METADATA.url,
     siteName: 'Motion Dojo',
-    images: [
-      {
-        url: 'https://motiondojo.com/images/hero-video-poster.webp',
-        width: 1280,
-        height: 720,
-        alt: 'Motion Dojo — Exclusive Community for Smartphone Motion Designers',
-      },
-    ],
+    images: [{ url: SITE_METADATA.ogImage, width: 1280, height: 720, alt: 'Motion Dojo' }],
     locale: 'en_US',
     type: 'website',
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Motion Dojo — Exclusive Community for Smartphone Motion Designers',
-    description:
-      'Motion dojo is an exclusive community where smartphone motion designers learn, practice, share, and grow together.',
-    images: ['https://motiondojo.com/images/hero-video-poster.webp'],
+    title: SITE_METADATA.title,
+    description: SITE_METADATA.description,
+    images: [SITE_METADATA.ogImage],
   },
   icons: {
     icon: '/assets/favicon-128.png',
@@ -36,44 +27,29 @@ export const metadata: Metadata = {
   },
 };
 
-// Default theme is strictly LIGHT with pure white (#FFFFFF), regardless of system settings.
-// Stays dark only if visitor previously explicitly chose dark.
-const themeInitializerScript = `
-(function() {
-  try {
-    var storedTheme = localStorage.getItem('theme');
-    if (storedTheme === 'dark') {
-      document.documentElement.classList.add('dark');
-    } else {
-      document.documentElement.classList.remove('dark');
-    }
-  } catch (e) {}
-})();
-`;
+export const viewport: Viewport = {
+  themeColor: '#F7F5FF',
+};
 
-export default function RootLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
+// Marks the page as JS-enabled so scroll reveals only hide content when they can show it again.
+const jsFlag = `document.documentElement.classList.add('js');`;
+
+export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en" suppressHydrationWarning>
+    <html lang="en">
       <head>
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
         <link
-          href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Sora:wght@600&display=swap"
+          href="https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700&display=swap"
           rel="stylesheet"
         />
-        <script
-          dangerouslySetInnerHTML={{
-            __html: themeInitializerScript,
-          }}
-        />
+        {/* Clash Display is served by Fontshare (Indian Type Foundry), free for commercial use */}
+        <link rel="preconnect" href="https://api.fontshare.com" crossOrigin="anonymous" />
+        <link href="https://api.fontshare.com/v2/css?f[]=clash-display@500,600,700&display=swap" rel="stylesheet" />
+        <script dangerouslySetInnerHTML={{ __html: jsFlag }} />
       </head>
-      <body className="antialiased selection:bg-[#C8FF3D] selection:text-[#14102A]">
-        {children}
-      </body>
+      <body>{children}</body>
     </html>
   );
 }

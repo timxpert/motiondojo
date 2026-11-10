@@ -1,79 +1,104 @@
 import React from 'react';
-import { LEARN_MORE_URL } from '@/config/site';
+import { COMMUNITY_JOIN_URL } from '@/config/site';
 
-export const Hero: React.FC = () => {
+/** Graph-editor composition: an ease curve with keyframes, handles and a scrubbing playhead. */
+function GraphArt() {
+  const frames = [0, 12, 24, 36, 48];
   return (
-    <section className="relative pt-16 sm:pt-24 lg:pt-32 pb-12 sm:pb-16 overflow-hidden bg-[var(--color-bg)]">
-      {/* Very soft violet radial glow in the top-right corner (about 10% opacity) */}
-      <div
-        className="pointer-events-none absolute top-0 right-0 w-[550px] h-[550px] rounded-full blur-3xl opacity-100"
-        style={{
-          background: 'radial-gradient(circle at 80% 20%, rgba(109, 50, 232, 0.1) 0%, transparent 70%)',
-        }}
-        aria-hidden="true"
-      />
+    <svg className="graph" viewBox="0 0 480 400" role="img" aria-label="An animation curve with keyframes">
+      <defs>
+        <linearGradient id="curveGrad" x1="0" x2="1" y1="0" y2="0">
+          <stop offset="0" stopColor="#6D32E8" />
+          <stop offset="0.6" stopColor="#A77BFF" />
+          <stop offset="1" stopColor="#C8FF3D" />
+        </linearGradient>
+      </defs>
 
-      <div className="max-w-[1200px] mx-auto px-6 min-[412px]:px-10 md:px-16 text-left relative z-10">
-        {/* Left-aligned stack */}
-        <div className="max-w-3xl">
-          {/* H1 strictly Sora 600 with explicit responsive line breaks */}
-          <h1
-            className="font-heading font-semibold text-[var(--color-text)] tracking-[-0.03em] leading-[1.1] mb-6"
-            style={{
-              fontSize: 'clamp(2.25rem, 5vw, 3.75rem)',
-              fontWeight: 600,
-            }}
-          >
-            {/* Mobile (under 640px), three lines: "You were never" / "meant to figure it" / "all out alone" */}
-            <span className="block sm:hidden">
-              <span className="block text-[var(--color-text)]">
-                You were never
-              </span>
-              <span className="block">
-                <span className="text-[var(--color-text)]">meant to </span>
-                <span className="hero-gradient-text">figure it</span>
-              </span>
-              <span className="block hero-gradient-text pb-2">
-                all out alone
-              </span>
-            </span>
+      {frames.map((f, i) => {
+        const x = 40 + i * 100;
+        return (
+          <g key={f}>
+            <line className="grid-line" x1={x} x2={x} y1="30" y2="350" />
+            <text className="axis-label" x={x} y="378" textAnchor="middle">
+              {f}f
+            </text>
+          </g>
+        );
+      })}
+      {[70, 150, 230, 310].map((y) => (
+        <line key={y} className="grid-line" x1="40" x2="440" y1={y} y2={y} />
+      ))}
 
-            {/* 640px and up, two lines: "You were never meant" / "to figure it all out alone" */}
-            <span className="hidden sm:block">
-              <span className="block text-[var(--color-text)]">
-                You were never meant
-              </span>
-              <span className="block pb-2">
-                <span className="text-[var(--color-text)]">to </span>
-                <span className="hero-gradient-text">figure it all out alone</span>
-              </span>
+      {/* linear "before" curve, for contrast with the eased one */}
+      <path className="curve-ghost" d="M40 320 L440 70" />
+      <path className="curve" pathLength={1} d="M40 320 C100 320 130 232 180 200 S 250 100 300 95 S 400 70 440 70" />
+
+      {/* bezier handles on the second keyframe */}
+      <g className="handle k2">
+        <line x1="140" y1="226" x2="220" y2="174" />
+      </g>
+      <circle className="handle-dot k2" cx="140" cy="226" r="5" />
+      <circle className="handle-dot k2" cx="220" cy="174" r="5" />
+
+      <g className="key-g k1"><rect className="key" x="31" y="311" width="18" height="18" rx="3" transform="rotate(45 40 320)" /></g>
+      <g className="key-g k2"><rect className="key" x="171" y="191" width="18" height="18" rx="3" transform="rotate(45 180 200)" /></g>
+      <g className="key-g k3"><rect className="key" x="291" y="86" width="18" height="18" rx="3" transform="rotate(45 300 95)" /></g>
+      <g className="key-g k4"><rect className="key key-lime" x="429" y="59" width="22" height="22" rx="3" transform="rotate(45 440 70)" /></g>
+
+      <g className="playhead-g">
+        <line className="playhead" x1="60" x2="60" y1="24" y2="352" />
+        <path className="playhead-cap" d="M52 14h16v8l-8 7-8-7z" />
+      </g>
+    </svg>
+  );
+}
+
+export function Hero() {
+  return (
+    <section className="hero" id="top" aria-labelledby="hero-title">
+      <div className="wrap hero-grid">
+        <div className="hero-copy">
+          <h1 className="display" id="hero-title">
+            <span className="line">You were never meant</span>
+            <span className="line">
+              to <span className="grad-text">figure it all</span>
             </span>
+            <span className="line grad-text">out alone.</span>
           </h1>
 
-          {/* Paragraph (exact copy, max-width ~46ch) */}
-          <p
-            className="text-base sm:text-lg lg:text-[1.125rem] leading-[1.7] text-[var(--color-muted)] font-normal mb-8 sm:mb-10"
-            style={{ maxWidth: '46ch' }}
-          >
-            Motion design is more than learning how to animate. It’s discovering your creative voice,
-            finding people who understand your ambition, and building something you can be proud of.
+          <p className="lede">
+            Motion design is more than animation. It’s about discovering your creative voice, developing your skills,
+            and growing alongside people who share your passion.
           </p>
 
-          {/* Button: "Learn more", lime with dark text, generous padding, soft glow */}
-          <div>
-            <a
-              href={LEARN_MORE_URL}
-              target="_self"
-              className="w-full sm:w-auto inline-flex items-center justify-center px-8 py-4 text-base font-semibold tracking-tight rounded-full bg-[#C8FF3D] hover:bg-[#bcf728] text-[#14102A] transition-all active:scale-95 focus:outline-none focus-visible:ring-2 focus-visible:ring-[#C8FF3D] focus-visible:ring-offset-2 shadow-sm"
-              style={{
-                boxShadow: '0 12px 30px rgba(200, 255, 61, 0.35)',
-              }}
-            >
+          <div className="btn-pair">
+            <a href={COMMUNITY_JOIN_URL} className="btn btn-primary">
+              Join the community
+            </a>
+            <a href="#intro" className="btn btn-outline">
               Learn more
             </a>
+          </div>
+        </div>
+
+        <div className="hero-art" data-parallax="0.06" aria-hidden="false">
+          <GraphArt />
+          <div className="float-chip chip-a" aria-hidden="true">
+            <img src="/assets/Timxpert.jpg" alt="" style={{ objectPosition: '50% 20%' }} />
+            <span>
+              Timxpert
+              <small>Founder</small>
+            </span>
+          </div>
+          <div className="float-chip chip-b" aria-hidden="true">
+            <img src="/assets/Muhammad Fatihi Abdullahi.jpg" alt="" style={{ objectPosition: '50% 25%' }} />
+            <span>
+              Fatihi
+              <small>Community manager</small>
+            </span>
           </div>
         </div>
       </div>
     </section>
   );
-};
+}
