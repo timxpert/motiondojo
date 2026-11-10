@@ -13,7 +13,6 @@ export function CourseHero() {
     <section className="hero bb-hero" id="top" aria-labelledby="bb-title">
       <div className="wrap bb-hero-grid">
         <div className="hero-copy">
-          <p className="bb-kicker">Black Belt in Motion Design</p>
           <h1 className="display" id="bb-title">
             Become a dangerously good motion designer
           </h1>
