@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from 'next';
 import './globals.css';
 import { SITE_METADATA } from '@/config/site';
+import { Motion } from '@/components/Motion';
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_METADATA.url),
@@ -49,7 +50,10 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <link href="https://api.fontshare.com/v2/css?f[]=clash-display@500,600,700&display=swap" rel="stylesheet" />
         <script dangerouslySetInnerHTML={{ __html: jsFlag }} />
       </head>
-      <body>{children}</body>
+      <body>
+        {children}
+        <Motion />
+      </body>
     </html>
   );
 }

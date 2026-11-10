@@ -56,7 +56,7 @@ export function Team() {
             ))}
           </ul>
 
-          <div className="team-panel" id="team-panel" role="tabpanel" aria-labelledby={`team-tab-${active}`}>
+          <div key={active} className="team-panel" id="team-panel" role="tabpanel" aria-labelledby={`team-tab-${active}`}>
             <p className="team-panel-bio">{m.bio}</p>
             <a className="btn btn-primary btn-sm" href={m.whatsapp} target="_blank" rel="noopener noreferrer">
               <WhatsAppIcon />

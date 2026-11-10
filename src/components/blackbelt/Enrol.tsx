@@ -181,7 +181,7 @@ export function EnrolModal() {
         </button>
 
         {step === 'choose' && (
-          <>
+          <div className="enrol-step" key="choose">
             <h2 className="enrol-title" id="enrol-title">
               How would you like to pay?
             </h2>
@@ -204,11 +204,11 @@ export function EnrolModal() {
                 Start your instalment on WhatsApp
               </a>
             </p>
-          </>
+          </div>
         )}
 
         {step === 'details' && (
-          <form onSubmit={pay} noValidate>
+          <form onSubmit={pay} noValidate className="enrol-step" key="details">
             <button type="button" className="enrol-back" onClick={() => setStep('choose')} disabled={busy}>
               Back
             </button>
@@ -271,7 +271,11 @@ export function EnrolModal() {
         )}
 
         {step === 'success' && (
-          <>
+          <div className="enrol-step" key="success">
+            <svg className="enrol-check" viewBox="0 0 64 64" aria-hidden="true" focusable="false">
+              <circle cx="32" cy="32" r="29" />
+              <path d="M20 33l8 8 16-17" />
+            </svg>
             <h2 className="enrol-title" id="enrol-title">
               Payment received
             </h2>
@@ -282,7 +286,7 @@ export function EnrolModal() {
             <a className="btn btn-lime" href={ENROL.accountNumberUrl} target="_blank" rel="noopener noreferrer">
               Message us on WhatsApp
             </a>
-          </>
+          </div>
         )}
       </div>
     </div>

@@ -35,6 +35,10 @@
   --r: 14px;
   --r-sm: 10px;
   --ease: cubic-bezier(0.22, 1, 0.36, 1);
+  /* Spring release: a real spring (stiffness 170, damping 18), sampled. Overshoots 5% and settles. */
+  --spring: linear(0, 0.057, 0.189, 0.354, 0.52, 0.671, 0.796, 0.892, 0.962, 1.008, 1.035, 1.047, 1.05, 1.046, 1.039, 1.031, 1.023, 1.015, 1.009, 1.005, 1.001, 0.999, 0.998, 0.998, 0.998, 0.998, 0.998, 0.999, 0.999, 0.999, 1);
+  /* Livelier spring for small confirmations */
+  --bounce: linear(0, 0.128, 0.415, 0.731, 0.99, 1.153, 1.217, 1.205, 1.149, 1.079, 1.017, 0.974, 0.954, 0.953, 0.963, 0.978, 0.993, 1.003, 1.009, 1.011, 1.009, 1.006, 1.002, 1, 0.998, 0.998, 0.998, 0.999, 0.999, 1);
   --header-h: 72px;
 }
 
@@ -230,7 +234,7 @@ main > .section:last-child {
   height: var(--btn-h);
   padding: 0 28px;
   border-radius: 999px;
-  border: 2px solid transparent;
+  border: 0;
   font-family: var(--font-body);
   font-size: 0.98rem;
   font-weight: 600;
@@ -1587,7 +1591,7 @@ details[open] > summary .bb-chev {
   margin-top: 6px;
   color: var(--muted);
 }
-.enrol-panel > .btn {
+.enrol-step > .btn {
   margin-top: 24px;
   width: 100%;
 }
@@ -1759,9 +1763,447 @@ details[open] > summary .bb-chev {
 }
 
 /* ==================================================================
-   Motion: the logo reel is the only thing that moves on its own.
-   Nothing animates on scroll.
+   Motion
+   - Press: anything tappable sinks a little under the finger (fast, 90ms)
+     and springs back when released, the way a physical key does.
+   - Tap ink: a soft light spreads from the exact touch point (Motion.tsx).
+   - Reveal: section content settles in once, the first time it's seen.
+     The hero never animates, so nothing moves while the page loads.
+   - Everything turns off under prefers-reduced-motion.
 ================================================================== */
+.btn,
+.carousel-btn,
+.stories-btn,
+.enrol-option,
+.menu-btn {
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+}
+.btn {
+  transition:
+    background-color 0.25s var(--ease),
+    color 0.25s var(--ease),
+    border-color 0.25s var(--ease),
+    box-shadow 0.3s var(--ease),
+    transform 0.6s var(--spring);
+}
+.btn:hover:not(:disabled) {
+  box-shadow: 0 10px 24px -14px rgba(20, 10, 46, 0.55);
+}
+.btn-primary:hover:not(:disabled) {
+  box-shadow: 0 12px 28px -12px rgba(109, 50, 232, 0.65);
+}
+.btn:active:not(:disabled),
+.carousel-btn:active:not(:disabled),
+.stories-btn:active,
+.enrol-option:active,
+.menu-btn:active {
+  transform: scale(0.96);
+  transition-duration: 0.09s;
+  transition-timing-function: ease-out;
+}
+.carousel-btn,
+.stories-btn,
+.menu-btn {
+  transition: background 0.2s ease, border-color 0.2s ease, color 0.2s ease, opacity 0.2s ease, transform 0.6s var(--spring);
+}
+.enrol-option {
+  transition: border-color 0.2s ease, background-color 0.2s ease, transform 0.6s var(--spring);
+}
+.enrol-option:hover {
+  background: var(--ground);
+}
+
+/* Arrows inside buttons lean the way they point */
+.btn svg {
+  transition: transform 0.45s var(--spring);
+}
+.btn:hover svg {
+  transform: translateX(3px);
+}
+
+/* Tap ink */
+.tap-ink {
+  position: absolute;
+  z-index: -1;
+  border-radius: 50%;
+  transform: translate(-50%, -50%) scale(0);
+  background: radial-gradient(closest-side, currentColor, transparent);
+  opacity: 0.22;
+  pointer-events: none;
+  animation: tap-ink 0.7s cubic-bezier(0.2, 0.7, 0.3, 1) forwards;
+}
+/* On light buttons a dark ink looks muddy: use a bright highlight instead */
+.btn-lime .tap-ink {
+  color: #fff;
+  opacity: 0.55;
+}
+.btn-light .tap-ink {
+  color: var(--violet);
+  opacity: 0.16;
+}
+@keyframes tap-ink {
+  to {
+    transform: translate(-50%, -50%) scale(1);
+    opacity: 0;
+  }
+}
+
+/* Cards and photos that respond to touch */
+.project,
+.story-media,
+.team-pick .team-photo {
+  transition: transform 0.6s var(--spring);
+}
+.project:active,
+.story-media:active,
+.team-pick:active .team-photo {
+  transform: scale(0.98);
+  transition-duration: 0.12s;
+  transition-timing-function: ease-out;
+}
+.stories-track li {
+  transition: opacity 0.45s ease, transform 0.7s var(--spring);
+}
+
+/* Header links: the hover pill grows from the centre */
+.nav a {
+  background: none;
+}
+.nav a::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  border-radius: inherit;
+  background: var(--tint);
+  transform: scale(0.6);
+  opacity: 0;
+  transition: transform 0.45s var(--spring), opacity 0.2s ease;
+}
+.nav a:hover {
+  background: none;
+}
+.nav a:hover::before {
+  transform: none;
+  opacity: 1;
+}
+.nav a {
+  isolation: isolate;
+}
+
+/* Disclosures (curriculum, FAQ): the body slides open instead of popping */
+.bb-phase,
+.bb-faq details {
+  transition: background-color 0.25s ease, box-shadow 0.3s ease;
+}
+.bb-phase[open],
+.bb-faq details[open] {
+  background: var(--paper);
+  box-shadow: inset 0 0 0 1.5px var(--line);
+}
+details[open] > :not(summary) {
+  animation: disclose 0.45s var(--ease);
+}
+@keyframes disclose {
+  from {
+    opacity: 0;
+    transform: translateY(-6px);
+  }
+}
+@supports (interpolate-size: allow-keywords) {
+  .bb-phase,
+  .bb-faq details {
+    interpolate-size: allow-keywords;
+  }
+  .bb-phase::details-content,
+  .bb-faq details::details-content {
+    height: 0;
+    overflow: clip;
+    transition: height 0.45s var(--ease), content-visibility 0.45s allow-discrete;
+  }
+  .bb-phase[open]::details-content,
+  .bb-faq details[open]::details-content {
+    height: auto;
+  }
+}
+
+/* Enrol dialog: each step slides in; payment success draws a tick */
+.enrol-step {
+  animation: step-in 0.45s var(--ease);
+}
+@keyframes step-in {
+  from {
+    opacity: 0;
+    transform: translateX(14px);
+  }
+}
+.enrol-check {
+  width: 64px;
+  height: 64px;
+  margin-bottom: 16px;
+  fill: none;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  animation: check-pop 0.8s var(--bounce) both;
+}
+.enrol-check circle {
+  fill: var(--lime);
+  stroke: none;
+}
+.enrol-check path {
+  stroke: var(--midnight);
+  stroke-width: 5;
+  stroke-dasharray: 40;
+  stroke-dashoffset: 40;
+  animation: check-draw 0.45s 0.25s var(--ease) forwards;
+}
+@keyframes check-pop {
+  from {
+    transform: scale(0.4);
+    opacity: 0;
+  }
+}
+@keyframes check-draw {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+/* ---------- Page entrance: the hero headline rises out of a mask, line by line ---------- */
+.hero .display .line,
+.bb-hero .display {
+  display: block;
+  animation: mask-rise 1.1s var(--ease) both;
+}
+.hero .display .line:nth-child(2) {
+  animation-delay: 0.12s;
+}
+.hero .lede,
+.hero .btn-pair,
+.hero .bb-price-note {
+  animation: fade-in 0.9s ease 0.35s both;
+}
+/* Animate the video itself, not its box: an animated box would isolate it and
+   stop the multiply blend that removes the clip's white background */
+.bb-phone video {
+  animation: phone-in 1.3s var(--ease) 0.2s both;
+}
+@keyframes mask-rise {
+  from {
+    clip-path: inset(0 0 100% 0);
+    transform: translateY(0.45em);
+  }
+  to {
+    clip-path: inset(-0.2em -0.2em -0.3em -0.2em);
+    transform: none;
+  }
+}
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+}
+@keyframes phone-in {
+  from {
+    opacity: 0;
+    transform: translateY(32px) scale(1.04);
+  }
+}
+
+/* ---------- Header tucks away while reading down ---------- */
+.header {
+  transition: border-color 0.3s ease, background-color 0.3s ease, transform 0.5s var(--ease);
+}
+.header.is-tucked {
+  transform: translateY(-100%);
+}
+
+/* ---------- The logo reel opens out to full width as it scrolls in ---------- */
+@supports (animation-timeline: view()) {
+  .reel {
+    animation: reel-open linear both;
+    animation-timeline: view();
+    animation-range: entry 0% cover 45%;
+  }
+  @keyframes reel-open {
+    from {
+      clip-path: inset(0 6% round 36px);
+    }
+    to {
+      clip-path: inset(0 0 round 0);
+    }
+  }
+}
+
+/* ---------- Cards lean toward the cursor (Motion.tsx sets --rx/--ry/--mx/--my) ---------- */
+.project,
+.story-card,
+.bb-plan,
+.bb-card,
+.bento > article {
+  position: relative;
+  transform: perspective(1000px) rotateX(var(--rx, 0deg)) rotateY(var(--ry, 0deg));
+  transition: transform 0.8s var(--spring), box-shadow 0.4s ease;
+}
+.is-tilting {
+  transition: transform 0.15s ease-out, box-shadow 0.4s ease;
+  box-shadow: 0 24px 50px -30px rgba(20, 10, 46, 0.45);
+}
+.project::after,
+.story-card::after,
+.bb-plan::after,
+.bb-card::after,
+.bento > article::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+  background: radial-gradient(420px circle at var(--mx, 50%) var(--my, 50%), rgba(255, 255, 255, 0.16), transparent 60%);
+  opacity: 0;
+  transition: opacity 0.4s ease;
+}
+.bb-card::after,
+.bb-plan:not(.bb-plan-main)::after,
+.story-card::after {
+  background: radial-gradient(420px circle at var(--mx, 50%) var(--my, 50%), rgba(109, 50, 232, 0.08), transparent 60%);
+}
+.is-tilting::after {
+  opacity: 1;
+}
+/* While a card is being pressed, the press wins over the tilt */
+.project:active {
+  transform: perspective(1000px) scale(0.98);
+}
+
+/* ---------- Buttons: magnetic drift (Motion.tsx sets translate) ---------- */
+.btn {
+  transition:
+    background-color 0.25s var(--ease),
+    color 0.25s var(--ease),
+    box-shadow 0.3s var(--ease),
+    transform 0.6s var(--spring),
+    translate 0.7s var(--spring);
+}
+
+/* ---------- Team: the bio swaps in, the chosen photo springs forward ---------- */
+.team-panel {
+  animation: step-in 0.45s var(--ease);
+}
+.team-pick[aria-selected="true"] .team-photo {
+  transform: scale(1.06);
+}
+
+/* ---------- Section headings rise out of a mask as their section arrives ---------- */
+.reveal .h2,
+.h2.reveal,
+.reveal .display,
+.display.reveal {
+  clip-path: inset(0 0 100% 0);
+  transform: translateY(0.4em);
+}
+.reveal.is-in .h2,
+.h2.reveal.is-in,
+.reveal.is-in .display,
+.display.reveal.is-in {
+  clip-path: inset(-0.2em -0.2em -0.3em -0.2em);
+  transform: none;
+  transition:
+    clip-path 1s var(--ease) calc(var(--i, 0) * 70ms),
+    transform 1s var(--ease) calc(var(--i, 0) * 70ms);
+}
+
+/* Pictures settle from slightly closer as they appear */
+.reveal .project img,
+.reveal .story-media img {
+  scale: 1.12;
+}
+.reveal.is-in .project img,
+.reveal.is-in .story-media img {
+  scale: 1;
+  transition: scale 1.4s var(--ease), transform 0.5s var(--ease);
+}
+
+/* The four-phase timeline draws itself, then each phase lights up in turn */
+.phases.reveal::before {
+  transform: scaleX(0);
+  transform-origin: left center;
+}
+.phases.reveal.is-in::before {
+  transform: none;
+  transition: transform 1.4s var(--ease) 0.15s;
+}
+.phases.reveal .phase-key {
+  transform: scale(0.4);
+  opacity: 0;
+}
+.phases.reveal.is-in .phase-key {
+  transform: none;
+  opacity: 1;
+  transition: transform 0.8s var(--bounce), opacity 0.3s ease;
+}
+.phases.reveal.is-in .phase:nth-child(1) .phase-key { transition-delay: 0.15s; }
+.phases.reveal.is-in .phase:nth-child(2) .phase-key { transition-delay: 0.45s; }
+.phases.reveal.is-in .phase:nth-child(3) .phase-key { transition-delay: 0.75s; }
+.phases.reveal.is-in .phase:nth-child(4) .phase-key { transition-delay: 1.05s; }
+.phases.reveal {
+  opacity: 1;
+  translate: none;
+}
+.phases.reveal .phase h3,
+.phases.reveal .phase p {
+  opacity: 0;
+  transform: translateY(10px);
+}
+.phases.reveal.is-in .phase h3,
+.phases.reveal.is-in .phase p {
+  opacity: 1;
+  transform: none;
+  transition: opacity 0.6s ease, transform 0.8s var(--ease);
+}
+.phases.reveal.is-in .phase:nth-child(1) :is(h3, p) { transition-delay: 0.25s; }
+.phases.reveal.is-in .phase:nth-child(2) :is(h3, p) { transition-delay: 0.55s; }
+.phases.reveal.is-in .phase:nth-child(3) :is(h3, p) { transition-delay: 0.85s; }
+.phases.reveal.is-in .phase:nth-child(4) :is(h3, p) { transition-delay: 1.15s; }
+
+/* Lists inside a revealed block arrive one item after another */
+.reveal :is(.bb-grid, .bb-perks, .bb-phases, .bb-faq, .bento, .bb-plans) > * {
+  opacity: 0;
+  translate: 0 16px;
+}
+.reveal.is-in :is(.bb-grid, .bb-perks, .bb-phases, .bb-faq, .bento, .bb-plans) > * {
+  opacity: 1;
+  translate: none;
+  transition: opacity 0.6s ease, translate 0.9s var(--ease), transform 0.8s var(--spring), box-shadow 0.4s ease;
+}
+.reveal.is-in :is(.bb-grid, .bb-perks, .bb-phases, .bb-faq, .bento, .bb-plans) > :nth-child(2) { transition-delay: 0.08s; }
+.reveal.is-in :is(.bb-grid, .bb-perks, .bb-phases, .bb-faq, .bento, .bb-plans) > :nth-child(3) { transition-delay: 0.16s; }
+.reveal.is-in :is(.bb-grid, .bb-perks, .bb-phases, .bb-faq, .bento, .bb-plans) > :nth-child(4) { transition-delay: 0.24s; }
+.reveal.is-in :is(.bb-grid, .bb-perks, .bb-phases, .bb-faq, .bento, .bb-plans) > :nth-child(5) { transition-delay: 0.32s; }
+.reveal.is-in :is(.bb-grid, .bb-perks, .bb-phases, .bb-faq, .bento, .bb-plans) > :nth-child(n + 6) { transition-delay: 0.4s; }
+
+.is-done,
+.is-done * {
+  transition-delay: 0s !important;
+}
+
+/* Scroll reveal (only applied by Motion.tsx, so content is never hidden without JavaScript) */
+.reveal {
+  opacity: 0;
+  translate: 0 18px;
+}
+.reveal.is-in {
+  opacity: 1;
+  translate: none;
+  transition:
+    opacity 0.7s ease calc(var(--i, 0) * 70ms),
+    translate 0.9s var(--ease) calc(var(--i, 0) * 70ms);
+}
+
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;
