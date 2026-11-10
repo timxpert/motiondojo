@@ -2,9 +2,9 @@ import type { Metadata } from 'next';
 import React from 'react';
 import { Header } from '@/components/Header';
 import { Footer } from '@/components/Footer';
-import { Testimonials } from '@/components/Testimonials';
 import { FinalCTA } from '@/components/FinalCTA';
 import { Projects } from '@/components/blackbelt/Projects';
+import { Stories } from '@/components/blackbelt/Stories';
 import { EnrolButton, EnrolModal } from '@/components/blackbelt/Enrol';
 import {
   CourseHero,
@@ -48,7 +48,7 @@ export default function BlackBeltPage() {
         <Curriculum />
         <Projects />
         <Experience />
-        <Testimonials title="Hear what community members are saying." />
+        <Stories />
         <Pricing />
         <Faq />
         <FinalCTA

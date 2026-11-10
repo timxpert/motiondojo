@@ -1326,6 +1326,116 @@ details[open] > summary .bb-chev {
   transform: scale(1.08);
 }
 
+/* Testimonial carousel: centred card, neighbours peek at the sides */
+.stories {
+  overflow: hidden;
+}
+.stories-title {
+  max-width: 18ch;
+  margin: 0 auto clamp(36px, 5vw, 56px);
+  text-align: center;
+}
+.stories-title span {
+  color: var(--violet);
+}
+.stories-track {
+  /* the track runs edge to edge of the panel; the padding centres the first and last cards */
+  --card: min(calc(100vw - 2 * var(--gutter) - 72px), 680px);
+  display: flex;
+  gap: 16px;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  scrollbar-width: none;
+  margin-inline: calc(var(--gutter) * -1);
+  padding-inline: calc(50% + var(--gutter) - var(--card) / 2);
+  padding-block: 8px 20px;
+}
+.stories-track::-webkit-scrollbar {
+  display: none;
+}
+.stories-track li {
+  flex: 0 0 var(--card);
+  scroll-snap-align: center;
+  opacity: 0.45;
+  transform: scale(0.94);
+  transition: opacity 0.35s ease, transform 0.35s var(--ease);
+}
+.stories-track li.is-active {
+  opacity: 1;
+  transform: none;
+}
+.story-card {
+  border-radius: var(--r-lg);
+  overflow: hidden;
+  background: var(--paper);
+  border: 1.5px solid var(--line);
+  box-shadow: var(--panel-shadow);
+}
+.story-media {
+  position: relative;
+  display: block;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  background: var(--midnight);
+}
+.story-media img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.story-media img.portrait {
+  object-fit: contain;
+}
+.story-play {
+  position: absolute;
+  inset: 0;
+  margin: auto;
+  display: grid;
+  place-items: center;
+  width: clamp(64px, 9vw, 88px);
+  height: clamp(64px, 9vw, 88px);
+  border-radius: 50%;
+  background: var(--violet);
+  color: #fff;
+  transition: transform 0.25s var(--ease), background 0.2s ease;
+}
+.story-play svg {
+  margin-left: 3px;
+}
+.story-media:hover .story-play {
+  transform: scale(1.06);
+  background: var(--violet-hover);
+}
+.story-name {
+  padding: clamp(18px, 3vw, 28px) clamp(20px, 4vw, 36px);
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: clamp(1.5rem, 3vw, 2rem);
+  letter-spacing: -0.015em;
+}
+.stories-nav {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  margin-top: clamp(16px, 3vw, 28px);
+}
+.stories-btn {
+  display: grid;
+  place-items: center;
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  background: var(--paper);
+  border: 1.5px solid var(--line);
+  color: var(--ink);
+  box-shadow: 0 12px 30px -18px rgba(20, 10, 46, 0.35);
+  transition: border-color 0.2s ease, color 0.2s ease;
+}
+.stories-btn:hover {
+  border-color: var(--violet);
+  color: var(--violet);
+}
+
 /* The Dojo's Experience */
 .bb-perks {
   display: grid;
