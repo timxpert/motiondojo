@@ -8,17 +8,16 @@ export function Course() {
       <div className="wrap">
         <div className="course-copy">
           <h2 className="h2" id="course-title">
-            Ready to take your motion design skills further?
+            Black Belt in Motion Design
           </h2>
           <p className="lede">
-            Black Belt in Motion Design is our structured training programme designed to help you build strong
-            foundations, master your tools, execute creative projects, and prepare for professional opportunities.
+            Our course for learning motion design on your phone with Alight Motion. Video lessons, assignments, and
+            projects you finish before moving on, split into four phases.
           </p>
-          <p className="lede">
-            From your first keyframe to building a portfolio, you’ll have a structured path to follow.
+          <p className="lede">₦40,000, or two payments of ₦20,000.
           </p>
           <a href={COURSE_URL} target="_blank" rel="noopener" className="btn btn-primary">
-            Explore the course
+            See the course
           </a>
         </div>
 

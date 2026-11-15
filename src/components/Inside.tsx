@@ -1,5 +1,5 @@
 import React from 'react';
-import { COURSE_URL, DOJO_AI_URL } from '@/config/site';
+import { COURSE_URL } from '@/config/site';
 
 export function Inside() {
   return (
@@ -7,54 +7,37 @@ export function Inside() {
       <div className="wrap">
         <div className="section-head">
           <h2 className="h2" id="inside-title">
-            Everything you need to keep growing.
+            Two ways in.
           </h2>
           <p className="lede">
-            From learning new skills to finding better ways to work, Motion Dojo brings together opportunities, tools,
-            and people that help you move forward.
+            Most people come to Motion Dojo to learn the craft, to find other people doing it, or both.
           </p>
         </div>
 
-        {/* Three offers, set apart by colour and size rather than pictures */}
+        {/* Two offers, set apart by colour rather than pictures */}
         <div className="bento">
           <article className="tile-learn">
-            <h3 className="tile-title">Learn new skills</h3>
+            <h3 className="tile-title">Learn the craft</h3>
             <div className="tile-copy">
               <p>
-                <strong>Black Belt in Motion Design</strong> is our structured motion design programme. It helps you
-                build strong foundations, master your tools, execute creative projects, and prepare for professional
-                opportunities.
+                <strong>Black Belt in Motion Design</strong> takes you from your first keyframe in Alight Motion to a
+                portfolio you can show clients, in four phases, at your own pace.
               </p>
               <a href={COURSE_URL} target="_blank" rel="noopener" className="btn btn-lime">
-                Explore the course
+                See the course
               </a>
             </div>
           </article>
 
-          <article className="tile-ai">
-            <h3 className="tile-title">Work smarter</h3>
-            <div className="tile-copy">
-              <p>
-                <strong>Dojo’s AI</strong> is our in-house tool, built to support the Motion Dojo community and make
-                the creative workflow easier.
-              </p>
-              {DOJO_AI_URL && (
-                <a href={DOJO_AI_URL} className="btn btn-light">
-                  Discover Dojo’s AI
-                </a>
-              )}
-            </div>
-          </article>
-
           <article className="tile-grow">
-            <h3 className="tile-title">Grow together</h3>
+            <h3 className="tile-title">Find your people</h3>
             <div className="tile-copy">
               <p>
-                <strong>The community</strong> is where you connect with other motion designers, share your work,
-                exchange ideas, collaborate, and grow alongside people who understand your journey.
+                <strong>The community</strong> is where members post work in progress, ask for help when something
+                won’t move right, and pass on paid referrals and collaborations.
               </p>
               <a href="#community" className="btn btn-primary">
-                Explore the community
+                About the community
               </a>
             </div>
           </article>

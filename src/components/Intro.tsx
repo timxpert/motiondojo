@@ -5,16 +5,16 @@ export function Intro() {
     <section className="section" id="intro" aria-labelledby="intro-title">
       <div className="wrap intro-grid">
         <h2 className="h2" id="intro-title">
-          More than a place to learn. A place to grow.
+          A dojo is where you train with other people.
         </h2>
         <div className="intro-copy">
           <p className="lede">
-            Motion Dojo is a community for motion designers and creatives who want to learn, improve, connect, and
-            build something meaningful.
+            Motion Dojo is a community of motion designers. You post what you’re working on, get honest feedback, and
+            see what everyone else is making.
           </p>
           <p className="lede">
-            Whether you’re just starting out or looking to take your skills further, you’ll find an environment that
-            encourages you to keep creating and getting better.
+            Some members are opening Alight Motion for the first time. Some already take client work. You’ll learn
+            from both.
           </p>
           <a href="#team" className="btn btn-primary">
             Get to know us

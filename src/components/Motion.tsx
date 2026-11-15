@@ -8,7 +8,7 @@ import { useEffect } from 'react';
       point the finger or cursor touched (CSS does the press and release).
    2. Scroll reveal: section content settles into place the first time it
       enters the screen.
-   3. Cards tilt toward the cursor with a soft light (mouse only).
+   3. Cards tilt toward the cursor (mouse only).
    4. Buttons drift slightly toward the cursor (mouse only).
    5. The header tucks away while scrolling down and returns on the way up.
    Everything switches off when the visitor asks for reduced motion.
@@ -76,7 +76,7 @@ export function Motion() {
       });
     }
 
-    /* 3. Cards lean toward the cursor and catch a soft light where it points
+    /* 3. Cards lean slightly toward the cursor
           (mouse and trackpad only; touch screens keep things still). */
     const fine = window.matchMedia('(hover: hover) and (pointer: fine)');
     let tiltEl: HTMLElement | null = null;
@@ -113,8 +113,6 @@ export function Motion() {
         t.classList.add('is-tilting');
         t.style.setProperty('--rx', `${((0.5 - py) * 5).toFixed(2)}deg`);
         t.style.setProperty('--ry', `${((px - 0.5) * 6).toFixed(2)}deg`);
-        t.style.setProperty('--mx', `${(px * 100).toFixed(1)}%`);
-        t.style.setProperty('--my', `${(py * 100).toFixed(1)}%`);
       }
 
       /* 4. Buttons drift a few pixels toward the cursor, then spring back. */

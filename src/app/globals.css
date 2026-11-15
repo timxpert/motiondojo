@@ -468,7 +468,7 @@ main > .section:last-child {
 .hero {
   position: relative;
   overflow: hidden;
-  background: radial-gradient(70% 80% at 100% 0%, rgba(167, 123, 255, 0.16), transparent 70%), var(--paper);
+  background: var(--paper);
   padding-top: clamp(48px, 8vw, 104px);
   padding-bottom: clamp(56px, 7vw, 88px);
 }
@@ -625,8 +625,7 @@ main > .section:last-child {
 }
 
 /* ==================================================================
-   What's inside the dojo: three offers set apart by colour and size.
-   The course leads (larger, violet); the tool and the community follow.
+   Two ways in: the course (violet) and the community (lime), side by side.
 ================================================================== */
 .bento {
   display: grid;
@@ -667,14 +666,6 @@ main > .section:last-child {
   color: rgba(255, 255, 255, 0.86);
 }
 
-.tile-ai {
-  background: var(--midnight);
-  color: var(--on-dark);
-}
-.tile-ai p {
-  color: var(--on-dark-muted);
-}
-
 .tile-grow {
   background: var(--lime);
   color: var(--midnight);
@@ -685,16 +676,11 @@ main > .section:last-child {
 
 @media (min-width: 900px) {
   .bento {
-    grid-template-columns: 1.4fr 1fr;
-    grid-template-rows: auto auto;
+    grid-template-columns: 1fr 1fr;
     gap: 20px;
   }
-  /* the course spans both rows; tool and community stack beside it */
-  .tile-learn {
-    grid-row: span 2;
-  }
-  .tile-learn .tile-title {
-    font-size: clamp(3rem, 5.4vw, 4.75rem);
+  .bento article {
+    min-height: 420px;
   }
 }
 
@@ -2039,7 +2025,7 @@ details[open] > :not(summary) {
   }
 }
 
-/* ---------- Cards lean toward the cursor (Motion.tsx sets --rx/--ry/--mx/--my) ---------- */
+/* ---------- Cards lean toward the cursor (Motion.tsx sets --rx/--ry) ---------- */
 .project,
 .story-card,
 .bb-plan,
@@ -2052,28 +2038,6 @@ details[open] > :not(summary) {
 .is-tilting {
   transition: transform 0.15s ease-out, box-shadow 0.4s ease;
   box-shadow: 0 24px 50px -30px rgba(20, 10, 46, 0.45);
-}
-.project::after,
-.story-card::after,
-.bb-plan::after,
-.bb-card::after,
-.bento > article::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  border-radius: inherit;
-  pointer-events: none;
-  background: radial-gradient(420px circle at var(--mx, 50%) var(--my, 50%), rgba(255, 255, 255, 0.16), transparent 60%);
-  opacity: 0;
-  transition: opacity 0.4s ease;
-}
-.bb-card::after,
-.bb-plan:not(.bb-plan-main)::after,
-.story-card::after {
-  background: radial-gradient(420px circle at var(--mx, 50%) var(--my, 50%), rgba(109, 50, 232, 0.08), transparent 60%);
-}
-.is-tilting::after {
-  opacity: 1;
 }
 /* While a card is being pressed, the press wins over the tilt */
 .project:active {

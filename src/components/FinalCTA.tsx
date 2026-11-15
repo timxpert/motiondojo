@@ -2,8 +2,8 @@ import React from 'react';
 import { COMMUNITY_JOIN_URL } from '@/config/site';
 
 export function FinalCTA({
-  title = 'Your next creative chapter starts here.',
-  lede = 'You don’t have to figure everything out alone. Join a community that encourages you to learn, create, connect, and grow.',
+  title = 'Come train with us.',
+  lede = 'Enrol in Black Belt in Motion Design and you’re in the community from your first lesson.',
   action,
 }: {
   title?: string;

@@ -16,7 +16,7 @@ npm run build
 | --- | --- |
 | `COMMUNITY_JOIN_URL` | Every "Join the community" / "Join Motion Dojo" button |
 | `COURSE_URL` | "Explore the course" (Black Belt in Motion Design) |
-| `DOJO_AI_URL` | "Discover Dojo's AI" button and footer link. Both stay hidden while it's empty |
+| `DOJO_AI_URL` | Footer link to Dojo’s AI. Hidden while it’s empty (the homepage no longer has a Dojo’s AI tile) |
 | `NINJAS_SHOWCASE_URL` | Footer link to the Keyframe Ninjas showcase |
 | `SOCIAL_LINKS` | Footer social links |
 | `CONTACT` | Footer contact details (hidden while empty) |
