@@ -6,6 +6,7 @@ export type Profile = {
   name: string;
   bio: string;
   avatar_url: string | null;
+  cover_url: string | null;
   country: string;
   skills: string[];
   phase: number | null;
@@ -74,7 +75,7 @@ export type Message = {
 };
 
 export type ProfileInput = Partial<
-  Pick<Profile, 'handle' | 'name' | 'bio' | 'avatar_url' | 'country' | 'skills' | 'phase' | 'instagram' | 'youtube' | 'website'>
+  Pick<Profile, 'handle' | 'name' | 'bio' | 'avatar_url' | 'cover_url' | 'country' | 'skills' | 'phase' | 'instagram' | 'youtube' | 'website'>
 >;
 
 export type StudentFilter = { q?: string; skill?: string; phase?: number | null };
@@ -95,7 +96,7 @@ export interface ConnectApi {
   updateProfile(input: ProfileInput): Promise<Profile>;
   refreshStudentStatus(): Promise<boolean>;
   redeemInvite(code: string): Promise<boolean>;
-  uploadImage(file: File, folder: 'avatars' | 'posts'): Promise<string>;
+  uploadImage(file: File, folder: 'avatars' | 'covers' | 'posts'): Promise<string>;
 
   listStudents(filter: StudentFilter): Promise<Profile[]>;
   getProfile(handle: string): Promise<Profile | null>;

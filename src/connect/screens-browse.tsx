@@ -275,41 +275,20 @@ export function ProfileScreen({ handle }: { handle: string }) {
     toast(blocked ? `Unblocked ${p.name}.` : `Blocked ${p.name}. They can’t message you.`);
   };
 
+  const skillsLine = p.skills.join(' · ');
+
   return (
-    <div className="cx-wide">
-      <section className="cx-profile">
-        <Avatar p={p} size={112} />
-        <div className="cx-profile-main">
-          <h1 className="cx-h1">
-            {p.name} {p.sample && <SampleTag />}
-          </h1>
-          <p className="cx-profile-handle">
-            @{p.handle}
-            {p.country && <> · {p.country}</>}
-          </p>
-          <div className="cx-profile-badges">
-            {p.is_sensei ? <SenseiBadge /> : p.is_student ? <NinjaBadge /> : <span className="cx-member">Community member</span>}
-            {p.phase && <PhaseTrack phase={p.phase} />}
-          </div>
-          {p.bio && <p className="cx-bio">{p.bio}</p>}
-          {p.skills.length > 0 && (
-            <ul className="cx-skills" aria-label="Skills">
-              {p.skills.map((s) => (
-                <li key={s}>{s}</li>
-              ))}
-            </ul>
-          )}
-          <dl className="cx-counts">
-            <div>
-              <dt>Posts</dt>
-              <dd>{counts.posts}</dd>
-            </div>
-            <div>
-              <dt>Connections</dt>
-              <dd>{counts.connections}</dd>
-            </div>
-          </dl>
-          <div className="cx-profile-actions">
+    <div className="cx-pf">
+      <div className="cx-pf-cover" aria-hidden="true">
+        {p.cover_url ? <img src={p.cover_url} alt="" /> : <DefaultCover seed={p.handle} />}
+      </div>
+
+      <div className="cx-pf-inner">
+        <div className="cx-pf-top">
+          <span className="cx-pf-avatar">
+            <Avatar p={p} size={136} />
+          </span>
+          <div className="cx-pf-actions">
             {mine ? (
               <A path="/settings" className="btn btn-light btn-sm">
                 Edit profile
@@ -337,14 +316,9 @@ export function ProfileScreen({ handle }: { handle: string }) {
                   </>
                 )}
                 {status === 'connected' && (
-                  <>
-                    <span className="cx-connected">
-                      <Icon name="check" size={18} /> Connected
-                    </span>
-                    <button type="button" className="btn btn-primary btn-sm" onClick={message}>
-                      Message
-                    </button>
-                  </>
+                  <button type="button" className="btn btn-primary btn-sm" onClick={message}>
+                    Message
+                  </button>
                 )}
                 <div className="cx-menu">
                   <button type="button" className="cx-icon-btn" aria-label="More options" aria-expanded={menu} onClick={() => setMenu((m) => !m)}>
@@ -368,48 +342,102 @@ export function ProfileScreen({ handle }: { handle: string }) {
                 </div>
               </>
             )}
-            {links.map((l) => (
-              <a key={l.kind} className="cx-icon-btn" href={socialUrl(l.kind, l.v)} target="_blank" rel="noopener noreferrer" aria-label={`${p.name} on ${l.label}`} title={l.label}>
-                <Icon name={l.kind === 'website' ? 'link' : l.kind} />
-              </a>
-            ))}
           </div>
         </div>
-      </section>
 
-      <h2 className="cx-h2">Work</h2>
-      {posts === null ? (
-        <Loading />
-      ) : posts.length === 0 ? (
-        <Empty title={p.is_student ? 'No posts yet' : 'Community members don’t post work'}>
-          {mine && p.is_student && (
-            <A path="/new" className="btn btn-primary btn-sm">
-              Share your first piece
-            </A>
-          )}
-        </Empty>
-      ) : (
-        <ul className="cx-thumbs">
-          {posts.map((x) => (
-            <li key={x.id}>
-              <A path={`/p/${x.id}`} className="cx-thumb" aria-label={x.caption || 'Open post'}>
-                {x.kind === 'image' ? (
-                  <img src={x.media_url} alt="" loading="lazy" />
-                ) : (
-                  <span className="cx-thumb-video">
-                    <Icon name="video" size={30} />
+        <div className="cx-pf-info">
+          <h1 className="cx-pf-name">
+            {p.name}
+            {p.is_sensei ? <SenseiBadge /> : p.is_student && <NinjaBadge small />}
+            {p.sample && <SampleTag />}
+          </h1>
+          <p className="cx-pf-handle">
+            @{p.handle}
+            {status === 'connected' && <span className="cx-pf-connected"> · Connected</span>}
+          </p>
+          {p.bio && <p className="cx-bio">{p.bio}</p>}
+
+          <ul className="cx-pf-meta">
+            {p.is_sensei ? (
+              <li>Grand Sensei, Motion Dojo</li>
+            ) : p.is_student ? (
+              <li>Keyframe Ninja{p.phase ? `, phase ${p.phase}: ${PHASES[p.phase - 1]}` : ''}</li>
+            ) : (
+              <li>Community member</li>
+            )}
+            {p.country && <li>{p.country}</li>}
+            {links.map((l) => (
+              <li key={l.kind}>
+                <a href={socialUrl(l.kind, l.v)} target="_blank" rel="noopener noreferrer">
+                  <Icon name={l.kind === 'website' ? 'link' : l.kind} size={16} />
+                  {l.kind === 'website' ? l.v.replace(/^https?:\/\//, '').replace(/\/$/, '') : l.v.startsWith('http') ? l.label : `@${l.v.replace(/^@/, '')}`}
+                </a>
+              </li>
+            ))}
+          </ul>
+          {skillsLine && <p className="cx-pf-skills">{skillsLine}</p>}
+
+          <p className="cx-pf-stats">
+            <span>
+              <strong>{counts.posts}</strong> {counts.posts === 1 ? 'post' : 'posts'}
+            </span>
+            <span>
+              <strong>{counts.connections}</strong> {counts.connections === 1 ? 'connection' : 'connections'}
+            </span>
+          </p>
+        </div>
+
+        <div className="cx-pf-tabs" role="tablist" aria-label="Profile">
+          <span role="tab" aria-selected="true" className="is-on">
+            Work
+          </span>
+        </div>
+
+        {posts === null ? (
+          <Loading />
+        ) : posts.length === 0 ? (
+          <p className="cx-pf-empty">
+            {p.is_student ? (mine ? 'You haven’t posted any work yet.' : 'No work posted yet.') : 'Only Keyframe Ninjas post work.'}{' '}
+            {mine && p.is_student && <A path="/new">Share your first piece</A>}
+          </p>
+        ) : (
+          <ul className="cx-thumbs">
+            {posts.map((x) => (
+              <li key={x.id}>
+                <A path={`/p/${x.id}`} className="cx-thumb" aria-label={x.caption || 'Open post'}>
+                  {x.kind === 'image' ? (
+                    <img src={x.media_url} alt="" loading="lazy" />
+                  ) : (
+                    <span className="cx-thumb-video">
+                      <Icon name="video" size={30} />
+                    </span>
+                  )}
+                  <span className="cx-thumb-stats">
+                    <Icon name="heart" size={16} filled /> {x.likes}
+                    <Icon name="comment" size={16} /> {x.comments}
                   </span>
-                )}
-                <span className="cx-thumb-stats">
-                  <Icon name="heart" size={16} filled /> {x.likes}
-                  <Icon name="comment" size={16} /> {x.comments}
-                </span>
-              </A>
-            </li>
-          ))}
-        </ul>
-      )}
+                </A>
+              </li>
+            ))}
+          </ul>
+        )}
+      </div>
     </div>
+  );
+}
+
+/** Cover for members without their own: a motion curve with keyframes, varied by handle */
+function DefaultCover({ seed }: { seed: string }) {
+  const n = [...seed].reduce((a, c) => a + c.charCodeAt(0), 0);
+  const bend = 20 + (n % 60);
+  return (
+    <svg viewBox="0 0 1200 300" preserveAspectRatio="xMidYMid slice">
+      <rect width="1200" height="300" fill="#140a2e" />
+      <path d={`M-20 ${240 - bend} C 260 ${250 - bend}, 360 ${40 + bend}, 600 ${90 + bend / 2} S 980 ${260 - bend}, 1220 ${60 + bend / 2}`} fill="none" stroke="#6d32e8" strokeWidth="6" />
+      <g fill="#c8ff3d">
+        <rect x="590" y={80 + bend / 2} width="20" height="20" rx="4" transform={`rotate(45 600 ${90 + bend / 2})`} />
+      </g>
+    </svg>
   );
 }
 

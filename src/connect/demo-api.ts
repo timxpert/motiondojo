@@ -20,6 +20,7 @@ function profile(p: Partial<Profile> & Pick<Profile, 'id' | 'handle' | 'name'>):
   return {
     bio: '',
     avatar_url: null,
+    cover_url: null,
     country: '',
     skills: [],
     phase: null,
@@ -47,12 +48,12 @@ const people: Profile[] = [
 
 type RawPost = Omit<Post, 'author' | 'likes' | 'comments' | 'liked' | 'saved'>;
 let posts: RawPost[] = [
-  { id: 'a1', author_id: 'g1', kind: 'image', media_url: art('#161616', '#f4f4f2', '#9a9a96', 30), caption: 'Sample community post: this week’s practice brief is a 5-second logo reveal. Post yours with the “I want feedback” tag by Friday.', tag: 'sharing', community: true, created_at: ago(2) },
-  { id: 'p1', author_id: 's2', kind: 'image', media_url: art('#1c1c1b', '#d6d6d2', '#f4f4f2', 0), caption: 'Sample post: first logo reveal I’m happy with. The overshoot on the last keyframe took a while.', tag: 'sharing', community: false, created_at: ago(3) },
-  { id: 'p2', author_id: 's1', kind: 'image', media_url: art('#3a3a38', '#f4f4f2', '#bdbdb8', 80), caption: 'Sample post: kinetic type practice. Does the ease feel too slow at the end?', tag: 'feedback', community: false, created_at: ago(9) },
-  { id: 'p3', author_id: 's4', kind: 'image', media_url: art('#e6e6e3', '#1c1c1b', '#5c5c59', 40), caption: 'Sample post: product turn for my portfolio, phase four project.', tag: 'sharing', community: false, created_at: ago(26) },
-  { id: 'p4', author_id: 's3', kind: 'image', media_url: art('#f4f4f2', '#5c5c59', '#1c1c1b', 120), caption: 'Sample post: day three of daily practice. Bouncing ball, take two.', tag: 'feedback', community: false, created_at: ago(50) },
-  { id: 'p5', author_id: 's5', kind: 'image', media_url: art('#2a2a29', '#bdbdb8', '#f4f4f2', 60), caption: 'Sample post: transition study between two scenes.', tag: 'sharing', community: false, created_at: ago(80) },
+  { id: 'a1', author_id: 'g1', kind: 'image', media_url: art('#6d32e8', '#f7f5ff', '#c8ff3d', 30), caption: 'Sample community post: this week’s practice brief is a 5-second logo reveal. Post yours with the “I want feedback” tag by Friday.', tag: 'sharing', community: true, created_at: ago(2) },
+  { id: 'p1', author_id: 's2', kind: 'image', media_url: art('#140a2e', '#a77bff', '#c8ff3d', 0), caption: 'Sample post: first logo reveal I’m happy with. The overshoot on the last keyframe took a while.', tag: 'sharing', community: false, created_at: ago(3) },
+  { id: 'p2', author_id: 's1', kind: 'image', media_url: art('#6d32e8', '#f7f5ff', '#c8ff3d', 80), caption: 'Sample post: kinetic type practice. Does the ease feel too slow at the end?', tag: 'feedback', community: false, created_at: ago(9) },
+  { id: 'p3', author_id: 's4', kind: 'image', media_url: art('#c8ff3d', '#140a2e', '#6d32e8', 40), caption: 'Sample post: product turn for my portfolio, phase four project.', tag: 'sharing', community: false, created_at: ago(26) },
+  { id: 'p4', author_id: 's3', kind: 'image', media_url: art('#f6f4fb', '#6d32e8', '#140a2e', 120), caption: 'Sample post: day three of daily practice. Bouncing ball, take two.', tag: 'feedback', community: false, created_at: ago(50) },
+  { id: 'p5', author_id: 's5', kind: 'image', media_url: art('#140a2e', '#c8ff3d', '#a77bff', 60), caption: 'Sample post: transition study between two scenes.', tag: 'sharing', community: false, created_at: ago(80) },
 ];
 let likes = new Set<string>(['p1:s1', 'p1:s4', 'p2:s2', 'p3:s1', 'p3:s2', 'p3:s5']);
 let comments: Omit<Comment, 'author'>[] = [

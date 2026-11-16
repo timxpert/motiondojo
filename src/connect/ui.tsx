@@ -116,7 +116,7 @@ export function A({ path, className, children, ...rest }: { path: string; classN
 }
 
 /* ---------- People ---------- */
-const TINTS = ['#1c1c1b', '#3a3a38', '#5c5c59', '#2a2a29'];
+const TINTS = ['#6d32e8', '#140a2e', '#a77bff', '#2b1a5c'];
 export function Avatar({ p, size = 44 }: { p: Pick<Profile, 'name' | 'avatar_url' | 'handle'>; size?: number }) {
   const initials = p.name
     .replace(/\(.*?\)/g, '')

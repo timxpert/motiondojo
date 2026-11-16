@@ -42,6 +42,7 @@ create table if not exists public.profiles (
   name          text not null check (char_length(name) between 1 and 60),
   bio           text not null default '' check (char_length(bio) <= 400),
   avatar_url    text,
+  cover_url     text,
   country       text not null default '' check (char_length(country) <= 60),
   skills        text[] not null default '{}',
   phase         smallint check (phase between 1 and 4),      -- Black Belt phase, students only
@@ -53,6 +54,9 @@ create table if not exists public.profiles (
   is_sensei     boolean not null default false,             -- the grand sensei; set in the dashboard
   created_at    timestamptz not null default now()
 );
+
+-- columns added after the first release
+alter table public.profiles add column if not exists cover_url text;
 
 create table if not exists public.posts (
   id         uuid primary key default gen_random_uuid(),

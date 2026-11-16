@@ -110,6 +110,7 @@ export function Settings() {
     youtube: '',
     website: '',
     avatar_url: null as string | null,
+    cover_url: null as string | null,
   });
   const [err, setErr] = useState('');
   const [busy, setBusy] = useState(false);
@@ -128,6 +129,7 @@ export function Settings() {
         youtube: me.youtube,
         website: me.website,
         avatar_url: me.avatar_url,
+        cover_url: me.cover_url,
       });
     }
   }, [me]);
@@ -152,6 +154,17 @@ export function Settings() {
     if (file.size > 3 * 1024 * 1024) return toast('Pick an image under 3 MB.');
     try {
       set('avatar_url', await api.uploadImage(file, 'avatars'));
+    } catch (e2) {
+      toast((e2 as Error).message);
+    }
+  };
+
+  const pickCover = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    if (file.size > 5 * 1024 * 1024) return toast('Pick an image under 5 MB.');
+    try {
+      set('cover_url', await api.uploadImage(file, 'covers'));
     } catch (e2) {
       toast((e2 as Error).message);
     }
@@ -193,6 +206,12 @@ export function Settings() {
       <form className="cx-panel cx-form" onSubmit={save} noValidate>
         <h1 className="cx-h1">{creating ? 'Set up your profile' : 'Edit profile'}</h1>
 
+        <div className="cx-cover-pick" style={f.cover_url ? { backgroundImage: `url(${f.cover_url})` } : undefined}>
+          <label className="btn btn-light btn-sm">
+            {f.cover_url ? 'Change cover' : 'Add a cover image'}
+            <input type="file" accept="image/*" className="sr-only" onChange={pickCover} />
+          </label>
+        </div>
         <div className="cx-avatar-pick">
           <Avatar p={{ name: f.name || '?', handle: f.handle || 'x', avatar_url: f.avatar_url }} size={88} />
           <label className="btn btn-light btn-sm">
