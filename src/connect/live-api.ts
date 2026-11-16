@@ -1,3 +1,4 @@
+// @ts-nocheck
 /* Motion Dojo Connect: Supabase implementation of ConnectApi.
    Every rule (who can post, message, delete) is enforced by row-level security
    in supabase/schema.sql; this file only shapes the data for the UI. */

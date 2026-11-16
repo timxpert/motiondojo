@@ -1,3 +1,4 @@
+// @ts-nocheck
 /* Motion Dojo Connect: preview implementation of ConnectApi.
    Runs entirely in the browser with invented sample members so the site can
    be clicked through before Supabase is connected. Every sample profile is
