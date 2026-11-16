@@ -5,7 +5,7 @@ import { useConnect } from './context';
 import { navigate } from './router';
 import { socialUrl, timeAgo } from './media';
 import { PHASES, SKILLS, type Comment, type ConnectionStatus, type Post, type Profile } from './types';
-import { A, Avatar, Empty, Icon, LikeButton, Loading, Media, NinjaBadge, PersonLine, PhaseTrack, PostCard, SampleTag, SaveButton, SenseiBadge } from './ui';
+import { A, Avatar, Empty, Icon, LikeButton, Loading, Media, NinjaBadge, PersonLine, PostCard, SampleTag, SaveButton, SenseiBadge } from './ui';
 
 /* ================= Feed ================= */
 type FeedName = 'community' | 'everyone' | 'connections';
@@ -30,29 +30,10 @@ export function Feed() {
   }, [api, tab]);
 
   const canShare = me?.is_student || me?.is_sensei;
-  const intro: Record<FeedName, string> = {
-    community: 'Updates, briefs and news from the grand sensei.',
-    everyone: 'Work from every Keyframe Ninja, newest first.',
-    connections: 'Work from the people you’re connected with.',
-  };
 
   return (
-    <div className="cx-col">
-      <div className="cx-intro">
-        <h1 className="cx-h1">Feed</h1>
-        <p>{intro[tab]}</p>
-        {canShare && (
-          <A path="/new" className="btn btn-primary btn-sm">
-            <Icon name="plus" size={18} /> {me?.is_sensei ? 'Post to the community' : 'Share your work'}
-          </A>
-        )}
-        {!signedIn && (
-          <A path="/login" className="btn btn-primary btn-sm">
-            Sign in
-          </A>
-        )}
-      </div>
-
+    <div className="cx-col cx-stream">
+      <h1 className="sr-only">Feed</h1>
       <div className="cx-tabs" role="tablist" aria-label="Feed">
         {FEEDS.filter((f) => !f.needsAccount || me).map((f) => (
           <button key={f.key} type="button" role="tab" aria-selected={tab === f.key} className={tab === f.key ? 'is-on' : ''} onClick={() => setTab(f.key)}>
@@ -60,6 +41,18 @@ export function Feed() {
           </button>
         ))}
       </div>
+
+      {canShare && me && (
+        <A path="/new" className="cx-composer">
+          <Avatar p={me} size={40} />
+          <span>{me.is_sensei ? 'Post something to the community…' : 'Share what you’re working on…'}</span>
+        </A>
+      )}
+      {!signedIn && (
+        <p className="cx-signin-line">
+          <A path="/login">Sign in</A> to connect, comment and save projects.
+        </p>
+      )}
 
       {posts === null ? (
         <Loading label="Loading posts" />
@@ -106,10 +99,10 @@ export function Students() {
   }, [api, q, skill, phase]);
 
   return (
-    <div className="cx-wide">
+    <div className="cx-col">
       <div className="cx-intro">
         <h1 className="cx-h1">Keyframe Ninjas</h1>
-        <p>Everyone learning on Black Belt in Motion Design. Open a profile to see their work or connect.</p>
+        <p>Students of Black Belt in Motion Design.</p>
       </div>
 
       <div className="cx-filters">
@@ -148,27 +141,24 @@ export function Students() {
           <p>Try another name, skill or phase.</p>
         </Empty>
       ) : (
-        <ul className="cx-grid">
+        <ul className="cx-people">
           {list.map((p) => (
             <li key={p.id}>
-              <A path={`/u/${p.handle}`} className="cx-card">
-                <Avatar p={p} size={64} />
-                <span className="cx-card-name">
-                  {p.name}
-                  {p.sample && <SampleTag />}
-                </span>
-                <span className="cx-card-meta">
-                  @{p.handle}
-                  {p.country && <> · {p.country}</>}
-                </span>
-                {p.phase && <PhaseTrack phase={p.phase} />}
-                {p.skills.length > 0 && (
-                  <span className="cx-card-skills">
-                    {p.skills.slice(0, 3).map((s) => (
-                      <span key={s}>{s}</span>
-                    ))}
+              <A path={`/u/${p.handle}`} className="cx-person-row">
+                <Avatar p={p} size={56} />
+                <span className="cx-person-row-text">
+                  <span className="cx-person-name">
+                    {p.name}
+                    <NinjaBadge small />
+                    {p.sample && <SampleTag />}
                   </span>
-                )}
+                  <span className="cx-person-meta">
+                    @{p.handle}
+                    {p.country && <> · {p.country}</>}
+                    {p.phase && <> · Phase {p.phase}: {PHASES[p.phase - 1]}</>}
+                  </span>
+                  {p.skills.length > 0 && <span className="cx-person-skills">{p.skills.slice(0, 4).join(' · ')}</span>}
+                </span>
               </A>
             </li>
           ))}

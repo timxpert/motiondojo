@@ -3623,3 +3623,149 @@ details[open] > :not(summary) {
 .cx .btn-danger:hover {
   background: var(--violet-hover);
 }
+
+/* ==================================================================
+   Connect, unslopped: the timeline is one flat column like X or
+   Instagram, not a stack of floating rounded cards.
+================================================================== */
+.cx-stream {
+  margin-top: calc(clamp(20px, 4vw, 40px) * -1);
+  background: var(--paper);
+}
+@media (min-width: 640px) {
+  .cx-stream {
+    border-inline: 1px solid var(--line);
+    min-height: calc(100dvh - 64px);
+  }
+}
+@media (max-width: 639px) {
+  .cx-stream {
+    margin-inline: calc(var(--gutter) * -1);
+  }
+}
+/* Underline tabs */
+.cx-tabs {
+  display: flex;
+  gap: 0;
+  margin: 0;
+  padding: 0;
+  border-radius: 0;
+  background: none;
+  box-shadow: inset 0 -1px 0 var(--line);
+}
+.cx-stream .cx-tabs {
+  position: sticky;
+  top: 64px;
+  z-index: 5;
+  background: rgba(255, 255, 255, 0.92);
+  backdrop-filter: blur(10px);
+}
+.cx-tabs button {
+  flex: 1;
+  justify-content: center;
+  min-height: 52px;
+  padding: 0 12px;
+  border-radius: 0;
+  color: var(--muted);
+}
+.cx-tabs button:hover {
+  background: var(--ground);
+}
+.cx-tabs button.is-on {
+  background: none;
+  color: var(--ink);
+  box-shadow: inset 0 -3px 0 var(--violet);
+}
+/* "What are you working on?" row */
+.cx-composer {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px 16px;
+  border-bottom: 1px solid var(--line);
+  color: var(--muted);
+}
+.cx-composer > span:last-child {
+  flex: 1;
+  padding: 10px 16px;
+  border-radius: 999px;
+  background: var(--ground);
+  transition: background-color 0.2s ease;
+}
+.cx-composer:hover > span:last-child {
+  background: var(--tint);
+}
+.cx-signin-line {
+  padding: 14px 16px;
+  border-bottom: 1px solid var(--line);
+  color: var(--muted);
+}
+.cx-signin-line a {
+  color: var(--violet);
+  font-weight: 600;
+}
+/* Posts: flat, divided by hairlines */
+.cx-feed {
+  gap: 0;
+}
+.cx-post {
+  border-radius: 0;
+  box-shadow: none;
+  border-bottom: 1px solid var(--line);
+}
+.cx-post-community {
+  box-shadow: inset 3px 0 0 var(--violet);
+}
+.cx-stream .cx-empty,
+.cx-stream .cx-loading {
+  margin: 0;
+  border-radius: 0;
+}
+/* Single post: the same flat treatment */
+.cx-post-full {
+  border: 1px solid var(--line);
+}
+/* Students: rows, like "who to follow" lists */
+.cx-people {
+  border-block: 1px solid var(--line);
+  background: var(--paper);
+}
+.cx-people li + li {
+  border-top: 1px solid var(--line);
+}
+.cx-person-row {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 14px 16px;
+  transition: background-color 0.2s ease;
+}
+.cx-person-row:hover {
+  background: var(--ground);
+}
+.cx-person-row-text {
+  display: grid;
+  gap: 2px;
+  min-width: 0;
+}
+.cx-person-skills {
+  font-size: 0.9rem;
+  color: var(--ink);
+}
+@media (max-width: 639px) {
+  .cx-people {
+    margin-inline: calc(var(--gutter) * -1);
+  }
+}
+/* Lists and empty states without boxes */
+.cx-list,
+.cx-inbox {
+  border-radius: 0;
+  box-shadow: none;
+  border-block: 1px solid var(--line);
+}
+.cx-empty {
+  background: none;
+  border-radius: 0;
+  padding: 48px 16px;
+}
