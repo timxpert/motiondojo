@@ -1654,25 +1654,30 @@ details[open] > summary .bb-chev {
 }
 
 /* ==================================================================
-   Footer: plain and quiet. Logo and a way back up, three short columns
-   of text links (social links show the actual handle), the tagline and
-   copyright on the last line. No icon grid, no "follow us".
+   Footer: a light panel. Brand, tagline and round social icons on the
+   left; two lists where every link carries its own icon tile; copyright
+   and a round back-to-top button underneath.
 ================================================================== */
 .footer {
   background: var(--paper);
-  padding: clamp(48px, 7vw, 88px) 0 clamp(24px, 3vw, 36px);
+  padding: clamp(24px, 3vw, 40px) 0 clamp(20px, 3vw, 32px);
 }
-.footer-inner {
-  width: min(100% - 2 * var(--gutter), var(--max));
-  margin-inline: auto;
+.footer-panel,
+.footer-bottom {
+  margin-inline: max(16px, calc((100% - var(--max) - var(--gutter) * 2) / 2));
 }
-.footer-top {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 16px;
-  padding-bottom: clamp(28px, 4vw, 40px);
-  border-bottom: 1px solid var(--line);
+.footer-panel {
+  display: grid;
+  gap: clamp(40px, 5vw, 56px);
+  padding: clamp(32px, 5vw, 64px);
+  border-radius: var(--r-panel);
+  background: var(--ground);
+}
+@media (min-width: 960px) {
+  .footer-panel {
+    grid-template-columns: 1fr 1.25fr;
+    align-items: start;
+  }
 }
 .footer-logo {
   display: inline-flex;
@@ -1680,53 +1685,61 @@ details[open] > summary .bb-chev {
   gap: 12px;
   font-family: var(--font-display);
   font-weight: 600;
-  font-size: clamp(1.4rem, 2.4vw, 1.75rem);
+  font-size: clamp(1.6rem, 3vw, 2rem);
   letter-spacing: -0.02em;
   color: var(--ink);
 }
 .footer-logo img {
-  width: 40px;
-  height: 40px;
-  border-radius: 10px;
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
 }
-.footer-up {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  min-height: 44px;
-  font-weight: 500;
-  color: var(--muted);
-  transition: color 0.2s ease;
+.footer-tagline {
+  margin-top: 20px;
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: clamp(1.6rem, 3.2vw, 2.4rem);
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+  color: var(--violet);
 }
-.footer-up svg {
-  transition: transform 0.45s var(--spring);
+.footer-socials {
+  display: flex;
+  gap: 10px;
+  margin-top: 28px;
 }
-.footer-up:hover {
+.footer-socials a {
+  display: grid;
+  place-items: center;
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background: var(--paper);
   color: var(--ink);
+  box-shadow: inset 0 0 0 1.5px var(--line);
+  transition: background-color 0.25s ease, color 0.25s ease, box-shadow 0.25s ease, transform 0.6s var(--spring);
 }
-.footer-up:hover svg {
+.footer-socials a:hover {
+  background: var(--violet);
+  color: #fff;
+  box-shadow: none;
   transform: translateY(-3px);
+}
+.footer-socials a:active {
+  transform: scale(0.94);
+  transition-duration: 0.09s;
 }
 .footer-cols {
   display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 28px 24px;
-  padding-block: clamp(32px, 5vw, 56px);
+  gap: 32px 24px;
 }
-/* On phones, the social column takes the full width under the other two */
-.footer-col:nth-child(3) {
-  grid-column: 1 / -1;
-}
-@media (min-width: 720px) {
+@media (min-width: 640px) {
   .footer-cols {
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-  }
-  .footer-col:nth-child(3) {
-    grid-column: auto;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 }
 .footer-label {
-  margin-bottom: 14px;
+  margin-bottom: 12px;
   font-family: var(--font-body);
   font-size: 0.95rem;
   font-weight: 500;
@@ -1734,51 +1747,102 @@ details[open] > summary .bb-chev {
 }
 .footer-col ul {
   display: grid;
-  gap: 4px;
+  gap: 6px;
 }
-.footer-col a {
-  display: inline-flex;
-  align-items: baseline;
-  flex-wrap: wrap;
-  gap: 4px 8px;
-  min-height: 40px;
-  padding-block: 8px;
+.footer-link {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 8px 12px 8px 8px;
+  margin-inline: -8px;
+  border-radius: 16px;
   font-weight: 500;
   color: var(--ink);
-  transition: color 0.2s ease;
+  transition: background-color 0.25s ease;
 }
-.footer-col a:hover {
+.footer-ico {
+  flex: none;
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  background: var(--paper);
+  color: var(--violet);
+  box-shadow: inset 0 0 0 1.5px var(--line);
+  transition: background-color 0.25s ease, color 0.25s ease, box-shadow 0.25s ease, transform 0.6s var(--spring);
+}
+.footer-link-text {
+  flex: 1;
+  line-height: 1.3;
+}
+.footer-go {
+  flex: none;
+  color: var(--muted);
+  opacity: 0;
+  transform: translateX(-6px);
+  transition: opacity 0.25s ease, transform 0.45s var(--spring);
+}
+/* internal links point "onward" (arrow turned right) */
+.footer-go svg {
+  transform: rotate(90deg);
+}
+.footer-link[target] .footer-go svg {
+  transform: none;
+}
+.footer-link:hover {
+  background: var(--paper);
+}
+.footer-link:hover .footer-ico {
+  background: var(--violet);
+  color: #fff;
+  box-shadow: none;
+  transform: rotate(-6deg) scale(1.06);
+}
+.footer-link:hover .footer-go {
+  opacity: 1;
+  transform: none;
   color: var(--violet);
 }
-.footer-note {
-  font-weight: 400;
-  color: var(--muted);
+.footer-link:active .footer-ico {
+  transform: scale(0.92);
+  transition-duration: 0.09s;
 }
-.footer-out {
-  align-self: center;
-  color: var(--muted);
-  transition: transform 0.45s var(--spring), color 0.2s ease;
-}
-.footer-col a:hover .footer-out {
-  color: var(--violet);
-  transform: translate(2px, -2px);
+/* Touch screens have no hover: keep the arrows visible */
+@media (hover: none) {
+  .footer-go {
+    opacity: 1;
+    transform: none;
+  }
 }
 .footer-bottom {
   display: flex;
-  flex-wrap: wrap;
-  align-items: baseline;
+  align-items: center;
   justify-content: space-between;
-  gap: 8px 24px;
-  padding-top: 24px;
-  border-top: 1px solid var(--line);
+  gap: 16px;
+  padding: 20px clamp(8px, 2vw, 16px) 0;
   color: var(--muted);
   font-size: 0.95rem;
 }
-.footer-tagline {
-  font-family: var(--font-display);
-  font-weight: 600;
-  font-size: 1.05rem;
-  color: var(--ink);
+.footer-up {
+  flex: none;
+  display: grid;
+  place-items: center;
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background: var(--midnight);
+  color: var(--lime);
+  transition: background-color 0.25s ease, transform 0.6s var(--spring);
+}
+.footer-up:hover {
+  background: var(--violet);
+  color: #fff;
+  transform: translateY(-4px);
+}
+.footer-up:active {
+  transform: scale(0.92);
+  transition-duration: 0.09s;
 }
 
 /* ==================================================================
