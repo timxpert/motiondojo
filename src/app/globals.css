@@ -478,10 +478,11 @@ main > .section:last-child {
   gap: 28px;
   justify-items: start;
 }
-/* Two lines at every width: the size follows the screen so
-   "to figure it all out alone." (about 10.5em wide) always fits */
+/* Two lines at every width, left-aligned: the size follows the screen so
+   "to figure it all out alone" always fits, capped at 3.25rem */
 .hero .display {
-  font-size: min(4.5rem, calc((100vw - 2 * var(--gutter)) / 10.8));
+  font-size: min(3.25rem, calc((100vw - 2 * var(--gutter)) / 13));
+  text-align: left;
 }
 .hero .display .line {
   display: block;
