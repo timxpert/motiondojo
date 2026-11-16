@@ -3185,8 +3185,8 @@ details[open] > :not(summary) {
   color: var(--muted);
 }
 .cx-chat {
-  display: grid;
-  grid-template-rows: auto 1fr auto;
+  display: flex;
+  flex-direction: column;
   min-height: calc(100dvh - 64px - 140px);
 }
 .cx-chat-head {
@@ -3197,6 +3197,7 @@ details[open] > :not(summary) {
   border-bottom: 1px solid var(--line);
 }
 .cx-msgs {
+  flex: 1;
   display: flex;
   flex-direction: column;
   gap: 8px;
@@ -3880,4 +3881,34 @@ details[open] > :not(summary) {
 .cx-compose textarea {
   width: 100%;
   min-width: 0;
+}
+
+/* ---------- Scam protection notes ---------- */
+.cx-safety {
+  margin: 0;
+  padding: 10px 16px;
+  background: #fff4d6;
+  color: #5c4100;
+  font-size: 0.9rem;
+  line-height: 1.45;
+  border-bottom: 1px solid #f0dda3;
+}
+.cx-chat .cx-safety {
+  border-radius: 12px;
+  border: 1px solid #f0dda3;
+  margin-bottom: 8px;
+}
+.cx-form .cx-safety {
+  border-radius: var(--r-sm);
+  border: 1px solid #f0dda3;
+}
+.cx-safety-note {
+  align-self: center;
+  margin: 12px auto 0;
+  padding: 6px 12px;
+  border-radius: 999px;
+  background: var(--tint);
+  color: var(--muted);
+  font-size: 0.8rem;
+  text-align: center;
 }

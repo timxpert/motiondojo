@@ -2,6 +2,7 @@
 
 import React, { useCallback, useEffect, useState } from 'react';
 import { useConnect } from './context';
+import { hasPaymentTalk, PAYMENT_NOTE } from './safety';
 import { navigate } from './router';
 import { socialUrl, timeAgo } from './media';
 import { PHASES, SKILLS, type Comment, type ConnectionStatus, type Post, type Profile } from './types';
@@ -550,13 +551,18 @@ export function PostScreen({ id }: { id: string }) {
               }
             }}
           />
-          <button type="submit" className="cx-reply-send" disabled={busy || !draft.trim()}>
+          <button type="submit" className="cx-reply-send" disabled={busy || !draft.trim() || hasPaymentTalk(draft)}>
             Post
           </button>
         </form>
       ) : (
         <p className="cx-signin-line">
           <A path={signedIn ? '/settings' : '/login'}>{signedIn ? 'Finish your profile' : 'Sign in'}</A> to comment.
+        </p>
+      )}
+      {hasPaymentTalk(draft) && (
+        <p className="cx-safety" role="alert">
+          {PAYMENT_NOTE}
         </p>
       )}
 

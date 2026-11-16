@@ -71,6 +71,8 @@ It lives in this same project (`src/connect`, route `src/app/connect`). `src/mid
 
 **Students get the Keyframe Ninja badge automatically** when the email they sign in with paid for the course through Paystack (the webhook records it). For students who paid another way, add their email in Supabase → Table Editor → `enrolments`, or add a code to `invite_codes` and give it to them (use long random codes, e.g. `NINJA-7K2Q-9XMD`, so they can't be guessed). **Moderators:** tick `is_moderator` on their row in `profiles`; they can remove any post or comment and read `reports`.
 
+**Scam protection:** messages, comments, captions, names and bios can't contain “aza”, “acct”, “a/c”, “account number/no”, “acc no” or a standalone 10-digit number. The app warns while typing and the database refuses it. To change the list, edit `src/connect/safety.ts` and `has_payment_details` in `supabase/schema.sql` (keep them the same).
+
 Notifications are in-app (the bell). Email or phone push notifications are a later addition.
 
 ## Fonts

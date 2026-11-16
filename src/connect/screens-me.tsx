@@ -2,6 +2,7 @@
 
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { useConnect } from './context';
+import { hasPaymentTalk, PAYMENT_NOTE } from './safety';
 import { navigate } from './router';
 import { timeAgo, toEmbed } from './media';
 import { PHASES, SKILLS, type Conversation, type Message, type Profile } from './types';
@@ -176,6 +177,7 @@ export function Settings() {
     const handle = toHandle(f.handle || f.name);
     if (!f.name.trim()) return setErr('Add your name.');
     if (handle.length < 3) return setErr('Your username needs at least 3 letters or numbers.');
+    if (hasPaymentTalk(f.bio, f.name)) return setErr(PAYMENT_NOTE);
     setBusy(true);
     try {
       const input = { ...f, name: f.name.trim(), handle, bio: f.bio.trim() };
@@ -407,12 +409,17 @@ export function NewPost() {
         </div>
         )}
 
+        {hasPaymentTalk(caption) && (
+          <p className="cx-safety" role="alert">
+            {PAYMENT_NOTE}
+          </p>
+        )}
         {err && (
           <p className="cx-error" role="alert">
             {err}
           </p>
         )}
-        <button type="submit" className="btn btn-primary" disabled={busy}>
+        <button type="submit" className="btn btn-primary" disabled={busy || hasPaymentTalk(caption)}>
           {busy ? 'Posting…' : sensei ? 'Post and notify students' : 'Post'}
         </button>
       </form>
@@ -526,6 +533,7 @@ export function Chat({ id }: { id: string }) {
           </span>
         </A>
       </header>
+      <p className="cx-safety-note">Never send money or bank details to anyone on Connect. Report anyone who asks.</p>
       <ol className="cx-msgs">
         {msgs.map((m) => (
           <li key={m.id} className={m.sender_id === me.id ? 'cx-msg is-mine' : 'cx-msg'}>
@@ -535,6 +543,11 @@ export function Chat({ id }: { id: string }) {
         ))}
         <div ref={end} />
       </ol>
+      {hasPaymentTalk(draft) && (
+        <p className="cx-safety" role="alert">
+          {PAYMENT_NOTE}
+        </p>
+      )}
       <form className="cx-compose cx-chat-compose" onSubmit={send}>
         <label className="sr-only" htmlFor="msg-box">
           Message
@@ -553,7 +566,7 @@ export function Chat({ id }: { id: string }) {
             }
           }}
         />
-        <button type="submit" className="cx-send" disabled={!draft.trim()} aria-label="Send">
+        <button type="submit" className="cx-send" disabled={!draft.trim() || hasPaymentTalk(draft)} aria-label="Send">
           <Icon name="send" size={20} />
         </button>
       </form>

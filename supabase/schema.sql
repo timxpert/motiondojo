@@ -360,6 +360,43 @@ drop trigger if exists connections_unnotify on public.connections;
 create trigger connections_unnotify after delete on public.connections
 for each row execute function public.unnotify_connection();
 
+-- ---------------------------------------------------------------------
+-- Scam protection: no payment or bank details anywhere on Connect.
+-- Blocks "aza", "acct", "a/c", "account number/no", "acc no" and any
+-- standalone 10-digit number (the length of a Nigerian account number).
+-- The app shows the same rule before sending (src/connect/safety.ts).
+-- ---------------------------------------------------------------------
+create or replace function public.has_payment_details(t text) returns boolean
+language sql immutable as $$
+  select coalesce(t, '') ~* '\maza\M|\macct\M|\ma/c\M|\maccount\s*(number|no|num)\M|\macc\.?\s*(number|no|num)\M|(^|[^0-9])[0-9]{10}([^0-9]|$)'
+$$;
+
+create or replace function public.no_payment_details() returns trigger
+language plpgsql as $$
+declare
+  txt text;
+begin
+  -- the trigger arguments name the text columns to check on this table
+  select string_agg(to_jsonb(new) ->> col, ' ') into txt from unnest(tg_argv) as col;
+  if public.has_payment_details(txt) then
+    raise exception 'payment_details' using hint = 'Payment and bank details are not allowed on Connect.';
+  end if;
+  return new;
+end $$;
+
+drop trigger if exists messages_no_payment on public.messages;
+create trigger messages_no_payment before insert or update on public.messages
+for each row execute function public.no_payment_details('body');
+drop trigger if exists comments_no_payment on public.comments;
+create trigger comments_no_payment before insert or update on public.comments
+for each row execute function public.no_payment_details('body');
+drop trigger if exists posts_no_payment on public.posts;
+create trigger posts_no_payment before insert or update on public.posts
+for each row execute function public.no_payment_details('caption');
+drop trigger if exists profiles_no_payment on public.profiles;
+create trigger profiles_no_payment before insert or update on public.profiles
+for each row execute function public.no_payment_details('bio', 'name');
+
 create or replace function public.touch_conversation() returns trigger
 language plpgsql security definer set search_path = public as $$
 begin

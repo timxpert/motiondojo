@@ -3,6 +3,7 @@
    be clicked through before Supabase is connected. Every sample profile is
    flagged `sample: true` and the UI labels it. Nothing here is real. */
 
+import { assertNoPaymentTalk } from './safety';
 import type { Comment, ConnectApi, ConnectionStatus, Conversation, Message, Notice, Post, Profile } from './types';
 
 const now = Date.now();
@@ -131,6 +132,7 @@ export function createDemoApi(): ConnectApi {
     },
     async updateProfile(input) {
       const me = who(needMe());
+      assertNoPaymentTalk(input.bio, input.name);
       if (input.handle && input.handle !== me.handle && people.some((p) => p.handle === input.handle)) {
         throw new Error('That username is taken. Try another.');
       }
@@ -243,6 +245,7 @@ export function createDemoApi(): ConnectApi {
     getPost: (id) => wait(posts.find((p) => p.id === id) ? full(posts.find((p) => p.id === id)!) : null),
     async createPost(input) {
       const me = who(needMe());
+      assertNoPaymentTalk(input.caption);
       const community = Boolean(input.community);
       if (community && !me.is_sensei) throw new Error('Only the grand sensei can post to the Community feed.');
       if (!community && !me.is_student && !me.is_sensei) throw new Error('Only Keyframe Ninjas can post work.');
@@ -262,6 +265,7 @@ export function createDemoApi(): ConnectApi {
     listComments: (postId) =>
       wait(comments.filter((c) => c.post_id === postId).map((c) => ({ ...c, author: who(c.author_id) }))),
     async addComment(postId, body) {
+      assertNoPaymentTalk(body);
       const c = { id: nid(), post_id: postId, author_id: needMe(), body, created_at: new Date().toISOString() };
       comments = [...comments, c];
       return { ...c, author: who(c.author_id) };
@@ -298,6 +302,7 @@ export function createDemoApi(): ConnectApi {
     },
     listMessages: (id) => wait(messages.filter((m) => m.conversation_id === id)),
     async sendMessage(id, body) {
+      assertNoPaymentTalk(body);
       const m: Message = { id: nid(), conversation_id: id, sender_id: needMe(), body, created_at: new Date().toISOString() };
       messages = [...messages, m];
       convs = convs.map((c) => (c.id === id ? { ...c, last: m.created_at } : c));
