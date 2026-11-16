@@ -154,14 +154,10 @@ export function Footer() {
       <div className="footer-panel">
         <div className="footer-brand">
           <a href="/" className="footer-logo" aria-label="Motion Dojo home">
-            <img src="/assets/favicon-128.png" alt="" width={44} height={44} />
+            <img src="/assets/favicon-128.png" alt="" width={32} height={32} />
             Motion Dojo
           </a>
-          <p className="footer-tagline">
-            Train like a ninja.
-            <br />
-            Create like a master.
-          </p>
+          <p className="footer-tagline">Train like a ninja, create like a master.</p>
           <ul className="footer-socials" aria-label="Motion Dojo on social media">
             {socials.map((s) => (
               <li key={s.label}>
