@@ -15,7 +15,13 @@ async function markEnrolled(email: string, reference: string) {
   try {
     const res = await fetch(`${url}/rest/v1/rpc/mark_enrolled`, {
       method: 'POST',
-      headers: { apikey: key, Authorization: `Bearer ${key}`, 'Content-Type': 'application/json' },
+      // New Supabase secret keys (sb_secret_…) go in the apikey header only;
+      // legacy service_role keys are JWTs and also go in Authorization.
+      headers: {
+        apikey: key,
+        ...(key.startsWith('eyJ') ? { Authorization: `Bearer ${key}` } : {}),
+        'Content-Type': 'application/json',
+      },
       body: JSON.stringify({ student_email: email, payment_reference: reference }),
     });
     if (!res.ok) console.error('[connect] mark_enrolled failed', res.status, await res.text());
