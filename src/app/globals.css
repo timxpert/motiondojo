@@ -3769,3 +3769,115 @@ details[open] > :not(summary) {
   border-radius: 0;
   padding: 48px 16px;
 }
+
+/* ---------- Post page and comments: flat thread, Instagram-style ---------- */
+.cx-bar {
+  position: sticky;
+  top: 64px;
+  z-index: 5;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  height: 52px;
+  padding: 0 8px;
+  border-bottom: 1px solid var(--line);
+  background: rgba(255, 255, 255, 0.92);
+  backdrop-filter: blur(10px);
+}
+.cx-bar h1 {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 1.15rem;
+}
+.cx-icon-flat {
+  background: none;
+  box-shadow: none;
+}
+.cx-reply {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 12px 16px;
+  border-bottom: 1px solid var(--line);
+}
+/* Width is fixed to the column; only the height grows with the text */
+.cx-reply textarea {
+  flex: 1 1 0;
+  width: 100%;
+  min-width: 0;
+  min-height: 36px;
+  max-height: 200px;
+  padding: 7px 0;
+  border: 0;
+  resize: none;
+  field-sizing: content;
+  font: inherit;
+  line-height: 1.45;
+  color: var(--ink);
+  background: none;
+  outline: none;
+  overflow-wrap: anywhere;
+}
+.cx-reply-send {
+  flex: none;
+  min-height: 36px;
+  padding: 0 4px;
+  font-weight: 600;
+  color: var(--violet);
+}
+.cx-reply-send:disabled {
+  color: var(--lavender);
+  opacity: 0.6;
+}
+.cx-thread-empty {
+  padding: 28px 16px;
+  color: var(--muted);
+}
+.cx-thread .cx-comment {
+  display: flex;
+  gap: 12px;
+  padding: 14px 16px;
+  border-bottom: 1px solid var(--line);
+}
+.cx-comment-main {
+  flex: 1;
+  min-width: 0;
+}
+.cx-comment-body {
+  margin: 0;
+  line-height: 1.5;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+.cx-comment-name {
+  margin-right: 6px;
+  font-weight: 600;
+}
+.cx-comment-body .cx-badge {
+  margin-right: 6px;
+  vertical-align: -3px;
+}
+.cx-comment-meta {
+  display: flex;
+  gap: 14px;
+  margin-top: 4px;
+  font-size: 0.85rem;
+  color: var(--muted);
+}
+.cx-comment-meta button {
+  font-weight: 600;
+  color: var(--muted);
+}
+.cx-comment-meta button:hover {
+  color: var(--ink);
+}
+/* Long unbroken text never widens a post */
+.cx-caption,
+.cx-post {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+.cx-compose textarea {
+  width: 100%;
+  min-width: 0;
+}

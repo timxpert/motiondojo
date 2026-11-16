@@ -492,24 +492,30 @@ export function PostScreen({ id }: { id: string }) {
     toast('Thanks. A moderator will take a look.');
   };
 
+  const canDeleteComment = (c: Comment) => Boolean(me && (me.id === c.author_id || me.id === post.author_id || me.is_moderator));
+
   return (
-    <div className="cx-col">
-      <button type="button" className="cx-back" onClick={() => window.history.back()}>
-        <Icon name="back" size={18} /> Back
-      </button>
-      <article className="cx-post cx-post-full">
+    <div className="cx-col cx-stream">
+      <header className="cx-bar">
+        <button type="button" className="cx-icon-btn cx-icon-flat" onClick={() => window.history.back()} aria-label="Back">
+          <Icon name="back" />
+        </button>
+        <h1>Post</h1>
+      </header>
+
+      <article className={post.community ? 'cx-post cx-post-community' : 'cx-post'}>
         <header className="cx-post-head">
           <PersonLine p={post.author} when={post.created_at} />
-          {post.tag === 'feedback' && <span className="cx-tag">Wants feedback</span>}
+          {post.community ? <span className="cx-tag">Community</span> : post.tag === 'feedback' && <span className="cx-tag">Wants feedback</span>}
         </header>
         <Media post={post} priority />
         {post.caption && <p className="cx-caption">{post.caption}</p>}
         <footer className="cx-post-actions">
           <LikeButton post={post} />
-          <span className="cx-act cx-act-static">
+          <label htmlFor="comment-box" className="cx-act" aria-label={`${comments.length} comments`}>
             <Icon name="comment" />
             <span>{comments.length}</span>
-          </span>
+          </label>
           <span className="cx-spacer" />
           <SaveButton post={post} />
           {canModerate ? (
@@ -524,55 +530,66 @@ export function PostScreen({ id }: { id: string }) {
         </footer>
       </article>
 
-      <section className="cx-comments" aria-labelledby="comments-title">
-        <h2 className="cx-h2" id="comments-title">
-          {post.tag === 'feedback' ? 'Feedback' : 'Comments'}
-        </h2>
-        {comments.length === 0 && <p className="cx-muted">{post.tag === 'feedback' ? 'No feedback yet. Be the first to help.' : 'No comments yet.'}</p>}
-        <ul>
-          {comments.map((c) => (
-            <li key={c.id} className="cx-comment">
-              <A path={`/u/${c.author.handle}`}>
-                <Avatar p={c.author} size={36} />
-              </A>
-              <div>
-                <p className="cx-comment-head">
-                  <A path={`/u/${c.author.handle}`}>{c.author.name}</A>
-                  {c.author.is_student && <NinjaBadge small />}
-                  <span>{timeAgo(c.created_at)}</span>
-                </p>
-                <p className="cx-comment-body">{c.body}</p>
-              </div>
-              {me && (me.id === c.author_id || me.id === post.author_id || me.is_moderator) && (
-                <button type="button" className="cx-text-btn" onClick={() => removeComment(c)} aria-label="Delete comment">
-                  Delete
-                </button>
-              )}
-            </li>
-          ))}
-        </ul>
-        {me ? (
-          <form className="cx-compose" onSubmit={submit}>
-            <Avatar p={me} size={36} />
-            <label className="sr-only" htmlFor="comment-box">
-              Write a comment
-            </label>
-            <textarea
-              id="comment-box"
-              rows={1}
-              maxLength={1000}
-              placeholder={post.tag === 'feedback' ? 'Share specific, kind feedback…' : 'Add a comment…'}
-              value={draft}
-              onChange={(e) => setDraft(e.target.value)}
-            />
-            <button type="submit" className="cx-send" disabled={busy || !draft.trim()} aria-label="Post comment">
-              <Icon name="send" size={20} />
-            </button>
-          </form>
+      {me ? (
+        <form className="cx-reply" onSubmit={submit}>
+          <Avatar p={me} size={36} />
+          <label className="sr-only" htmlFor="comment-box">
+            Write a comment
+          </label>
+          <textarea
+            id="comment-box"
+            rows={1}
+            maxLength={1000}
+            placeholder={post.tag === 'feedback' ? 'What would you change?' : 'Add a comment'}
+            value={draft}
+            onChange={(e) => setDraft(e.target.value)}
+            onKeyDown={(e) => {
+              if (e.key === 'Enter' && !e.shiftKey) {
+                e.preventDefault();
+                (e.currentTarget.form as HTMLFormElement).requestSubmit();
+              }
+            }}
+          />
+          <button type="submit" className="cx-reply-send" disabled={busy || !draft.trim()}>
+            Post
+          </button>
+        </form>
+      ) : (
+        <p className="cx-signin-line">
+          <A path={signedIn ? '/settings' : '/login'}>{signedIn ? 'Finish your profile' : 'Sign in'}</A> to comment.
+        </p>
+      )}
+
+      <section aria-label={post.tag === 'feedback' ? 'Feedback' : 'Comments'}>
+        {comments.length === 0 ? (
+          <p className="cx-thread-empty">{post.tag === 'feedback' ? 'No feedback yet.' : 'No comments yet.'}</p>
         ) : (
-          <p className="cx-muted">
-            <A path={signedIn ? '/settings' : '/login'}>{signedIn ? 'Finish your profile' : 'Sign in'}</A> to comment.
-          </p>
+          <ul className="cx-thread">
+            {comments.map((c) => (
+              <li key={c.id} className="cx-comment">
+                <A path={`/u/${c.author.handle}`} tabIndex={-1} aria-hidden="true">
+                  <Avatar p={c.author} size={36} />
+                </A>
+                <div className="cx-comment-main">
+                  <p className="cx-comment-body">
+                    <A path={`/u/${c.author.handle}`} className="cx-comment-name">
+                      {c.author.name}
+                    </A>
+                    {c.author.is_sensei && <SenseiBadge />}
+                    {c.author.is_student && <NinjaBadge small />} {c.body}
+                  </p>
+                  <p className="cx-comment-meta">
+                    <time dateTime={c.created_at}>{timeAgo(c.created_at)}</time>
+                    {canDeleteComment(c) && (
+                      <button type="button" onClick={() => removeComment(c)}>
+                        Delete
+                      </button>
+                    )}
+                  </p>
+                </div>
+              </li>
+            ))}
+          </ul>
         )}
       </section>
     </div>
