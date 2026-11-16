@@ -36,7 +36,7 @@ function profile(p: Partial<Profile> & Pick<Profile, 'id' | 'handle' | 'name'>):
 }
 
 const people: Profile[] = [
-  profile({ id: 's1', handle: 'sample_ada', name: 'Ada', country: 'Nigeria', phase: 2, skills: ['Alight Motion', 'Typography'], bio: 'Sample profile for the preview. Learning kinetic type one keyframe at a time.' }),
+  profile({ id: 's1', handle: 'sample_ada', name: 'Ada', country: 'Nigeria', phase: 2, skills: ['Alight Motion', 'Typography'], bio: 'Sample profile for the preview. Practising kinetic type.' }),
   profile({ id: 's2', handle: 'sample_tunde', name: 'Tunde', country: 'Nigeria', phase: 3, skills: ['Logo animation', 'Transitions'], bio: 'Sample profile for the preview. Logo reveals and smooth transitions.' }),
   profile({ id: 's3', handle: 'sample_amaka', name: 'Amaka', country: 'Ghana', phase: 1, skills: ['Alight Motion', 'Graphic design'], bio: 'Sample profile for the preview. Graphic designer starting out with motion.' }),
   profile({ id: 's4', handle: 'sample_kemi', name: 'Kemi', country: 'Nigeria', phase: 4, skills: ['Product visuals', '2D animation', 'Sound design'], bio: 'Sample profile for the preview. Building my portfolio in phase four.' }),

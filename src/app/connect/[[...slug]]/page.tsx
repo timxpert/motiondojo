@@ -4,7 +4,7 @@ import { ConnectApp } from '@/connect/ConnectApp';
 
 const title = 'Motion Dojo Connect';
 const description =
-  'Meet the Keyframe Ninjas, students of Black Belt in Motion Design. See their work, follow their progress and connect with smartphone motion designers.';
+  'Profiles and work from the Keyframe Ninjas, the students of Black Belt in Motion Design.';
 
 export const metadata: Metadata = {
   title,

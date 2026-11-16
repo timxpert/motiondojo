@@ -26,7 +26,7 @@ export function Feed() {
     <div className="cx-col">
       <div className="cx-intro">
         <h1 className="cx-h1">What the Ninjas are making</h1>
-        <p>Work, progress and experiments from Keyframe Ninjas, the students of Black Belt in Motion Design.</p>
+        <p>Keyframe Ninjas are the students of Black Belt in Motion Design. This is where they post what they’re working on.</p>
         {me?.is_student && (
           <A path="/new" className="btn btn-primary btn-sm">
             <Icon name="plus" size={18} /> Share your work
