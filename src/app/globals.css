@@ -1545,6 +1545,17 @@ details[open] > summary .bb-chev {
   cursor: wait;
 }
 
+/* Closing panel without a headline: the sentence carries it */
+.final.no-title .lede {
+  max-width: 24ch;
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: clamp(1.6rem, 3.4vw, 2.6rem);
+  line-height: 1.15;
+  letter-spacing: -0.02em;
+  color: var(--on-dark);
+}
+
 /* ==================================================================
    Footer: a light panel. Brand, tagline and round social icons on the
    left; two lists where every link carries its own icon tile; copyright

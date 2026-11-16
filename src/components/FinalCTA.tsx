@@ -2,7 +2,7 @@ import React from 'react';
 import { COMMUNITY_JOIN_URL } from '@/config/site';
 
 export function FinalCTA({
-  title = 'Come grow with us',
+  title = '',
   lede = 'Join smartphone motion designers who learn, share their work and get better together.',
   action,
 }: {
@@ -12,7 +12,10 @@ export function FinalCTA({
   action?: React.ReactNode;
 }) {
   return (
-    <section className="section dark-section final" aria-labelledby="final-title">
+    <section
+      className={title ? 'section dark-section final' : 'section dark-section final no-title'}
+      {...(title ? { 'aria-labelledby': 'final-title' } : { 'aria-label': 'Join Motion Dojo' })}
+    >
       <div className="wrap">
         <svg className="final-art" viewBox="0 0 800 500" aria-hidden="true">
           <path className="trail" d="M40 380 C 200 380, 240 90, 400 120 S 620 330, 760 60" />
@@ -21,9 +24,11 @@ export function FinalCTA({
           <rect className="k k-lime" x="749" y="49" width="22" height="22" rx="3" transform="rotate(45 760 60)" />
         </svg>
 
-        <h2 className="display" id="final-title">
-          {title}
-        </h2>
+        {title && (
+          <h2 className="display" id="final-title">
+            {title}
+          </h2>
+        )}
         <p className="lede">{lede}</p>
         {action ?? (
           <a href={COMMUNITY_JOIN_URL} target="_blank" rel="noopener noreferrer" className="btn btn-lime">
