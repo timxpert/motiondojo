@@ -7,6 +7,23 @@ import crypto from 'node:crypto';
 export const runtime = 'nodejs';
 export const dynamic = 'force-dynamic';
 
+/** Records the enrolment in Supabase (Motion Dojo Connect). Skipped until Supabase is set up. */
+async function markEnrolled(email: string, reference: string) {
+  const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
+  const key = process.env.SUPABASE_SERVICE_ROLE_KEY;
+  if (!url || !key) return;
+  try {
+    const res = await fetch(`${url}/rest/v1/rpc/mark_enrolled`, {
+      method: 'POST',
+      headers: { apikey: key, Authorization: `Bearer ${key}`, 'Content-Type': 'application/json' },
+      body: JSON.stringify({ student_email: email, payment_reference: reference }),
+    });
+    if (!res.ok) console.error('[connect] mark_enrolled failed', res.status, await res.text());
+  } catch (e) {
+    console.error('[connect] mark_enrolled error', e);
+  }
+}
+
 export async function POST(req: Request) {
   const secret = process.env.PAYSTACK_SECRET_KEY;
   if (!secret) return new Response('Not configured', { status: 500 });
@@ -37,6 +54,10 @@ export async function POST(req: Request) {
       email: customer.email,
       metadata: d.metadata,
     });
+    // Course paid in full: the student's Connect account gets the Keyframe Ninja badge
+    if (customer.email && d.amount === 4000000 && d.currency === 'NGN') {
+      await markEnrolled(customer.email, String(d.reference || ''));
+    }
   }
 
   return new Response('ok', { status: 200 });
