@@ -37,11 +37,11 @@ export function createLiveApi(url: string, anonKey: string, redirectTo: string):
       me ? sb.from('likes').select('post_id').eq('user_id', me).in('post_id', ids) : none,
       me ? sb.from('bookmarks').select('post_id').eq('user_id', me).in('post_id', ids) : none,
     ]);
-    const saved = new Set(((saves as { data: { post_id: string }[] | null }).data ?? []).map((b) => b.post_id));
+    const saved = new Set(((saves as unknown as { data: { post_id: string }[] | null }).data ?? []).map((b) => b.post_id));
     const byId = new Map<string, { likes: number; comments: number }>(
-      ((stats ?? []) as { post_id: string; likes: number; comments: number }[]).map((s) => [s.post_id, s]),
+      ((stats ?? []) as unknown as { post_id: string; likes: number; comments: number }[]).map((s) => [s.post_id, s]),
     );
-    const liked = new Set(((mine as { data: { post_id: string }[] | null }).data ?? []).map((l) => l.post_id));
+    const liked = new Set(((mine as unknown as { data: { post_id: string }[] | null }).data ?? []).map((l) => l.post_id));
     return rows.map((r) => ({
       ...r,
       likes: Number(byId.get(r.id)?.likes ?? 0),
@@ -74,21 +74,21 @@ export function createLiveApi(url: string, anonKey: string, redirectTo: string):
       const id = await uid();
       if (!id) return null;
       const { data } = await sb.from('profiles').select('*').eq('id', id).maybeSingle();
-      return (data as Profile) ?? null;
+      return (data as unknown as Profile) ?? null;
     },
     async createProfile(input) {
       const id = await needUid();
       const { data, error } = await sb.from('profiles').insert({ ...input, id }).select().single();
       if (error?.code === '23505') throw new Error('That username is taken. Try another.');
       fail(error);
-      return data as Profile;
+      return data as unknown as Profile;
     },
     async updateProfile(input) {
       const id = await needUid();
       const { data, error } = await sb.from('profiles').update(input).eq('id', id).select().single();
       if (error?.code === '23505') throw new Error('That username is taken. Try another.');
       fail(error);
-      return data as Profile;
+      return data as unknown as Profile;
     },
     async refreshStudentStatus() {
       const { data, error } = await sb.rpc('refresh_student_status');
@@ -119,11 +119,11 @@ export function createLiveApi(url: string, anonKey: string, redirectTo: string):
       }
       const { data, error } = await q;
       fail(error);
-      return (data ?? []) as Profile[];
+      return (data ?? []) as unknown as Profile[];
     },
     async getProfile(handle) {
       const { data } = await sb.from('profiles').select('*').eq('handle', handle.toLowerCase()).maybeSingle();
-      return (data as Profile) ?? null;
+      return (data as unknown as Profile) ?? null;
     },
     async counts(userId) {
       const head = { count: 'exact' as const, head: true };
@@ -142,7 +142,7 @@ export function createLiveApi(url: string, anonKey: string, redirectTo: string):
         .select('requester_id,status')
         .or(`and(requester_id.eq.${me},addressee_id.eq.${userId}),and(requester_id.eq.${userId},addressee_id.eq.${me})`)
         .maybeSingle();
-      const row = data as { requester_id: string; status: string } | null;
+      const row = data as unknown as { requester_id: string; status: string } | null;
       if (!row) return 'none';
       if (row.status === 'accepted') return 'connected';
       return row.requester_id === me ? 'requested' : 'incoming';
@@ -179,7 +179,7 @@ export function createLiveApi(url: string, anonKey: string, redirectTo: string):
         .or(`requester_id.eq.${me},addressee_id.eq.${me}`)
         .order('accepted_at', { ascending: false });
       fail(error);
-      return ((data ?? []) as { requester_id: string; r: Profile; a: Profile }[]).map((c) => (c.requester_id === me ? c.a : c.r));
+      return ((data ?? []) as unknown as { requester_id: string; r: Profile; a: Profile }[]).map((c) => (c.requester_id === me ? c.a : c.r));
     },
     async listRequests() {
       const me = await needUid();
@@ -190,8 +190,8 @@ export function createLiveApi(url: string, anonKey: string, redirectTo: string):
       ]);
       fail(inc.error || out.error);
       return {
-        incoming: ((inc.data ?? []) as { r: Profile }[]).map((c) => c.r),
-        sent: ((out.data ?? []) as { a: Profile }[]).map((c) => c.a),
+        incoming: ((inc.data ?? []) as unknown as { r: Profile }[]).map((c) => c.r),
+        sent: ((out.data ?? []) as unknown as { a: Profile }[]).map((c) => c.a),
       };
     },
 
@@ -203,7 +203,7 @@ export function createLiveApi(url: string, anonKey: string, redirectTo: string):
         .order('created_at', { ascending: false })
         .limit(60);
       fail(error);
-      return (data ?? []) as Notice[];
+      return (data ?? []) as unknown as Notice[];
     },
     async unreadCount() {
       if (!(await uid())) return 0;
@@ -226,7 +226,7 @@ export function createLiveApi(url: string, anonKey: string, redirectTo: string):
       }
       const { data, error } = await q;
       fail(error);
-      return decorate((data ?? []) as Post[]);
+      return decorate((data ?? []) as unknown as Post[]);
     },
     async listSaved() {
       const me = await needUid();
@@ -236,7 +236,7 @@ export function createLiveApi(url: string, anonKey: string, redirectTo: string):
         .eq('user_id', me)
         .order('created_at', { ascending: false });
       fail(error);
-      return decorate(((data ?? []) as { post: Post | null }[]).map((b) => b.post).filter((p): p is Post => Boolean(p)));
+      return decorate(((data ?? []) as unknown as { post: Post | null }[]).map((b) => b.post).filter((p): p is Post => Boolean(p)));
     },
     async setSaved(postId, on) {
       const me = await needUid();
@@ -248,7 +248,7 @@ export function createLiveApi(url: string, anonKey: string, redirectTo: string):
     async getPost(id) {
       const { data } = await sb.from('posts').select(POST_SELECT).eq('id', id).maybeSingle();
       if (!data) return null;
-      return (await decorate([data as Post]))[0];
+      return (await decorate([data as unknown as Post]))[0];
     },
     async createPost(input) {
       const me = await needUid();
@@ -257,7 +257,7 @@ export function createLiveApi(url: string, anonKey: string, redirectTo: string):
         throw new Error(input.community ? 'Only the grand sensei can post to the Community feed.' : 'Only Keyframe Ninjas can post work.');
       }
       fail(error);
-      return (await decorate([data as Post]))[0];
+      return (await decorate([data as unknown as Post]))[0];
     },
     async deletePost(id) {
       const { error } = await sb.from('posts').delete().eq('id', id);
@@ -277,7 +277,7 @@ export function createLiveApi(url: string, anonKey: string, redirectTo: string):
         .eq('post_id', postId)
         .order('created_at');
       fail(error);
-      return (data ?? []) as Comment[];
+      return (data ?? []) as unknown as Comment[];
     },
     async addComment(postId, body) {
       const me = await needUid();
@@ -287,7 +287,7 @@ export function createLiveApi(url: string, anonKey: string, redirectTo: string):
         .select('*, author:profiles!comments_author_id_fkey(*)')
         .single();
       fail(error);
-      return data as Comment;
+      return data as unknown as Comment;
     },
     async deleteComment(id) {
       const { error } = await sb.from('comments').delete().eq('id', id);
@@ -301,7 +301,7 @@ export function createLiveApi(url: string, anonKey: string, redirectTo: string):
         .select('*, a:profiles!conversations_user_a_fkey(*), b:profiles!conversations_user_b_fkey(*)')
         .order('last_message_at', { ascending: false });
       fail(error);
-      const rows = (data ?? []) as { id: string; user_a: string; a: Profile; b: Profile; last_message_at: string }[];
+      const rows = (data ?? []) as unknown as { id: string; user_a: string; a: Profile; b: Profile; last_message_at: string }[];
       const lasts = await Promise.all(
         rows.map((r) =>
           sb.from('messages').select('body').eq('conversation_id', r.id).order('created_at', { ascending: false }).limit(1).maybeSingle(),
@@ -311,7 +311,7 @@ export function createLiveApi(url: string, anonKey: string, redirectTo: string):
         id: r.id,
         other: r.user_a === me ? r.b : r.a,
         last_message_at: r.last_message_at,
-        last_body: (lasts[i].data as { body: string } | null)?.body ?? '',
+        last_body: (lasts[i].data as unknown as { body: string } | null)?.body ?? '',
       }));
     },
     async openConversation(userId) {
@@ -319,7 +319,7 @@ export function createLiveApi(url: string, anonKey: string, redirectTo: string):
       if (error?.message.includes('not connected')) throw new Error('Connect with this member before messaging them.');
       if (error?.message.includes('blocked')) throw new Error('You can’t message this member.');
       fail(error);
-      return data as string;
+      return data as unknown as string;
     },
     async getConversation(id) {
       const me = await needUid();
@@ -329,19 +329,19 @@ export function createLiveApi(url: string, anonKey: string, redirectTo: string):
         .eq('id', id)
         .maybeSingle();
       if (!data) return null;
-      const r = data as { id: string; user_a: string; a: Profile; b: Profile; last_message_at: string };
+      const r = data as unknown as { id: string; user_a: string; a: Profile; b: Profile; last_message_at: string };
       return { id: r.id, other: r.user_a === me ? r.b : r.a, last_message_at: r.last_message_at, last_body: '' } as Conversation;
     },
     async listMessages(conversationId) {
       const { data, error } = await sb.from('messages').select('*').eq('conversation_id', conversationId).order('created_at').limit(500);
       fail(error);
-      return (data ?? []) as Message[];
+      return (data ?? []) as unknown as Message[];
     },
     async sendMessage(conversationId, body) {
       const me = await needUid();
       const { data, error } = await sb.from('messages').insert({ conversation_id: conversationId, sender_id: me, body }).select().single();
       fail(error);
-      return data as Message;
+      return data as unknown as Message;
     },
 
     async report(target, id, reason) {
