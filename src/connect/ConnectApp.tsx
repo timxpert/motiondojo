@@ -8,10 +8,11 @@ import type { ConnectApi } from './types';
 import { A, Avatar, Icon, Loading } from './ui';
 import { Feed, PostScreen, ProfileScreen, Students } from './screens-browse';
 import { Chat, Inbox, Login, NewPost, Settings } from './screens-me';
+import { Connections, Notifications, Saved } from './screens-social';
 
 const SUPABASE_URL = process.env.NEXT_PUBLIC_SUPABASE_URL || '';
 const SUPABASE_ANON_KEY = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || '';
-const MAIN_SITE = 'https://joinmotiondojo.com';
+const MAIN_SITE = process.env.NEXT_PUBLIC_MAIN_SITE_URL || 'https://joinmotiondojo.com';
 
 /** Live when Supabase keys are set, otherwise the labelled sample preview */
 function useApi(): ConnectApi | null {
@@ -46,12 +47,43 @@ export function ConnectApp() {
 const TABS = [
   { path: '/', label: 'Feed', icon: 'home' as const, match: ['feed', 'post'] },
   { path: '/students', label: 'Students', icon: 'people' as const, match: ['students', 'profile'] },
+  { path: '/connections', label: 'Connections', icon: 'link2' as const, match: ['connections'] },
   { path: '/messages', label: 'Messages', icon: 'chat' as const, match: ['messages', 'chat'] },
 ];
+
+/** Unread notifications and waiting connection requests, refreshed every 30 seconds */
+function useCounts() {
+  const { api, me } = useConnect();
+  const [c, setC] = useState({ unread: 0, requests: 0 });
+  useEffect(() => {
+    if (!me) {
+      setC({ unread: 0, requests: 0 });
+      return;
+    }
+    let live = true;
+    const load = async () => {
+      const [unread, r] = await Promise.all([api.unreadCount(), api.listRequests()]);
+      if (live) setC({ unread, requests: r.incoming.length });
+    };
+    load().catch(() => {});
+    const t = window.setInterval(() => document.visibilityState === 'visible' && load().catch(() => {}), 30000);
+    const on = () => load().catch(() => {});
+    window.addEventListener('cx:counts', on);
+    return () => {
+      live = false;
+      window.clearInterval(t);
+      window.removeEventListener('cx:counts', on);
+    };
+  }, [api, me]);
+  return c;
+}
+
+const Dot = ({ n }: { n: number }) => (n > 0 ? <span className="cx-dot">{n > 9 ? '9+' : n}</span> : null);
 
 function Shell({ route }: { route: Route }) {
   const { api, me, signedIn } = useConnect();
   const [menu, setMenu] = useState(false);
+  const counts = useCounts();
 
   // Close the account menu whenever the page changes
   useEffect(() => setMenu(false), [route]);
@@ -76,6 +108,12 @@ function Shell({ route }: { route: Route }) {
         return <Settings />;
       case 'new':
         return <NewPost />;
+      case 'connections':
+        return <Connections />;
+      case 'notifications':
+        return <Notifications />;
+      case 'saved':
+        return <Saved />;
       default:
         return (
           <div className="cx-empty">
@@ -103,14 +141,21 @@ function Shell({ route }: { route: Route }) {
             {TABS.map((t) => (
               <A key={t.path} path={t.path} className={t.match.includes(route.name) ? 'is-on' : ''} aria-current={t.match.includes(route.name) ? 'page' : undefined}>
                 {t.label}
+                {t.path === '/connections' && <Dot n={counts.requests} />}
               </A>
             ))}
           </nav>
           <div className="cx-top-right">
-            {me?.is_student && (
+            {(me?.is_student || me?.is_sensei) && (
               <A path="/new" className="btn btn-primary btn-sm cx-new">
                 <Icon name="plus" size={18} />
-                <span>Share work</span>
+                <span>{me.is_sensei ? 'Post' : 'Share work'}</span>
+              </A>
+            )}
+            {me && (
+              <A path="/notifications" className="cx-bell" aria-label={`Notifications${counts.unread ? `, ${counts.unread} new` : ''}`}>
+                <Icon name="bell" />
+                <Dot n={counts.unread} />
               </A>
             )}
             {signedIn ? (
@@ -123,6 +168,11 @@ function Shell({ route }: { route: Route }) {
                     {me && (
                       <A path={`/u/${me.handle}`} role="menuitem">
                         Your profile
+                      </A>
+                    )}
+                    {me && (
+                      <A path="/saved" role="menuitem">
+                        Saved
                       </A>
                     )}
                     <A path="/settings" role="menuitem">
@@ -148,7 +198,7 @@ function Shell({ route }: { route: Route }) {
 
       {signedIn && me === null && route.name !== 'settings' && route.name !== 'login' && (
         <p className="cx-nudge">
-          You’re signed in. <A path="/settings">Set up your profile</A> to follow, like, comment and message.
+          You’re signed in. <A path="/settings">Set up your profile</A> to connect, like, comment and save projects.
         </p>
       )}
 
@@ -159,16 +209,13 @@ function Shell({ route }: { route: Route }) {
       <nav className="cx-tabbar" aria-label="Connect">
         {TABS.map((t) => (
           <A key={t.path} path={t.path} className={t.match.includes(route.name) ? 'is-on' : ''} aria-current={t.match.includes(route.name) ? 'page' : undefined}>
-            <Icon name={t.icon} />
+            <span className="cx-tab-ico">
+              <Icon name={t.icon} />
+              {t.path === '/connections' && <Dot n={counts.requests} />}
+            </span>
             <span>{t.label}</span>
           </A>
         ))}
-        {me?.is_student && (
-          <A path="/new" className={route.name === 'new' ? 'is-on' : ''}>
-            <Icon name="plus" />
-            <span>Share</span>
-          </A>
-        )}
       </nav>
     </div>
   );

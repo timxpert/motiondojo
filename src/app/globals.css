@@ -2161,11 +2161,26 @@ details[open] > :not(summary) {
 }
 
 /* ==================================================================
-   Motion Dojo Connect (connect.joinmotiondojo.com)
-   Same palette and type as the main site. Light ground, white panels,
-   violet for actions, lime for the Keyframe Ninja badge.
+   Motion Dojo Connect
+   Monochrome: a warm near-black and an off-white, with greys between.
+   No pure #000 or #fff. The site's tokens are redefined inside .cx, so
+   shared pieces (buttons, fields) turn monochrome here only.
 ================================================================== */
 .cx {
+  --ink: #171716;
+  --midnight: #171716;
+  --violet: #171716;
+  --violet-hover: #2e2e2c;
+  --lavender: #8a8a86;
+  --lime: #fafaf8;
+  --paper: #fafaf8;
+  --ground: #f0f0ed;
+  --muted: #6b6b67;
+  --line: #e0e0dc;
+  --tint: #e8e8e4;
+  --on-dark: #fafaf8;
+  --on-dark-muted: #b4b4af;
+  --panel-shadow: 0 1px 2px rgba(23, 23, 22, 0.04), 0 12px 32px -20px rgba(23, 23, 22, 0.18);
   min-height: 100dvh;
   background: var(--ground);
   color: var(--ink);
@@ -2181,8 +2196,8 @@ details[open] > :not(summary) {
 }
 .cx-preview-bar {
   padding: 8px var(--gutter);
-  background: var(--lime);
-  color: var(--midnight);
+  background: var(--ink);
+  color: var(--paper);
   font-size: 0.9rem;
   font-weight: 500;
   text-align: center;
@@ -3404,4 +3419,239 @@ details[open] > :not(summary) {
   display: flex;
   justify-content: flex-end;
   gap: 8px;
+}
+
+/* ---------- Connect: monochrome overrides for shared pieces ---------- */
+.cx .btn-primary {
+  background: var(--ink);
+  color: var(--paper);
+}
+.cx .btn-primary:hover:not(:disabled) {
+  background: var(--violet-hover);
+  box-shadow: 0 10px 22px -14px rgba(23, 23, 22, 0.6);
+}
+.cx .btn-lime,
+.cx .btn-light {
+  background: var(--paper);
+  color: var(--ink);
+  box-shadow: inset 0 0 0 1.5px var(--line);
+}
+.cx .btn-lime:hover:not(:disabled),
+.cx .btn-light:hover:not(:disabled) {
+  background: var(--tint);
+  box-shadow: inset 0 0 0 1.5px var(--ink);
+}
+.cx .btn-danger {
+  background: var(--ink);
+  color: var(--paper);
+}
+.cx .btn svg {
+  margin-right: 2px;
+}
+.cx .field input:focus-visible,
+.cx .field select:focus-visible {
+  border-color: var(--ink);
+}
+.cx :focus-visible {
+  outline-color: var(--ink);
+}
+.cx-logo img {
+  filter: grayscale(1) contrast(1.15);
+}
+.cx-logo em {
+  color: var(--muted);
+}
+.cx-badge {
+  background: var(--ink);
+  color: var(--paper);
+}
+.cx-badge-sensei {
+  padding: 3px 9px;
+  background: var(--paper);
+  color: var(--ink);
+  box-shadow: inset 0 0 0 1.5px var(--ink);
+  font-size: 0.72rem;
+  letter-spacing: 0.02em;
+}
+.cx-member {
+  background: var(--tint);
+  color: var(--ink);
+}
+.cx-sample {
+  background: var(--tint);
+  color: var(--muted);
+}
+.cx-tag {
+  background: var(--paper);
+  color: var(--ink);
+  box-shadow: inset 0 0 0 1.5px var(--ink);
+}
+.cx-card-skills span,
+.cx-skills li {
+  background: var(--tint);
+  color: var(--ink);
+}
+.cx-act.is-liked,
+.cx-act.is-saved {
+  color: var(--ink);
+}
+.cx-error {
+  background: var(--tint);
+  color: var(--ink);
+  box-shadow: inset 3px 0 0 var(--ink);
+}
+.cx-post-community {
+  box-shadow: inset 0 0 0 1.5px var(--ink), var(--panel-shadow);
+}
+.cx-media {
+  background: #232322;
+}
+
+/* ---------- Connect: counts, bell, connection rows, notifications ---------- */
+.cx-dot {
+  display: inline-grid;
+  place-items: center;
+  min-width: 18px;
+  height: 18px;
+  margin-left: 6px;
+  padding: 0 5px;
+  border-radius: 999px;
+  background: var(--ink);
+  color: var(--paper);
+  font-size: 0.7rem;
+  font-weight: 600;
+  line-height: 1;
+  animation: check-pop 0.5s var(--bounce);
+}
+.cx-bell {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  color: var(--ink);
+  transition: background-color 0.2s ease;
+}
+.cx-bell:hover {
+  background: var(--tint);
+}
+.cx-bell .cx-dot,
+.cx-tab-ico .cx-dot {
+  position: absolute;
+  top: 4px;
+  right: 2px;
+  margin: 0;
+  box-shadow: 0 0 0 2px var(--paper);
+}
+.cx-tab-ico {
+  position: relative;
+  display: grid;
+  place-items: center;
+}
+.cx-tab-ico .cx-dot {
+  top: -6px;
+  right: -12px;
+}
+.cx-nav a {
+  display: inline-flex;
+  align-items: center;
+}
+.cx-connected {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-height: 44px;
+  padding: 0 14px;
+  border-radius: 999px;
+  background: var(--tint);
+  font-size: 0.95rem;
+  font-weight: 600;
+}
+.cx-h2 .cx-count {
+  display: inline-grid;
+  place-items: center;
+  min-width: 24px;
+  height: 24px;
+  margin-left: 8px;
+  padding: 0 7px;
+  border-radius: 999px;
+  background: var(--ink);
+  color: var(--paper);
+  font-family: var(--font-body);
+  font-size: 0.8rem;
+  vertical-align: middle;
+}
+.cx-list {
+  overflow: hidden;
+  border-radius: 20px;
+  background: var(--paper);
+  box-shadow: var(--panel-shadow);
+}
+.cx-list > li + li {
+  border-top: 1px solid var(--line);
+}
+.cx-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 14px 16px;
+}
+.cx-row-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.cx-notice {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 14px 16px;
+  transition: background-color 0.2s ease;
+}
+.cx-notice:hover {
+  background: var(--ground);
+}
+.cx-notice.is-new {
+  box-shadow: inset 3px 0 0 var(--ink);
+  font-weight: 600;
+}
+.cx-notice-text {
+  display: grid;
+  gap: 2px;
+}
+.cx-notice-text time {
+  font-size: 0.85rem;
+  font-weight: 400;
+  color: var(--muted);
+}
+.cx .btn-danger:hover {
+  background: var(--violet-hover);
+}
+/* The toast and dialogs sit outside .cx, so they take the Connect colours directly */
+.cx-toast {
+  background: #171716;
+  color: #fafaf8;
+}
+.cx-dialog-wrap {
+  background: rgba(23, 23, 22, 0.45);
+  --ink: #171716;
+  --paper: #fafaf8;
+  --line: #e0e0dc;
+  --muted: #6b6b67;
+  --tint: #e8e8e4;
+  --violet: #171716;
+  --violet-hover: #2e2e2c;
+}
+.cx-dialog-wrap .btn-primary,
+.cx-dialog-wrap .btn-danger {
+  background: #171716;
+  color: #fafaf8;
+}
+.cx-dialog-wrap .btn-light {
+  background: #fafaf8;
+  color: #171716;
+  box-shadow: inset 0 0 0 1.5px #e0e0dc;
 }

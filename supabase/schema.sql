@@ -4,11 +4,13 @@
 -- Safe to re-run: every object is created only if it doesn't exist yet.
 --
 -- Who can do what (enforced here by row-level security, not just the UI):
---   * Anyone, signed in or not: read profiles, posts, likes, comments, follows.
---   * Any signed-in member: edit their own profile, like, comment, follow,
---     message, report, block.
+--   * Anyone, signed in or not: read profiles, posts, likes, comments, accepted connections.
+--   * Any signed-in member: edit their own profile, like, comment, bookmark,
+--     send and answer connection requests, report, block.
+--   * Connected members (a request was accepted): message each other.
 --   * Keyframe Ninjas (verified students): all of the above, plus post work.
 --   * Moderators: remove any post or comment, read reports.
+--   * The grand sensei: posts to the Community feed; every student is notified.
 -- A member becomes a Keyframe Ninja automatically when the email they sign
 -- in with is in `enrolments` (filled by the Paystack webhook) or when they
 -- redeem an invite code.
@@ -46,9 +48,9 @@ create table if not exists public.profiles (
   instagram     text not null default '',
   youtube       text not null default '',
   website       text not null default '',
-  open_messages boolean not null default true,              -- false: only Keyframe Ninjas can message
   is_student    boolean not null default false,             -- set by the database, never by the user
   is_moderator  boolean not null default false,             -- set in the dashboard
+  is_sensei     boolean not null default false,             -- the grand sensei; set in the dashboard
   created_at    timestamptz not null default now()
 );
 
@@ -59,6 +61,7 @@ create table if not exists public.posts (
   media_url  text not null,                  -- storage URL for images, share link for videos
   caption    text not null default '' check (char_length(caption) <= 1000),
   tag        text not null default 'sharing' check (tag in ('sharing', 'feedback')),
+  community  boolean not null default false,  -- a grand sensei post for the Community feed
   created_at timestamptz not null default now()
 );
 create index if not exists posts_author_idx on public.posts (author_id, created_at desc);
@@ -80,12 +83,26 @@ create table if not exists public.comments (
 );
 create index if not exists comments_post_idx on public.comments (post_id, created_at);
 
-create table if not exists public.follows (
-  follower_id  uuid not null references public.profiles (id) on delete cascade,
-  following_id uuid not null references public.profiles (id) on delete cascade,
+-- One row per pair. 'pending' until the addressee accepts; declining deletes the row.
+create table if not exists public.connections (
+  requester_id uuid not null references public.profiles (id) on delete cascade,
+  addressee_id uuid not null references public.profiles (id) on delete cascade,
+  status       text not null default 'pending' check (status in ('pending', 'accepted')),
   created_at   timestamptz not null default now(),
-  primary key (follower_id, following_id),
-  check (follower_id <> following_id)
+  accepted_at  timestamptz,
+  primary key (requester_id, addressee_id),
+  check (requester_id <> addressee_id)
+);
+-- the same two people can't have two rows in opposite directions
+create unique index if not exists connections_pair_idx
+  on public.connections (least(requester_id, addressee_id), greatest(requester_id, addressee_id));
+create index if not exists connections_addressee_idx on public.connections (addressee_id, status);
+
+create table if not exists public.bookmarks (
+  user_id    uuid not null references public.profiles (id) on delete cascade,
+  post_id    uuid not null references public.posts (id) on delete cascade,
+  created_at timestamptz not null default now(),
+  primary key (user_id, post_id)
 );
 
 create table if not exists public.blocks (
@@ -114,6 +131,18 @@ create table if not exists public.messages (
 );
 create index if not exists messages_conv_idx on public.messages (conversation_id, created_at);
 
+-- In-app notifications, written only by the triggers below
+create table if not exists public.notifications (
+  id         uuid primary key default gen_random_uuid(),
+  user_id    uuid not null references public.profiles (id) on delete cascade,
+  kind       text not null check (kind in ('community_post', 'connection_request', 'connection_accepted')),
+  actor_id   uuid references public.profiles (id) on delete cascade,
+  post_id    uuid references public.posts (id) on delete cascade,
+  read_at    timestamptz,
+  created_at timestamptz not null default now()
+);
+create index if not exists notifications_user_idx on public.notifications (user_id, created_at desc);
+
 create table if not exists public.reports (
   id          uuid primary key default gen_random_uuid(),
   reporter_id uuid not null references public.profiles (id) on delete cascade,
@@ -136,6 +165,18 @@ language sql stable security definer set search_path = public as $$
   select coalesce((select is_moderator from public.profiles where id = uid), false)
 $$;
 
+create or replace function public.are_connected(x uuid, y uuid) returns boolean
+language sql stable security definer set search_path = public as $$
+  select exists (select 1 from public.connections
+                 where status = 'accepted'
+                   and ((requester_id = x and addressee_id = y) or (requester_id = y and addressee_id = x)))
+$$;
+
+create or replace function public.is_sensei(uid uuid) returns boolean
+language sql stable security definer set search_path = public as $$
+  select coalesce((select is_sensei from public.profiles where id = uid), false)
+$$;
+
 create or replace function public.is_blocked_between(x uuid, y uuid) returns boolean
 language sql stable security definer set search_path = public as $$
   select exists (select 1 from public.blocks
@@ -152,6 +193,7 @@ begin
     select lower(email) into uemail from auth.users where id = new.id;
     new.is_student   := exists (select 1 from public.enrolments where lower(email) = uemail);
     new.is_moderator := false;
+    new.is_sensei    := false;
   elsif auth.uid() is not null
         and coalesce(auth.role(), '') <> 'service_role'
         and coalesce(current_setting('connect.trusted', true), '') <> 'on' then
@@ -160,8 +202,9 @@ begin
     -- connect.trusted for their own transaction) can change them.
     new.is_student   := old.is_student;
     new.is_moderator := old.is_moderator;
+    new.is_sensei    := old.is_sensei;
   end if;
-  if not new.is_student then
+  if not new.is_student or new.is_sensei then
     new.phase := null;
   end if;
   return new;
@@ -224,12 +267,94 @@ begin
   if cid is not null then
     return cid;
   end if;
-  if not (select open_messages from public.profiles where id = other) and not public.is_student(me) then
-    raise exception 'closed';
+  if not public.are_connected(me, other) then
+    raise exception 'not connected';
   end if;
   insert into public.conversations (user_a, user_b) values (a, b) returning id into cid;
   return cid;
 end $$;
+
+create or replace function public.connections_guard() returns trigger
+language plpgsql as $$
+begin
+  if tg_op = 'INSERT' then
+    new.status := 'pending';
+    new.accepted_at := null;
+    if public.is_blocked_between(new.requester_id, new.addressee_id) then
+      raise exception 'blocked';
+    end if;
+  else
+    if new.requester_id <> old.requester_id or new.addressee_id <> old.addressee_id then
+      raise exception 'cannot change who is connected';
+    end if;
+    if new.status = 'accepted' and old.status = 'pending' then
+      new.accepted_at := now();
+    end if;
+  end if;
+  return new;
+end $$;
+drop trigger if exists connections_guard on public.connections;
+create trigger connections_guard before insert or update on public.connections
+for each row execute function public.connections_guard();
+
+-- Blocking someone also ends any connection with them
+create or replace function public.blocks_disconnect() returns trigger
+language plpgsql security definer set search_path = public as $$
+begin
+  delete from public.connections
+  where (requester_id = new.blocker_id and addressee_id = new.blocked_id)
+     or (requester_id = new.blocked_id and addressee_id = new.blocker_id);
+  return new;
+end $$;
+drop trigger if exists blocks_disconnect on public.blocks;
+create trigger blocks_disconnect after insert on public.blocks
+for each row execute function public.blocks_disconnect();
+
+create or replace function public.notify_community_post() returns trigger
+language plpgsql security definer set search_path = public as $$
+begin
+  if new.community then
+    insert into public.notifications (user_id, kind, actor_id, post_id)
+    select p.id, 'community_post', new.author_id, new.id
+    from public.profiles p
+    where p.is_student and p.id <> new.author_id;
+  end if;
+  return new;
+end $$;
+drop trigger if exists posts_notify on public.posts;
+create trigger posts_notify after insert on public.posts
+for each row execute function public.notify_community_post();
+
+create or replace function public.notify_connection() returns trigger
+language plpgsql security definer set search_path = public as $$
+begin
+  if tg_op = 'INSERT' then
+    insert into public.notifications (user_id, kind, actor_id)
+    values (new.addressee_id, 'connection_request', new.requester_id);
+  elsif new.status = 'accepted' and old.status = 'pending' then
+    insert into public.notifications (user_id, kind, actor_id)
+    values (new.requester_id, 'connection_accepted', new.addressee_id);
+    -- the request has been answered
+    delete from public.notifications
+    where user_id = new.addressee_id and actor_id = new.requester_id and kind = 'connection_request';
+  end if;
+  return new;
+end $$;
+drop trigger if exists connections_notify on public.connections;
+create trigger connections_notify after insert or update on public.connections
+for each row execute function public.notify_connection();
+
+-- Declined or cancelled requests take their notification with them
+create or replace function public.unnotify_connection() returns trigger
+language plpgsql security definer set search_path = public as $$
+begin
+  delete from public.notifications
+  where kind = 'connection_request' and user_id = old.addressee_id and actor_id = old.requester_id;
+  return old;
+end $$;
+drop trigger if exists connections_unnotify on public.connections;
+create trigger connections_unnotify after delete on public.connections
+for each row execute function public.unnotify_connection();
 
 create or replace function public.touch_conversation() returns trigger
 language plpgsql security definer set search_path = public as $$
@@ -257,11 +382,13 @@ alter table public.profiles      enable row level security;
 alter table public.posts         enable row level security;
 alter table public.likes         enable row level security;
 alter table public.comments      enable row level security;
-alter table public.follows       enable row level security;
+alter table public.connections   enable row level security;
+alter table public.bookmarks     enable row level security;
 alter table public.blocks        enable row level security;
 alter table public.conversations enable row level security;
 alter table public.messages      enable row level security;
 alter table public.reports       enable row level security;
+alter table public.notifications enable row level security;
 
 do $$ begin
   -- profiles
@@ -270,9 +397,12 @@ do $$ begin
   create policy "edit own profile"           on public.profiles for update using (id = auth.uid());
   -- posts
   create policy "posts are public"           on public.posts for select using (true);
-  create policy "students post"              on public.posts for insert
-    with check (author_id = auth.uid() and public.is_student(auth.uid()));
-  create policy "edit own post"              on public.posts for update using (author_id = auth.uid());
+  create policy "students and sensei post"    on public.posts for insert
+    with check (author_id = auth.uid()
+                and ((not community and (public.is_student(auth.uid()) or public.is_sensei(auth.uid())))
+                     or (community and public.is_sensei(auth.uid()))));
+  create policy "edit own post"              on public.posts for update using (author_id = auth.uid())
+    with check (author_id = auth.uid() and (not community or public.is_sensei(auth.uid())));
   create policy "remove own post or moderate" on public.posts for delete
     using (author_id = auth.uid() or public.is_moderator(auth.uid()));
   -- likes
@@ -286,10 +416,20 @@ do $$ begin
     author_id = auth.uid()
     or public.is_moderator(auth.uid())
     or exists (select 1 from public.posts p where p.id = post_id and p.author_id = auth.uid()));
-  -- follows
-  create policy "follows are public"         on public.follows for select using (true);
-  create policy "follow as yourself"         on public.follows for insert with check (follower_id = auth.uid());
-  create policy "unfollow"                   on public.follows for delete using (follower_id = auth.uid());
+  -- connections: accepted ones are public (profile counts); requests only to the two people
+  create policy "see connections"            on public.connections for select
+    using (status = 'accepted' or auth.uid() in (requester_id, addressee_id));
+  create policy "send a request"             on public.connections for insert
+    with check (requester_id = auth.uid());
+  create policy "accept a request"           on public.connections for update
+    using (addressee_id = auth.uid() and status = 'pending')
+    with check (addressee_id = auth.uid() and status = 'accepted');
+  create policy "decline, cancel or remove"  on public.connections for delete
+    using (auth.uid() in (requester_id, addressee_id));
+  -- bookmarks: private to their owner
+  create policy "see own bookmarks"          on public.bookmarks for select using (user_id = auth.uid());
+  create policy "bookmark"                   on public.bookmarks for insert with check (user_id = auth.uid());
+  create policy "remove bookmark"            on public.bookmarks for delete using (user_id = auth.uid());
   -- blocks
   create policy "see own blocks"             on public.blocks for select using (blocker_id = auth.uid());
   create policy "block"                      on public.blocks for insert with check (blocker_id = auth.uid());
@@ -305,7 +445,13 @@ do $$ begin
     sender_id = auth.uid()
     and exists (select 1 from public.conversations c
                 where c.id = conversation_id and auth.uid() in (c.user_a, c.user_b)
+                  and public.are_connected(c.user_a, c.user_b)
                   and not public.is_blocked_between(c.user_a, c.user_b)));
+  -- notifications: your own; you can only mark them read or clear them
+  create policy "see own notifications"      on public.notifications for select using (user_id = auth.uid());
+  create policy "mark own read"              on public.notifications for update
+    using (user_id = auth.uid()) with check (user_id = auth.uid());
+  create policy "clear own"                  on public.notifications for delete using (user_id = auth.uid());
   -- reports
   create policy "file a report"              on public.reports for insert with check (reporter_id = auth.uid());
   create policy "moderators read reports"    on public.reports for select using (public.is_moderator(auth.uid()));

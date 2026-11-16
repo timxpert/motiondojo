@@ -3,7 +3,7 @@
    in supabase/schema.sql; this file only shapes the data for the UI. */
 
 import { createClient, type SupabaseClient } from '@supabase/supabase-js';
-import type { Comment, ConnectApi, Conversation, Message, Post, Profile, ProfileInput, StudentFilter } from './types';
+import type { Comment, ConnectApi, ConnectionStatus, Conversation, Message, Notice, Post, Profile, ProfileInput, StudentFilter } from './types';
 
 const POST_SELECT = '*, author:profiles!posts_author_id_fkey(*)';
 
@@ -23,15 +23,18 @@ export function createLiveApi(url: string, anonKey: string, redirectTo: string):
     return id;
   };
 
-  /** Adds like/comment counts and "liked by me" to raw post rows */
-  async function decorate(rows: (Omit<Post, 'likes' | 'comments' | 'liked'>)[]): Promise<Post[]> {
+  /** Adds like/comment counts and "liked/saved by me" to raw post rows */
+  async function decorate(rows: (Omit<Post, 'likes' | 'comments' | 'liked' | 'saved'>)[]): Promise<Post[]> {
     if (rows.length === 0) return [];
     const ids = rows.map((r) => r.id);
     const me = await uid();
-    const [{ data: stats }, mine] = await Promise.all([
+    const none = Promise.resolve({ data: [] });
+    const [{ data: stats }, mine, saves] = await Promise.all([
       sb.from('post_stats').select('*').in('post_id', ids),
-      me ? sb.from('likes').select('post_id').eq('user_id', me).in('post_id', ids) : Promise.resolve({ data: [] }),
+      me ? sb.from('likes').select('post_id').eq('user_id', me).in('post_id', ids) : none,
+      me ? sb.from('bookmarks').select('post_id').eq('user_id', me).in('post_id', ids) : none,
     ]);
+    const saved = new Set(((saves as { data: { post_id: string }[] | null }).data ?? []).map((b) => b.post_id));
     const byId = new Map<string, { likes: number; comments: number }>(
       ((stats ?? []) as { post_id: string; likes: number; comments: number }[]).map((s) => [s.post_id, s]),
     );
@@ -41,10 +44,11 @@ export function createLiveApi(url: string, anonKey: string, redirectTo: string):
       likes: Number(byId.get(r.id)?.likes ?? 0),
       comments: Number(byId.get(r.id)?.comments ?? 0),
       liked: liked.has(r.id),
+      saved: saved.has(r.id),
     }));
   }
 
-  return {
+  const api: ConnectApi = {
     mode: 'live',
 
     async session() {
@@ -120,40 +124,123 @@ export function createLiveApi(url: string, anonKey: string, redirectTo: string):
     },
     async counts(userId) {
       const head = { count: 'exact' as const, head: true };
-      const [a, b, c] = await Promise.all([
-        sb.from('follows').select('*', head).eq('following_id', userId),
-        sb.from('follows').select('*', head).eq('follower_id', userId),
-        sb.from('posts').select('*', head).eq('author_id', userId),
+      const [a, c] = await Promise.all([
+        sb.from('connections').select('*', head).eq('status', 'accepted').or(`requester_id.eq.${userId},addressee_id.eq.${userId}`),
+        sb.from('posts').select('*', head).eq('author_id', userId).eq('community', false),
       ]);
-      return { followers: a.count ?? 0, following: b.count ?? 0, posts: c.count ?? 0 };
-    },
-    async isFollowing(userId) {
-      const me = await uid();
-      if (!me) return false;
-      const { data } = await sb.from('follows').select('follower_id').eq('follower_id', me).eq('following_id', userId).maybeSingle();
-      return Boolean(data);
-    },
-    async setFollow(userId, on) {
-      const me = await needUid();
-      const { error } = on
-        ? await sb.from('follows').upsert({ follower_id: me, following_id: userId })
-        : await sb.from('follows').delete().eq('follower_id', me).eq('following_id', userId);
-      fail(error);
+      return { connections: a.count ?? 0, posts: c.count ?? 0 };
     },
 
-    async listPosts({ authorId, following, limit = 30 }) {
+    async connectionStatus(userId): Promise<ConnectionStatus> {
+      const me = await uid();
+      if (!me) return 'none';
+      const { data } = await sb
+        .from('connections')
+        .select('requester_id,status')
+        .or(`and(requester_id.eq.${me},addressee_id.eq.${userId}),and(requester_id.eq.${userId},addressee_id.eq.${me})`)
+        .maybeSingle();
+      const row = data as { requester_id: string; status: string } | null;
+      if (!row) return 'none';
+      if (row.status === 'accepted') return 'connected';
+      return row.requester_id === me ? 'requested' : 'incoming';
+    },
+    async requestConnection(userId) {
+      const me = await needUid();
+      const { error } = await sb.from('connections').insert({ requester_id: me, addressee_id: userId });
+      if (error?.code === '23505') throw new Error('There’s already a request between you two.');
+      if (error?.message.includes('blocked')) throw new Error('You can’t connect with this member.');
+      fail(error);
+    },
+    async answerRequest(userId, accept) {
+      const me = await needUid();
+      const q = sb.from('connections');
+      const { error } = accept
+        ? await q.update({ status: 'accepted' }).eq('requester_id', userId).eq('addressee_id', me)
+        : await q.delete().eq('requester_id', userId).eq('addressee_id', me);
+      fail(error);
+    },
+    async removeConnection(userId) {
+      const me = await needUid();
+      const { error } = await sb
+        .from('connections')
+        .delete()
+        .or(`and(requester_id.eq.${me},addressee_id.eq.${userId}),and(requester_id.eq.${userId},addressee_id.eq.${me})`);
+      fail(error);
+    },
+    async listConnections() {
+      const me = await needUid();
+      const { data, error } = await sb
+        .from('connections')
+        .select('requester_id, r:profiles!connections_requester_id_fkey(*), a:profiles!connections_addressee_id_fkey(*)')
+        .eq('status', 'accepted')
+        .or(`requester_id.eq.${me},addressee_id.eq.${me}`)
+        .order('accepted_at', { ascending: false });
+      fail(error);
+      return ((data ?? []) as { requester_id: string; r: Profile; a: Profile }[]).map((c) => (c.requester_id === me ? c.a : c.r));
+    },
+    async listRequests() {
+      const me = await needUid();
+      const sel = 'requester_id, r:profiles!connections_requester_id_fkey(*), a:profiles!connections_addressee_id_fkey(*)';
+      const [inc, out] = await Promise.all([
+        sb.from('connections').select(sel).eq('status', 'pending').eq('addressee_id', me).order('created_at', { ascending: false }),
+        sb.from('connections').select(sel).eq('status', 'pending').eq('requester_id', me).order('created_at', { ascending: false }),
+      ]);
+      fail(inc.error || out.error);
+      return {
+        incoming: ((inc.data ?? []) as { r: Profile }[]).map((c) => c.r),
+        sent: ((out.data ?? []) as { a: Profile }[]).map((c) => c.a),
+      };
+    },
+
+    async listNotices() {
+      await needUid();
+      const { data, error } = await sb
+        .from('notifications')
+        .select('id, kind, post_id, read_at, created_at, actor:profiles!notifications_actor_id_fkey(*)')
+        .order('created_at', { ascending: false })
+        .limit(60);
+      fail(error);
+      return (data ?? []) as Notice[];
+    },
+    async unreadCount() {
+      if (!(await uid())) return 0;
+      const { count } = await sb.from('notifications').select('*', { count: 'exact', head: true }).is('read_at', null);
+      return count ?? 0;
+    },
+    async markNoticesRead() {
+      const me = await needUid();
+      await sb.from('notifications').update({ read_at: new Date().toISOString() }).eq('user_id', me).is('read_at', null);
+    },
+
+    async listPosts({ authorId, feed = 'everyone', limit = 30 }) {
       let q = sb.from('posts').select(POST_SELECT).order('created_at', { ascending: false }).limit(limit);
-      if (authorId) q = q.eq('author_id', authorId);
-      if (following) {
-        const me = await needUid();
-        const { data: f } = await sb.from('follows').select('following_id').eq('follower_id', me);
-        const ids = (f ?? []).map((r: { following_id: string }) => r.following_id);
-        if (ids.length === 0) return [];
-        q = q.in('author_id', ids);
+      if (authorId) q = q.eq('author_id', authorId).eq('community', false);
+      else q = q.eq('community', feed === 'community');
+      if (feed === 'connections' && !authorId) {
+        const people = await api.listConnections();
+        if (people.length === 0) return [];
+        q = q.in('author_id', people.map((p) => p.id));
       }
       const { data, error } = await q;
       fail(error);
       return decorate((data ?? []) as Post[]);
+    },
+    async listSaved() {
+      const me = await needUid();
+      const { data, error } = await sb
+        .from('bookmarks')
+        .select(`created_at, post:posts(${POST_SELECT})`)
+        .eq('user_id', me)
+        .order('created_at', { ascending: false });
+      fail(error);
+      return decorate(((data ?? []) as { post: Post | null }[]).map((b) => b.post).filter((p): p is Post => Boolean(p)));
+    },
+    async setSaved(postId, on) {
+      const me = await needUid();
+      const { error } = on
+        ? await sb.from('bookmarks').upsert({ user_id: me, post_id: postId })
+        : await sb.from('bookmarks').delete().eq('user_id', me).eq('post_id', postId);
+      fail(error);
     },
     async getPost(id) {
       const { data } = await sb.from('posts').select(POST_SELECT).eq('id', id).maybeSingle();
@@ -163,7 +250,9 @@ export function createLiveApi(url: string, anonKey: string, redirectTo: string):
     async createPost(input) {
       const me = await needUid();
       const { data, error } = await sb.from('posts').insert({ ...input, author_id: me }).select(POST_SELECT).single();
-      if (error?.message.includes('row-level security')) throw new Error('Only Keyframe Ninjas can post work.');
+      if (error?.message.includes('row-level security')) {
+        throw new Error(input.community ? 'Only the grand sensei can post to the Community feed.' : 'Only Keyframe Ninjas can post work.');
+      }
       fail(error);
       return (await decorate([data as Post]))[0];
     },
@@ -224,7 +313,7 @@ export function createLiveApi(url: string, anonKey: string, redirectTo: string):
     },
     async openConversation(userId) {
       const { data, error } = await sb.rpc('open_conversation', { other: userId });
-      if (error?.message.includes('closed')) throw new Error('This member only accepts messages from Keyframe Ninjas.');
+      if (error?.message.includes('not connected')) throw new Error('Connect with this member before messaging them.');
       if (error?.message.includes('blocked')) throw new Error('You can’t message this member.');
       fail(error);
       return data as string;
@@ -271,6 +360,7 @@ export function createLiveApi(url: string, anonKey: string, redirectTo: string):
       return Boolean(data);
     },
   };
+  return api;
 }
 
 export type { ProfileInput };

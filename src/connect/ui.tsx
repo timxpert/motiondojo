@@ -74,6 +74,16 @@ const PATHS = {
     </>
   ),
   out: <path d="M7 17 17 7M9 7h8v8" />,
+  bookmark: <path d="M6.5 4h11v16l-5.5-4-5.5 4z" />,
+  bell: <path d="M6 16V11a6 6 0 0 1 12 0v5l1.5 2h-15zM10 20.5a2 2 0 0 0 4 0" />,
+  link2: (
+    <>
+      <circle cx="8" cy="12" r="4" />
+      <circle cx="16" cy="12" r="4" />
+    </>
+  ),
+  check: <path d="m5 12.5 4.5 4.5L19 7.5" />,
+  close: <path d="M6 6l12 12M18 6 6 18" />,
 };
 export type IconName = keyof typeof PATHS;
 
@@ -106,7 +116,7 @@ export function A({ path, className, children, ...rest }: { path: string; classN
 }
 
 /* ---------- People ---------- */
-const TINTS = ['#6d32e8', '#140a2e', '#a77bff', '#2b1a5c'];
+const TINTS = ['#1c1c1b', '#3a3a38', '#5c5c59', '#2a2a29'];
 export function Avatar({ p, size = 44 }: { p: Pick<Profile, 'name' | 'avatar_url' | 'handle'>; size?: number }) {
   const initials = p.name
     .replace(/\(.*?\)/g, '')
@@ -133,6 +143,10 @@ export function NinjaBadge({ small = false }: { small?: boolean }) {
       {small && <span className="sr-only">Keyframe Ninja</span>}
     </span>
   );
+}
+
+export function SenseiBadge() {
+  return <span className="cx-badge cx-badge-sensei">Grand Sensei</span>;
 }
 
 export function SampleTag() {
@@ -162,6 +176,7 @@ export function PersonLine({ p, when }: { p: Profile; when?: string }) {
       <span className="cx-person-text">
         <span className="cx-person-name">
           {p.name}
+          {p.is_sensei && <SenseiBadge />}
           {p.is_student && <NinjaBadge small />}
           {p.sample && <SampleTag />}
         </span>
@@ -237,12 +252,37 @@ export function LikeButton({ post, onChange }: { post: Post; onChange?: (p: Post
   );
 }
 
+export function SaveButton({ post }: { post: Post }) {
+  const { api, signedIn, me, toast } = useConnect();
+  const [saved, setSaved] = useState(post.saved);
+  if (signedIn && me && me.id === post.author_id) return null;
+  const toggle = async () => {
+    if (!signedIn || !me) {
+      toast('Sign in to save projects.');
+      return;
+    }
+    setSaved(!saved);
+    try {
+      await api.setSaved(post.id, !saved);
+      toast(saved ? 'Removed from Saved.' : 'Saved. Find it under Saved in your menu.');
+    } catch (e) {
+      setSaved(saved);
+      toast((e as Error).message);
+    }
+  };
+  return (
+    <button type="button" className={saved ? 'cx-act is-saved' : 'cx-act'} onClick={toggle} aria-pressed={saved} aria-label={saved ? 'Remove from saved' : 'Save project'}>
+      <Icon name="bookmark" filled={saved} />
+    </button>
+  );
+}
+
 export function PostCard({ post }: { post: Post }) {
   return (
-    <article className="cx-post">
+    <article className={post.community ? 'cx-post cx-post-community' : 'cx-post'}>
       <header className="cx-post-head">
         <PersonLine p={post.author} when={post.created_at} />
-        {post.tag === 'feedback' && <span className="cx-tag">Wants feedback</span>}
+        {post.community ? <span className="cx-tag">Community</span> : post.tag === 'feedback' && <span className="cx-tag">Wants feedback</span>}
       </header>
       <A path={`/p/${post.id}`} className="cx-post-media" aria-label="Open post">
         <Media post={post} />
@@ -254,6 +294,8 @@ export function PostCard({ post }: { post: Post }) {
           <Icon name="comment" />
           <span>{post.comments}</span>
         </A>
+        <span className="cx-spacer" />
+        <SaveButton post={post} />
       </footer>
     </article>
   );

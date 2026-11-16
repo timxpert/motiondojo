@@ -4,32 +4,46 @@ import React, { useCallback, useEffect, useState } from 'react';
 import { useConnect } from './context';
 import { navigate } from './router';
 import { socialUrl, timeAgo } from './media';
-import { PHASES, SKILLS, type Comment, type Post, type Profile } from './types';
-import { A, Avatar, Empty, Icon, LikeButton, Loading, Media, NinjaBadge, PersonLine, PhaseTrack, PostCard, SampleTag } from './ui';
+import { PHASES, SKILLS, type Comment, type ConnectionStatus, type Post, type Profile } from './types';
+import { A, Avatar, Empty, Icon, LikeButton, Loading, Media, NinjaBadge, PersonLine, PhaseTrack, PostCard, SampleTag, SaveButton, SenseiBadge } from './ui';
 
 /* ================= Feed ================= */
+type FeedName = 'community' | 'everyone' | 'connections';
+const FEEDS: { key: FeedName; label: string; needsAccount?: boolean }[] = [
+  { key: 'community', label: 'Community' },
+  { key: 'everyone', label: 'Everyone' },
+  { key: 'connections', label: 'Connections', needsAccount: true },
+];
+
 export function Feed() {
   const { api, me, signedIn } = useConnect();
-  const [tab, setTab] = useState<'all' | 'following'>('all');
+  const [tab, setTab] = useState<FeedName>('community');
   const [posts, setPosts] = useState<Post[] | null>(null);
 
   useEffect(() => {
     let live = true;
     setPosts(null);
-    api.listPosts({ following: tab === 'following' }).then((p) => live && setPosts(p)).catch(() => live && setPosts([]));
+    api.listPosts({ feed: tab }).then((p) => live && setPosts(p)).catch(() => live && setPosts([]));
     return () => {
       live = false;
     };
   }, [api, tab]);
 
+  const canShare = me?.is_student || me?.is_sensei;
+  const intro: Record<FeedName, string> = {
+    community: 'Updates, briefs and news from the grand sensei.',
+    everyone: 'Work from every Keyframe Ninja, newest first.',
+    connections: 'Work from the people you’re connected with.',
+  };
+
   return (
     <div className="cx-col">
       <div className="cx-intro">
-        <h1 className="cx-h1">What the Ninjas are making</h1>
-        <p>Keyframe Ninjas are the students of Black Belt in Motion Design. This is where they post what they’re working on.</p>
-        {me?.is_student && (
+        <h1 className="cx-h1">Feed</h1>
+        <p>{intro[tab]}</p>
+        {canShare && (
           <A path="/new" className="btn btn-primary btn-sm">
-            <Icon name="plus" size={18} /> Share your work
+            <Icon name="plus" size={18} /> {me?.is_sensei ? 'Post to the community' : 'Share your work'}
           </A>
         )}
         {!signedIn && (
@@ -39,24 +53,24 @@ export function Feed() {
         )}
       </div>
 
-      {signedIn && (
-        <div className="cx-tabs" role="tablist" aria-label="Feed">
-          {(['all', 'following'] as const).map((t) => (
-            <button key={t} type="button" role="tab" aria-selected={tab === t} className={tab === t ? 'is-on' : ''} onClick={() => setTab(t)}>
-              {t === 'all' ? 'Everyone' : 'Following'}
-            </button>
-          ))}
-        </div>
-      )}
+      <div className="cx-tabs" role="tablist" aria-label="Feed">
+        {FEEDS.filter((f) => !f.needsAccount || me).map((f) => (
+          <button key={f.key} type="button" role="tab" aria-selected={tab === f.key} className={tab === f.key ? 'is-on' : ''} onClick={() => setTab(f.key)}>
+            {f.label}
+          </button>
+        ))}
+      </div>
 
       {posts === null ? (
         <Loading label="Loading posts" />
       ) : posts.length === 0 ? (
-        <Empty title={tab === 'following' ? 'Nothing here yet' : 'No posts yet'}>
-          {tab === 'following' ? (
+        <Empty title="Nothing here yet">
+          {tab === 'connections' ? (
             <p>
-              Follow a few Ninjas from the <A path="/students">students page</A> and their work shows up here.
+              Connect with Ninjas from the <A path="/students">students page</A> and their work shows up here.
             </p>
+          ) : tab === 'community' ? (
+            <p>Posts from the grand sensei will appear here.</p>
           ) : (
             <p>When Keyframe Ninjas share their work, it appears here.</p>
           )}
@@ -95,7 +109,7 @@ export function Students() {
     <div className="cx-wide">
       <div className="cx-intro">
         <h1 className="cx-h1">Keyframe Ninjas</h1>
-        <p>Everyone learning on Black Belt in Motion Design. Open a profile to follow their progress or say hello.</p>
+        <p>Everyone learning on Black Belt in Motion Design. Open a profile to see their work or connect.</p>
       </div>
 
       <div className="cx-filters">
@@ -169,8 +183,9 @@ export function ProfileScreen({ handle }: { handle: string }) {
   const { api, me, signedIn, toast, ask } = useConnect();
   const [p, setP] = useState<Profile | null | undefined>(undefined);
   const [posts, setPosts] = useState<Post[] | null>(null);
-  const [counts, setCounts] = useState({ followers: 0, following: 0, posts: 0 });
-  const [following, setFollowing] = useState(false);
+  const [counts, setCounts] = useState({ connections: 0, posts: 0 });
+  const [status, setStatus] = useState<ConnectionStatus>('none');
+  const [busy, setBusy] = useState(false);
   const [menu, setMenu] = useState(false);
   const [blocked, setBlocked] = useState(false);
 
@@ -181,11 +196,11 @@ export function ProfileScreen({ handle }: { handle: string }) {
       if (!live) return;
       setP(prof);
       if (!prof) return;
-      const [ps, c, f, b] = await Promise.all([api.listPosts({ authorId: prof.id }), api.counts(prof.id), api.isFollowing(prof.id), api.isBlocked(prof.id)]);
+      const [ps, c, st, b] = await Promise.all([api.listPosts({ authorId: prof.id }), api.counts(prof.id), api.connectionStatus(prof.id), api.isBlocked(prof.id)]);
       if (!live) return;
       setPosts(ps);
       setCounts(c);
-      setFollowing(f);
+      setStatus(st);
       setBlocked(b);
     });
     return () => {
@@ -210,18 +225,29 @@ export function ProfileScreen({ handle }: { handle: string }) {
     { kind: 'website' as const, v: p.website, label: 'Website' },
   ].filter((l) => l.v);
 
-  const follow = async () => {
+  const act = async (fn: () => Promise<void>, next: ConnectionStatus, msg: string) => {
     if (!signedIn) return navigate('/login');
     if (!me) return navigate('/settings');
-    const next = !following;
-    setFollowing(next);
-    setCounts((c) => ({ ...c, followers: c.followers + (next ? 1 : -1) }));
+    setBusy(true);
     try {
-      await api.setFollow(p.id, next);
+      await fn();
+      setStatus(next);
+      if (next === 'connected' || status === 'connected') setCounts((c) => ({ ...c, connections: c.connections + (next === 'connected' ? 1 : -1) }));
+      toast(msg);
     } catch (e) {
-      setFollowing(!next);
       toast((e as Error).message);
+    } finally {
+      setBusy(false);
     }
+  };
+  const connect = () => act(() => api.requestConnection(p.id), 'requested', `Request sent to ${p.name}.`);
+  const cancel = () => act(() => api.removeConnection(p.id), 'none', 'Request cancelled.');
+  const accept = () => act(() => api.answerRequest(p.id, true), 'connected', `You’re connected with ${p.name}.`);
+  const decline = () => act(() => api.answerRequest(p.id, false), 'none', 'Request declined.');
+  const disconnect = async () => {
+    setMenu(false);
+    const ok = await ask({ title: `Remove ${p.name} from your connections?`, body: 'You won’t be able to message each other until one of you connects again.', confirm: 'Remove', danger: true });
+    if (ok) act(() => api.removeConnection(p.id), 'none', 'Connection removed.');
   };
   const message = async () => {
     if (!signedIn) return navigate('/login');
@@ -245,6 +271,7 @@ export function ProfileScreen({ handle }: { handle: string }) {
     if (!signedIn) return navigate('/login');
     await api.setBlock(p.id, !blocked);
     setBlocked(!blocked);
+    if (!blocked) setStatus('none');
     toast(blocked ? `Unblocked ${p.name}.` : `Blocked ${p.name}. They can’t message you.`);
   };
 
@@ -261,7 +288,7 @@ export function ProfileScreen({ handle }: { handle: string }) {
             {p.country && <> · {p.country}</>}
           </p>
           <div className="cx-profile-badges">
-            {p.is_student ? <NinjaBadge /> : <span className="cx-member">Community member</span>}
+            {p.is_sensei ? <SenseiBadge /> : p.is_student ? <NinjaBadge /> : <span className="cx-member">Community member</span>}
             {p.phase && <PhaseTrack phase={p.phase} />}
           </div>
           {p.bio && <p className="cx-bio">{p.bio}</p>}
@@ -278,12 +305,8 @@ export function ProfileScreen({ handle }: { handle: string }) {
               <dd>{counts.posts}</dd>
             </div>
             <div>
-              <dt>Followers</dt>
-              <dd>{counts.followers}</dd>
-            </div>
-            <div>
-              <dt>Following</dt>
-              <dd>{counts.following}</dd>
+              <dt>Connections</dt>
+              <dd>{counts.connections}</dd>
             </div>
           </dl>
           <div className="cx-profile-actions">
@@ -293,13 +316,35 @@ export function ProfileScreen({ handle }: { handle: string }) {
               </A>
             ) : (
               <>
-                <button type="button" className={following ? 'btn btn-light btn-sm' : 'btn btn-primary btn-sm'} onClick={follow} aria-pressed={following}>
-                  {following ? 'Following' : 'Follow'}
-                </button>
-                {!blocked && (
-                  <button type="button" className="btn btn-lime btn-sm" onClick={message}>
-                    Message
+                {!blocked && status === 'none' && (
+                  <button type="button" className="btn btn-primary btn-sm" onClick={connect} disabled={busy}>
+                    <Icon name="link2" size={18} /> Connect
                   </button>
+                )}
+                {status === 'requested' && (
+                  <button type="button" className="btn btn-light btn-sm" onClick={cancel} disabled={busy} title="Cancel request">
+                    Requested
+                  </button>
+                )}
+                {status === 'incoming' && (
+                  <>
+                    <button type="button" className="btn btn-primary btn-sm" onClick={accept} disabled={busy}>
+                      Accept
+                    </button>
+                    <button type="button" className="btn btn-light btn-sm" onClick={decline} disabled={busy}>
+                      Decline
+                    </button>
+                  </>
+                )}
+                {status === 'connected' && (
+                  <>
+                    <span className="cx-connected">
+                      <Icon name="check" size={18} /> Connected
+                    </span>
+                    <button type="button" className="btn btn-primary btn-sm" onClick={message}>
+                      Message
+                    </button>
+                  </>
                 )}
                 <div className="cx-menu">
                   <button type="button" className="cx-icon-btn" aria-label="More options" aria-expanded={menu} onClick={() => setMenu((m) => !m)}>
@@ -307,6 +352,11 @@ export function ProfileScreen({ handle }: { handle: string }) {
                   </button>
                   {menu && (
                     <div className="cx-menu-list" role="menu">
+                      {status === 'connected' && (
+                        <button type="button" role="menuitem" onClick={disconnect}>
+                          Remove connection
+                        </button>
+                      )}
                       <button type="button" role="menuitem" onClick={report}>
                         Report profile
                       </button>
@@ -443,6 +493,7 @@ export function PostScreen({ id }: { id: string }) {
             <span>{comments.length}</span>
           </span>
           <span className="cx-spacer" />
+          <SaveButton post={post} />
           {canModerate ? (
             <button type="button" className="cx-text-btn" onClick={removePost}>
               Delete

@@ -77,6 +77,9 @@ export function Login() {
               <button type="button" className="btn btn-light btn-sm" onClick={() => api.demoSignIn!('visitor')}>
                 Sample visitor
               </button>
+              <button type="button" className="btn btn-light btn-sm" onClick={() => api.demoSignIn!('sensei')}>
+                Sample grand sensei
+              </button>
             </div>
           </div>
         )}
@@ -106,7 +109,6 @@ export function Settings() {
     instagram: '',
     youtube: '',
     website: '',
-    open_messages: true,
     avatar_url: null as string | null,
   });
   const [err, setErr] = useState('');
@@ -125,7 +127,6 @@ export function Settings() {
         instagram: me.instagram,
         youtube: me.youtube,
         website: me.website,
-        open_messages: me.open_messages,
         avatar_url: me.avatar_url,
       });
     }
@@ -230,7 +231,7 @@ export function Settings() {
           </div>
         </fieldset>
 
-        {me?.is_student && (
+        {me?.is_student && !me.is_sensei && (
           <label className="field">
             <span>Your Black Belt phase</span>
             <select value={f.phase ?? ''} onChange={(e) => set('phase', e.target.value ? Number(e.target.value) : null)}>
@@ -260,11 +261,6 @@ export function Settings() {
           </label>
         </fieldset>
 
-        <label className="cx-check">
-          <input type="checkbox" checked={!f.open_messages} onChange={(e) => set('open_messages', !e.target.checked)} />
-          <span>Only Keyframe Ninjas can message me</span>
-        </label>
-
         {err && (
           <p className="cx-error" role="alert">
             {err}
@@ -275,7 +271,7 @@ export function Settings() {
         </button>
       </form>
 
-      {me && !me.is_student && (
+      {me && !me.is_student && !me.is_sensei && (
         <div className="cx-panel cx-verify">
           <h2 className="cx-h2">Are you on Black Belt in Motion Design?</h2>
           <p className="cx-muted">If you enrolled with this email, check again. If you paid another way, enter the invite code from the community manager.</p>
@@ -307,12 +303,13 @@ export function NewPost() {
   const [tag, setTag] = useState<'sharing' | 'feedback'>('sharing');
   const [busy, setBusy] = useState(false);
   const [err, setErr] = useState('');
+  const sensei = Boolean(me?.is_sensei);
 
   if (me === undefined) return <Loading />;
-  if (!me?.is_student) {
+  if (!me?.is_student && !sensei) {
     return (
       <Empty title="Posting is for Keyframe Ninjas">
-        <p>Students on Black Belt in Motion Design share their work here. Everyone can like, comment and follow.</p>
+        <p>Students on Black Belt in Motion Design share their work here. Everyone can like, comment, save and connect.</p>
       </Empty>
     );
   }
@@ -336,8 +333,8 @@ export function NewPost() {
     if (!ready) return setErr(kind === 'image' ? 'Add an image first.' : 'Paste a YouTube, Vimeo, Instagram or TikTok link.');
     setBusy(true);
     try {
-      const p = await api.createPost({ kind, media_url: kind === 'image' ? image! : url.trim(), caption: caption.trim(), tag });
-      toast('Posted.');
+      const p = await api.createPost({ kind, media_url: kind === 'image' ? image! : url.trim(), caption: caption.trim(), tag, community: sensei });
+      toast(sensei ? 'Posted to the Community feed. Every student has been notified.' : 'Posted.');
       navigate(`/p/${p.id}`);
     } catch (e2) {
       setErr((e2 as Error).message);
@@ -349,7 +346,8 @@ export function NewPost() {
   return (
     <div className="cx-narrow">
       <form className="cx-panel cx-form" onSubmit={submit} noValidate>
-        <h1 className="cx-h1">Share your work</h1>
+        <h1 className="cx-h1">{sensei ? 'Post to the community' : 'Share your work'}</h1>
+        {sensei && <p className="cx-muted">This goes to the Community feed, and every Keyframe Ninja gets a notification.</p>}
 
         <div className="cx-seg" role="radiogroup" aria-label="What are you sharing?">
           {(['video', 'image'] as const).map((k) => (
@@ -379,6 +377,7 @@ export function NewPost() {
           <textarea rows={3} maxLength={1000} value={caption} placeholder="What did you make, and what did you learn?" onChange={(e) => setCaption(e.target.value)} />
         </label>
 
+        {!sensei && (
         <div className="cx-seg" role="radiogroup" aria-label="What do you want from people?">
           <button type="button" role="radio" aria-checked={tag === 'sharing'} className={tag === 'sharing' ? 'is-on' : ''} onClick={() => setTag('sharing')}>
             Just sharing
@@ -387,6 +386,7 @@ export function NewPost() {
             I want feedback
           </button>
         </div>
+        )}
 
         {err && (
           <p className="cx-error" role="alert">
@@ -394,7 +394,7 @@ export function NewPost() {
           </p>
         )}
         <button type="submit" className="btn btn-primary" disabled={busy}>
-          {busy ? 'Posting…' : 'Post'}
+          {busy ? 'Posting…' : sensei ? 'Post and notify students' : 'Post'}
         </button>
       </form>
     </div>

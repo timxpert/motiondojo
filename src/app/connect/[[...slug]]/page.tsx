@@ -9,7 +9,7 @@ const description =
 export const metadata: Metadata = {
   title,
   description,
-  openGraph: { title, description, url: 'https://connect.joinmotiondojo.com' },
+  openGraph: { title, description },
   twitter: { title, description },
 };
 

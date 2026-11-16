@@ -3,7 +3,7 @@
    be clicked through before Supabase is connected. Every sample profile is
    flagged `sample: true` and the UI labels it. Nothing here is real. */
 
-import type { Comment, ConnectApi, Conversation, Message, Post, Profile } from './types';
+import type { Comment, ConnectApi, ConnectionStatus, Conversation, Message, Notice, Post, Profile } from './types';
 
 const now = Date.now();
 const ago = (h: number) => new Date(now - h * 3600_000).toISOString();
@@ -26,9 +26,9 @@ function profile(p: Partial<Profile> & Pick<Profile, 'id' | 'handle' | 'name'>):
     instagram: '',
     youtube: '',
     website: '',
-    open_messages: true,
     is_student: true,
     is_moderator: false,
+    is_sensei: false,
     created_at: ago(24 * 30),
     sample: true,
     ...p,
@@ -42,15 +42,17 @@ const people: Profile[] = [
   profile({ id: 's4', handle: 'sample_kemi', name: 'Kemi', country: 'Nigeria', phase: 4, skills: ['Product visuals', '2D animation', 'Sound design'], bio: 'Sample profile for the preview. Building my portfolio in phase four.' }),
   profile({ id: 's5', handle: 'sample_jide', name: 'Jide', country: 'Kenya', phase: 2, skills: ['Video editing', 'AI video'], bio: 'Sample profile for the preview. Editor learning motion.' }),
   profile({ id: 'v1', handle: 'sample_visitor', name: 'Visitor', is_student: false, phase: null, bio: 'Sample visitor account for the preview.' }),
+  profile({ id: 'g1', handle: 'sample_sensei', name: 'Grand Sensei', is_student: false, is_sensei: true, phase: null, bio: 'Sample grand sensei account for the preview.' }),
 ];
 
-type RawPost = Omit<Post, 'author' | 'likes' | 'comments' | 'liked'>;
+type RawPost = Omit<Post, 'author' | 'likes' | 'comments' | 'liked' | 'saved'>;
 let posts: RawPost[] = [
-  { id: 'p1', author_id: 's2', kind: 'image', media_url: art('#140a2e', '#a77bff', '#c8ff3d', 0), caption: 'Sample post: first logo reveal I’m happy with. The overshoot on the last keyframe took a while.', tag: 'sharing', created_at: ago(3) },
-  { id: 'p2', author_id: 's1', kind: 'image', media_url: art('#6d32e8', '#f7f5ff', '#c8ff3d', 80), caption: 'Sample post: kinetic type practice. Does the ease feel too slow at the end?', tag: 'feedback', created_at: ago(9) },
-  { id: 'p3', author_id: 's4', kind: 'image', media_url: art('#c8ff3d', '#140a2e', '#6d32e8', 40), caption: 'Sample post: product turn for my portfolio, phase four project.', tag: 'sharing', created_at: ago(26) },
-  { id: 'p4', author_id: 's3', kind: 'image', media_url: art('#f6f4fb', '#6d32e8', '#140a2e', 120), caption: 'Sample post: day three of daily practice. Bouncing ball, take two.', tag: 'feedback', created_at: ago(50) },
-  { id: 'p5', author_id: 's5', kind: 'image', media_url: art('#140a2e', '#c8ff3d', '#a77bff', 60), caption: 'Sample post: transition study between two scenes.', tag: 'sharing', created_at: ago(80) },
+  { id: 'a1', author_id: 'g1', kind: 'image', media_url: art('#161616', '#f4f4f2', '#9a9a96', 30), caption: 'Sample community post: this week’s practice brief is a 5-second logo reveal. Post yours with the “I want feedback” tag by Friday.', tag: 'sharing', community: true, created_at: ago(2) },
+  { id: 'p1', author_id: 's2', kind: 'image', media_url: art('#1c1c1b', '#d6d6d2', '#f4f4f2', 0), caption: 'Sample post: first logo reveal I’m happy with. The overshoot on the last keyframe took a while.', tag: 'sharing', community: false, created_at: ago(3) },
+  { id: 'p2', author_id: 's1', kind: 'image', media_url: art('#3a3a38', '#f4f4f2', '#bdbdb8', 80), caption: 'Sample post: kinetic type practice. Does the ease feel too slow at the end?', tag: 'feedback', community: false, created_at: ago(9) },
+  { id: 'p3', author_id: 's4', kind: 'image', media_url: art('#e6e6e3', '#1c1c1b', '#5c5c59', 40), caption: 'Sample post: product turn for my portfolio, phase four project.', tag: 'sharing', community: false, created_at: ago(26) },
+  { id: 'p4', author_id: 's3', kind: 'image', media_url: art('#f4f4f2', '#5c5c59', '#1c1c1b', 120), caption: 'Sample post: day three of daily practice. Bouncing ball, take two.', tag: 'feedback', community: false, created_at: ago(50) },
+  { id: 'p5', author_id: 's5', kind: 'image', media_url: art('#2a2a29', '#bdbdb8', '#f4f4f2', 60), caption: 'Sample post: transition study between two scenes.', tag: 'sharing', community: false, created_at: ago(80) },
 ];
 let likes = new Set<string>(['p1:s1', 'p1:s4', 'p2:s2', 'p3:s1', 'p3:s2', 'p3:s5']);
 let comments: Omit<Comment, 'author'>[] = [
@@ -58,7 +60,21 @@ let comments: Omit<Comment, 'author'>[] = [
   { id: 'c2', post_id: 'p2', author_id: 's2', body: 'Sample comment: agree, the rest feels smooth.', created_at: ago(7) },
   { id: 'c3', post_id: 'p1', author_id: 's1', body: 'Sample comment: that overshoot is clean.', created_at: ago(2) },
 ];
-let follows = new Set<string>(['s1:s2', 's1:s4', 's3:s4', 'v1:s2']);
+/** requester:addressee -> status */
+let links = new Map<string, 'pending' | 'accepted'>([
+  ['s1:s2', 'accepted'],
+  ['s4:s1', 'accepted'],
+  ['s3:s1', 'pending'],
+  ['s5:s3', 'accepted'],
+]);
+let saves = new Set<string>(['s1:p3']);
+let notices: { id: string; user: string; kind: Notice['kind']; actor: string; post: string | null; read: boolean; at: string }[] = [
+  { id: 'n1', user: 's1', kind: 'community_post', actor: 'g1', post: 'a1', read: false, at: ago(2) },
+  { id: 'n2', user: 's1', kind: 'connection_request', actor: 's3', post: null, read: false, at: ago(4) },
+];
+const linkOf = (x: string, y: string) => (links.has(`${x}:${y}`) ? `${x}:${y}` : links.has(`${y}:${x}`) ? `${y}:${x}` : null);
+const notify = (user: string, kind: Notice['kind'], actor: string, post: string | null = null) =>
+  notices.unshift({ id: nid(), user, kind, actor, post, read: false, at: new Date().toISOString() });
 let blocks = new Set<string>();
 let convs: { id: string; a: string; b: string; last: string }[] = [{ id: 'm1', a: 's1', b: 's2', last: ago(5) }];
 let messages: Message[] = [
@@ -80,6 +96,7 @@ function full(p: RawPost): Post {
     likes: all.length,
     comments: comments.filter((c) => c.post_id === p.id).length,
     liked: current ? likes.has(`${p.id}:${current}`) : false,
+    saved: current ? saves.has(`${current}:${p.id}`) : false,
   };
 }
 const needMe = () => {
@@ -99,7 +116,7 @@ export function createDemoApi(): ConnectApi {
       throw new Error('Email sign-in works once Supabase is connected. In this preview, use the sample accounts below.');
     },
     async demoSignIn(as) {
-      current = as === 'student' ? 's1' : 'v1';
+      current = as === 'student' ? 's1' : as === 'sensei' ? 'g1' : 'v1';
       emit();
     },
     async signOut() {
@@ -146,32 +163,91 @@ export function createDemoApi(): ConnectApi {
     getProfile: (h) => wait(people.find((p) => p.handle === h.toLowerCase()) ?? null),
     counts: (id) =>
       wait({
-        followers: [...follows].filter((k) => k.endsWith(':' + id)).length,
-        following: [...follows].filter((k) => k.startsWith(id + ':')).length,
-        posts: posts.filter((p) => p.author_id === id).length,
+        connections: [...links].filter(([k, v]) => v === 'accepted' && k.split(':').includes(id)).length,
+        posts: posts.filter((p) => p.author_id === id && !p.community).length,
       }),
-    isFollowing: (id) => wait(Boolean(current && follows.has(`${current}:${id}`))),
-    async setFollow(id, on) {
-      const k = `${needMe()}:${id}`;
-      if (on) follows.add(k);
-      else follows.delete(k);
+    connectionStatus(id): Promise<ConnectionStatus> {
+      if (!current) return wait('none');
+      const k = linkOf(current, id);
+      if (!k) return wait('none');
+      if (links.get(k) === 'accepted') return wait('connected');
+      return wait(k.startsWith(current + ':') ? 'requested' : 'incoming');
+    },
+    async requestConnection(id) {
+      const me = needMe();
+      if (linkOf(me, id)) throw new Error('There’s already a request between you two.');
+      if (blocks.has(`${me}:${id}`) || blocks.has(`${id}:${me}`)) throw new Error('You can’t connect with this member.');
+      links.set(`${me}:${id}`, 'pending');
+      notify(id, 'connection_request', me);
+    },
+    async answerRequest(id, accept) {
+      const me = needMe();
+      const k = `${id}:${me}`;
+      if (!links.has(k)) return;
+      notices = notices.filter((n) => !(n.user === me && n.actor === id && n.kind === 'connection_request'));
+      if (accept) {
+        links.set(k, 'accepted');
+        notify(id, 'connection_accepted', me);
+      } else links.delete(k);
+    },
+    async removeConnection(id) {
+      const k = linkOf(needMe(), id);
+      if (k) links.delete(k);
+    },
+    listConnections() {
+      const me = needMe();
+      return wait([...links].filter(([k, v]) => v === 'accepted' && k.split(':').includes(me)).map(([k]) => who(k.split(':').find((x) => x !== me)!)));
+    },
+    listRequests() {
+      const me = needMe();
+      const pend = [...links].filter(([, v]) => v === 'pending').map(([k]) => k.split(':'));
+      return wait({
+        incoming: pend.filter(([, b]) => b === me).map(([a]) => who(a)),
+        sent: pend.filter(([a]) => a === me).map(([, b]) => who(b)),
+      });
+    },
+    listNotices() {
+      const me = needMe();
+      return wait(
+        notices
+          .filter((n) => n.user === me)
+          .map<Notice>((n) => ({ id: n.id, kind: n.kind, actor: who(n.actor), post_id: n.post, read_at: n.read ? n.at : null, created_at: n.at })),
+      );
+    },
+    unreadCount: () => wait(current ? notices.filter((n) => n.user === current && !n.read).length : 0),
+    async markNoticesRead() {
+      const me = needMe();
+      notices = notices.map((n) => (n.user === me ? { ...n, read: true } : n));
     },
 
-    listPosts({ authorId, following }) {
+    listPosts({ authorId, feed = 'everyone' }) {
       let list = [...posts].sort((a, b) => b.created_at.localeCompare(a.created_at));
-      if (authorId) list = list.filter((p) => p.author_id === authorId);
-      if (following) {
+      if (authorId) list = list.filter((p) => p.author_id === authorId && !p.community);
+      else list = list.filter((p) => p.community === (feed === 'community'));
+      if (feed === 'connections' && !authorId) {
         const me = needMe();
-        list = list.filter((p) => follows.has(`${me}:${p.author_id}`));
+        list = list.filter((p) => links.get(linkOf(me, p.author_id) ?? '') === 'accepted');
       }
       return wait(list.map(full));
+    },
+    listSaved() {
+      const me = needMe();
+      return wait(posts.filter((p) => saves.has(`${me}:${p.id}`)).map(full));
+    },
+    async setSaved(postId, on) {
+      const k = `${needMe()}:${postId}`;
+      if (on) saves.add(k);
+      else saves.delete(k);
     },
     getPost: (id) => wait(posts.find((p) => p.id === id) ? full(posts.find((p) => p.id === id)!) : null),
     async createPost(input) {
       const me = who(needMe());
-      if (!me.is_student) throw new Error('Only Keyframe Ninjas can post work.');
-      const p: RawPost = { id: nid(), author_id: me.id, created_at: new Date().toISOString(), ...input };
+      const community = Boolean(input.community);
+      if (community && !me.is_sensei) throw new Error('Only the grand sensei can post to the Community feed.');
+      if (!community && !me.is_student && !me.is_sensei) throw new Error('Only Keyframe Ninjas can post work.');
+      const p: RawPost = { id: nid(), author_id: me.id, created_at: new Date().toISOString(), ...input, community };
       posts = [p, ...posts];
+      if (community) people.filter((x) => x.is_student).forEach((x) => notify(x.id, 'community_post', me.id, p.id));
       return full(p);
     },
     async deletePost(id) {
@@ -209,7 +285,7 @@ export function createDemoApi(): ConnectApi {
       if (blocks.has(`${me}:${userId}`) || blocks.has(`${userId}:${me}`)) throw new Error('You can’t message this member.');
       const found = convs.find((c) => (c.a === me && c.b === userId) || (c.a === userId && c.b === me));
       if (found) return found.id;
-      if (!who(userId).open_messages && !who(me).is_student) throw new Error('This member only accepts messages from Keyframe Ninjas.');
+      if (links.get(linkOf(me, userId) ?? '') !== 'accepted') throw new Error('Connect with this member before messaging them.');
       const c = { id: nid(), a: me, b: userId, last: new Date().toISOString() };
       convs = [...convs, c];
       return c.id;
@@ -232,7 +308,11 @@ export function createDemoApi(): ConnectApi {
     },
     async setBlock(id, on) {
       const k = `${needMe()}:${id}`;
-      if (on) blocks.add(k);
+      if (on) {
+        blocks.add(k);
+        const l = linkOf(needMe(), id);
+        if (l) links.delete(l);
+      }
       else blocks.delete(k);
     },
     isBlocked: (id) => wait(Boolean(current && blocks.has(`${current}:${id}`))),

@@ -12,9 +12,10 @@ export type Profile = {
   instagram: string;
   youtube: string;
   website: string;
-  open_messages: boolean;
   is_student: boolean;
   is_moderator: boolean;
+  /** The grand sensei: posts to the Community feed */
+  is_sensei: boolean;
   created_at: string;
   /** Preview only: marks invented sample data */
   sample?: boolean;
@@ -27,11 +28,25 @@ export type Post = {
   media_url: string;
   caption: string;
   tag: 'sharing' | 'feedback';
+  /** A grand sensei post on the Community feed */
+  community: boolean;
   created_at: string;
   author: Profile;
   likes: number;
   comments: number;
   liked: boolean;
+  saved: boolean;
+};
+
+export type ConnectionStatus = 'none' | 'requested' | 'incoming' | 'connected';
+
+export type Notice = {
+  id: string;
+  kind: 'community_post' | 'connection_request' | 'connection_accepted';
+  actor: Profile | null;
+  post_id: string | null;
+  read_at: string | null;
+  created_at: string;
 };
 
 export type Comment = {
@@ -59,7 +74,7 @@ export type Message = {
 };
 
 export type ProfileInput = Partial<
-  Pick<Profile, 'handle' | 'name' | 'bio' | 'avatar_url' | 'country' | 'skills' | 'phase' | 'instagram' | 'youtube' | 'website' | 'open_messages'>
+  Pick<Profile, 'handle' | 'name' | 'bio' | 'avatar_url' | 'country' | 'skills' | 'phase' | 'instagram' | 'youtube' | 'website'>
 >;
 
 export type StudentFilter = { q?: string; skill?: string; phase?: number | null };
@@ -72,7 +87,7 @@ export interface ConnectApi {
   onAuthChange(cb: () => void): () => void;
   signIn(email: string): Promise<void>;
   /** Preview only: sign in instantly as a sample student or a sample visitor */
-  demoSignIn?(as: 'student' | 'visitor'): Promise<void>;
+  demoSignIn?(as: 'student' | 'visitor' | 'sensei'): Promise<void>;
   signOut(): Promise<void>;
 
   me(): Promise<Profile | null>;
@@ -84,13 +99,26 @@ export interface ConnectApi {
 
   listStudents(filter: StudentFilter): Promise<Profile[]>;
   getProfile(handle: string): Promise<Profile | null>;
-  counts(userId: string): Promise<{ followers: number; following: number; posts: number }>;
-  isFollowing(userId: string): Promise<boolean>;
-  setFollow(userId: string, on: boolean): Promise<void>;
+  counts(userId: string): Promise<{ connections: number; posts: number }>;
 
-  listPosts(opts: { authorId?: string; following?: boolean; limit?: number }): Promise<Post[]>;
+  connectionStatus(userId: string): Promise<ConnectionStatus>;
+  requestConnection(userId: string): Promise<void>;
+  /** Accept or decline a request someone sent you */
+  answerRequest(userId: string, accept: boolean): Promise<void>;
+  /** Cancel a request you sent, or remove an existing connection */
+  removeConnection(userId: string): Promise<void>;
+  listConnections(): Promise<Profile[]>;
+  listRequests(): Promise<{ incoming: Profile[]; sent: Profile[] }>;
+
+  listNotices(): Promise<Notice[]>;
+  unreadCount(): Promise<number>;
+  markNoticesRead(): Promise<void>;
+
+  listPosts(opts: { authorId?: string; feed?: 'community' | 'everyone' | 'connections'; limit?: number }): Promise<Post[]>;
+  listSaved(): Promise<Post[]>;
+  setSaved(postId: string, on: boolean): Promise<void>;
   getPost(id: string): Promise<Post | null>;
-  createPost(input: { kind: 'image' | 'video'; media_url: string; caption: string; tag: 'sharing' | 'feedback' }): Promise<Post>;
+  createPost(input: { kind: 'image' | 'video'; media_url: string; caption: string; tag: 'sharing' | 'feedback'; community?: boolean }): Promise<Post>;
   deletePost(id: string): Promise<void>;
   setLike(postId: string, on: boolean): Promise<void>;
   listComments(postId: string): Promise<Comment[]>;

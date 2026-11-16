@@ -43,23 +43,35 @@ Payment uses Paystack. Only the **public** key is in the code (`ENROL.paystackPu
 
 Payments are confirmed on the server by `/api/verify-payment` (₦40,000, NGN) before the visitor sees "Payment received".
 
-## Motion Dojo Connect: `connect.joinmotiondojo.com`
+## Motion Dojo Connect (its own domain)
 
-A community space for Keyframe Ninjas (students of Black Belt in Motion Design): profiles, a directory, work posts with likes and comments, follows and direct messages. Anyone can browse; signed-in members can follow, like, comment and message; only verified students can post work.
+A community space for Keyframe Ninjas (students of Black Belt in Motion Design). It has:
+- a **Community** feed where the grand sensei posts, and every student gets a notification
+- a student directory and profiles
+- work posts with likes, comments and bookmarks (Saved)
+- **connection requests** that the other person accepts or declines; messages only work between connected members
+- notifications, reports and blocks
 
-It lives in this same project (`src/connect`, route `src/app/connect`). `src/middleware.ts` serves it on any `connect.` host, so `connect.joinmotiondojo.com/students` shows `/connect/students`. Until Supabase is connected it runs as a preview with clearly labelled sample members.
+Anyone can browse. Signed-in members can like, comment, save, connect and (once connected) message. Only verified students post work; only the grand sensei posts to Community.
+
+It lives in this same project (`src/connect`, route `src/app/connect`). `src/middleware.ts` serves it on the Connect domain, so `<your-connect-domain>/students` shows `/connect/students`. Until Supabase is connected it runs as a preview with clearly labelled sample members.
 
 **Setup (one time):**
 
 1. Create a free project at [supabase.com](https://supabase.com).
 2. In Supabase → SQL Editor, paste all of `supabase/schema.sql` and run it.
-3. In Supabase → Authentication → URL Configuration, set the Site URL to `https://connect.joinmotiondojo.com` and add it to Redirect URLs.
+3. In Supabase → Authentication → URL Configuration, set the Site URL to your Connect domain (e.g. `https://yourdomain.com`) and add it to Redirect URLs.
 4. In Vercel → this project → Settings → Environment Variables, add:
    - `NEXT_PUBLIC_SUPABASE_URL` and `NEXT_PUBLIC_SUPABASE_ANON_KEY` (Supabase → Project Settings → API)
    - `SUPABASE_SERVICE_ROLE_KEY` (same page; server only, never commit it)
-5. In Vercel → Domains, add `connect.joinmotiondojo.com` to this project, then redeploy.
+   - `CONNECT_HOSTS`: your Connect domain, e.g. `yourdomain.com,www.yourdomain.com`
+   - `NEXT_PUBLIC_MAIN_SITE_URL` (optional): where "Motion Dojo website" in the account menu points
+5. In Vercel → Domains, add the Connect domain to this project, then redeploy.
+6. Sign in to Connect once yourself, then in Supabase → Table Editor → `profiles`, tick `is_sensei` on your row. That makes you the grand sensei.
 
-**Students get the Keyframe Ninja badge automatically** when the email they sign in with paid for the course through Paystack (the webhook records it). For students who paid another way, add their email in Supabase → Table Editor → `enrolments`, or add a code to `invite_codes` and give it to them (use long random codes, e.g. `NINJA-7K2Q-9XMD`, so they can't be guessed). **Moderators:** set `is_moderator` to true on their row in `profiles`; they can remove any post or comment and read `reports`.
+**Students get the Keyframe Ninja badge automatically** when the email they sign in with paid for the course through Paystack (the webhook records it). For students who paid another way, add their email in Supabase → Table Editor → `enrolments`, or add a code to `invite_codes` and give it to them (use long random codes, e.g. `NINJA-7K2Q-9XMD`, so they can't be guessed). **Moderators:** tick `is_moderator` on their row in `profiles`; they can remove any post or comment and read `reports`.
+
+Notifications are in-app (the bell). Email or phone push notifications are a later addition.
 
 ## Fonts
 
