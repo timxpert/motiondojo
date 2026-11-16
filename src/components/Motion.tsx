@@ -67,8 +67,7 @@ export function Motion() {
         const siblings = el.parentElement ? Array.from(el.parentElement.children) : [];
         el.style.setProperty('--i', String(Math.min(siblings.indexOf(el), 3)));
         el.classList.add('reveal');
-        // A heading starts fully masked (clip-path), which the observer reads as invisible,
-        // so headings are triggered by their parent block instead.
+        // Headings are triggered by their parent block (a hidden heading is a poor trigger)
         const target = el.matches('.h2, .display') && el.parentElement ? el.parentElement : el;
         watch.set(target, [...(watch.get(target) || []), el]);
         io!.observe(target);

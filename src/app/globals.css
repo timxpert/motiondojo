@@ -2056,7 +2056,7 @@ details[open] > :not(summary) {
   }
 }
 
-/* ---------- Page entrance: the hero headline rises out of a mask, line by line ---------- */
+/* ---------- Page entrance: the hero headline rises in, line by line ---------- */
 .hero .display .line,
 .bb-hero .display {
   display: block;
@@ -2075,14 +2075,12 @@ details[open] > :not(summary) {
 .bb-phone video {
   animation: phone-in 1.3s var(--ease) 0.2s both;
 }
+/* Opacity and movement only: no clip-path, so the headline can never be left hidden
+   by a browser that handles clipping differently */
 @keyframes mask-rise {
   from {
-    clip-path: inset(0 0 100% 0);
-    transform: translateY(0.45em);
-  }
-  to {
-    clip-path: inset(-0.2em -0.2em -0.3em -0.2em);
-    transform: none;
+    opacity: 0;
+    transform: translateY(0.35em);
   }
 }
 @keyframes fade-in {
@@ -2159,22 +2157,22 @@ details[open] > :not(summary) {
   transform: scale(1.06);
 }
 
-/* ---------- Section headings rise out of a mask as their section arrives ---------- */
+/* ---------- Section headings rise in as their section arrives ---------- */
 .reveal .h2,
 .h2.reveal,
 .reveal .display,
 .display.reveal {
-  clip-path: inset(0 0 100% 0);
-  transform: translateY(0.4em);
+  opacity: 0;
+  transform: translateY(0.35em);
 }
 .reveal.is-in .h2,
 .h2.reveal.is-in,
 .reveal.is-in .display,
 .display.reveal.is-in {
-  clip-path: inset(-0.2em -0.2em -0.3em -0.2em);
+  opacity: 1;
   transform: none;
   transition:
-    clip-path 1s var(--ease) calc(var(--i, 0) * 70ms),
+    opacity 0.8s ease calc(var(--i, 0) * 70ms),
     transform 1s var(--ease) calc(var(--i, 0) * 70ms);
 }
 
