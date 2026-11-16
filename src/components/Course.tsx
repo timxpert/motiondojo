@@ -6,20 +6,17 @@ export function Course() {
   const parts = [
     {
       name: 'Motion Dojo',
-      is: 'The community',
-      body: 'Smartphone motion designers and creative enthusiasts learning, connecting and growing together.',
+      body: 'The community. Smartphone motion designers and creative enthusiasts learning and growing together.',
       link: { href: COMMUNITY_JOIN_URL, label: 'Join the community', newTab: true, className: 'btn btn-primary' },
     },
     {
       name: 'Black Belt in Motion Design',
-      is: 'The course',
-      body: 'Structured training for members who want a guided learning experience.',
+      body: 'The course. Structured training for members who want a guided learning experience.',
       link: { href: COURSE_URL, label: 'See the course', newTab: true, className: 'btn btn-lime' },
     },
     {
       name: 'Keyframe Ninjas',
-      is: 'Students on the course',
-      body: 'Members enrolled in Black Belt in Motion Design.',
+      body: 'The students. Everyone enrolled in Black Belt in Motion Design is a Keyframe Ninja.',
       link: { href: NINJAS_SHOWCASE_URL, label: 'See their work', newTab: true, className: 'btn btn-light' },
     },
   ];
@@ -29,16 +26,13 @@ export function Course() {
       <div className="wrap">
         <div className="section-head">
           <h2 className="h2" id="ecosystem-title">
-            The community, the course and the Ninjas.
+            Motion Dojo, Black Belt and the Ninjas
           </h2>
         </div>
         <ul className="eco">
           {parts.map((p) => (
             <li key={p.name} className="eco-row">
-              <div className="eco-name">
-                <span className="eco-is">{p.is}</span>
-                <h3>{p.name}</h3>
-              </div>
+              <h3 className="eco-name">{p.name}</h3>
               <p>{p.body}</p>
               {p.link.href && (
                 <a

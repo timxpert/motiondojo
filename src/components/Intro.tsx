@@ -5,7 +5,7 @@ export function Intro() {
     <section className="section" id="intro" aria-labelledby="intro-title">
       <div className="wrap intro-grid">
         <h2 className="h2" id="intro-title">
-          A community for smartphone motion designers.
+          A community for smartphone motion designers
         </h2>
         <div className="intro-copy">
           <p className="lede">

@@ -21,27 +21,22 @@ const PILLARS = [
 
 export function Inside() {
   return (
-    <section className="section section-flat" id="pillars" aria-labelledby="pillars-title">
+    <section className="section" id="pillars" aria-labelledby="pillars-title">
       <div className="wrap">
         <div className="section-head">
           <h2 className="h2" id="pillars-title">
-            Built around three things.
+            What Motion Dojo is built around
           </h2>
         </div>
 
-        <ol className="bento pillars">
-          {PILLARS.map((p, i) => (
-            <li key={p.key} className={`tile-${p.key}`}>
-              <span className="pillar-num" aria-hidden="true">
-                0{i + 1}
-              </span>
-              <div className="tile-copy">
-                <h3 className="tile-title">{p.title}</h3>
-                <p>{p.body}</p>
-              </div>
-            </li>
+        <dl className="pillars">
+          {PILLARS.map((p) => (
+            <div key={p.key} className={`pillar pillar-${p.key}`}>
+              <dt>{p.title}</dt>
+              <dd>{p.body}</dd>
+            </div>
           ))}
-        </ol>
+        </dl>
       </div>
     </section>
   );

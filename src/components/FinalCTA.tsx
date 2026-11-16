@@ -2,8 +2,8 @@ import React from 'react';
 import { COMMUNITY_JOIN_URL } from '@/config/site';
 
 export function FinalCTA({
-  title = 'Not just learning to animate. Growing together.',
-  lede = 'Motion Dojo is building a community of creatives who grow together. There’s room for you.',
+  title = 'Come grow with us',
+  lede = 'Join smartphone motion designers who learn, share their work and get better together.',
   action,
 }: {
   title?: string;

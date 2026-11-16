@@ -625,84 +625,51 @@ main > .section:last-child {
 }
 
 /* ==================================================================
-   Built around three things: Learning (violet), Community (midnight),
-   Growth (lime). Numbered, equal tiles.
+   What Motion Dojo is built around: three rows of plain type.
+   The word on the left, what it means on the right, hairlines between.
 ================================================================== */
-.bento {
+.pillars {
   display: grid;
-  gap: 16px;
+  margin: 0;
 }
-.bento > li {
+.pillar {
   display: grid;
-  align-content: space-between;
-  gap: 40px;
-  padding: clamp(24px, 3vw, 36px);
-  border-radius: var(--r-lg);
+  gap: 10px;
+  padding-block: clamp(24px, 3.4vw, 40px);
+  border-top: 1px solid var(--line);
 }
-.pillar-num {
+.pillar:last-child {
+  border-bottom: 1px solid var(--line);
+}
+.pillar dt {
   font-family: var(--font-display);
   font-weight: 600;
-  font-size: 1rem;
-  opacity: 0.7;
-}
-.tile-title {
-  font-family: var(--font-display);
-  font-weight: 600;
-  font-size: clamp(2rem, 3.6vw, 2.75rem);
+  font-size: clamp(2.25rem, 5vw, 4rem);
   line-height: 1;
-  letter-spacing: -0.03em;
+  letter-spacing: -0.035em;
+  color: var(--ink);
 }
-.tile-copy {
-  display: grid;
-  gap: 14px;
+.pillar-community dt {
+  color: var(--violet);
 }
-.tile-learn {
-  background: var(--violet);
-  color: #fff;
-}
-.tile-learn p {
-  color: rgba(255, 255, 255, 0.86);
-}
-.tile-community {
-  background: var(--midnight);
-  color: var(--on-dark);
-}
-.tile-community p {
-  color: var(--on-dark-muted);
-}
-.tile-community .pillar-num {
-  color: var(--lime);
-  opacity: 1;
-}
-.tile-grow {
-  background: var(--lime);
-  color: var(--midnight);
-}
-.tile-grow p {
-  color: #2b2346;
+.pillar dd {
+  margin: 0;
+  max-width: 44ch;
+  font-size: clamp(1.05rem, 1.4vw, 1.2rem);
+  line-height: 1.55;
+  color: var(--muted);
 }
 @media (min-width: 900px) {
-  .bento {
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-    gap: 20px;
-  }
-  .bento > li {
-    min-height: 380px;
+  .pillar {
+    grid-template-columns: 1fr 1fr;
+    align-items: baseline;
+    gap: 48px;
   }
 }
 
 /* ==================================================================
    What makes Motion Dojo different: a dark statement panel
 ================================================================== */
-.kicker {
-  margin-bottom: 18px;
-  font-weight: 600;
-  font-size: 0.95rem;
-  color: var(--violet);
-}
-.dark-section .kicker {
-  color: var(--lime);
-}
 .different .h2 {
   max-width: 18ch;
 }
@@ -723,14 +690,7 @@ main > .section:last-child {
 .eco-row:last-child {
   border-bottom: 1px solid var(--line);
 }
-.eco-is {
-  display: block;
-  margin-bottom: 4px;
-  font-size: 0.95rem;
-  font-weight: 500;
-  color: var(--violet);
-}
-.eco-name h3 {
+.eco-name {
   font-family: var(--font-display);
   font-weight: 600;
   font-size: clamp(1.5rem, 2.6vw, 2rem);
@@ -743,9 +703,12 @@ main > .section:last-child {
 }
 @media (min-width: 900px) {
   .eco-row {
-    grid-template-columns: 1.1fr 1.2fr auto;
+    grid-template-columns: 1fr 1.3fr 180px;
     align-items: center;
     gap: 40px;
+  }
+  .eco-row .btn {
+    justify-self: end;
   }
 }
 
@@ -2076,8 +2039,7 @@ details[open] > :not(summary) {
 .project,
 .story-card,
 .bb-plan,
-.bb-card,
-.bento > li {
+.bb-card {
   position: relative;
   transform: perspective(1000px) rotateX(var(--rx, 0deg)) rotateY(var(--ry, 0deg));
   transition: transform 0.8s var(--spring), box-shadow 0.4s ease;
@@ -2140,20 +2102,20 @@ details[open] > :not(summary) {
 }
 
 /* Lists inside a revealed block arrive one item after another */
-.reveal :is(.bb-grid, .bb-perks, .bb-phases, .bb-faq, .bento, .bb-plans) > * {
+.reveal :is(.bb-grid, .bb-perks, .bb-phases, .bb-faq, .pillars, .eco, .bb-plans) > * {
   opacity: 0;
   translate: 0 16px;
 }
-.reveal.is-in :is(.bb-grid, .bb-perks, .bb-phases, .bb-faq, .bento, .bb-plans) > * {
+.reveal.is-in :is(.bb-grid, .bb-perks, .bb-phases, .bb-faq, .pillars, .eco, .bb-plans) > * {
   opacity: 1;
   translate: none;
   transition: opacity 0.6s ease, translate 0.9s var(--ease), transform 0.8s var(--spring), box-shadow 0.4s ease;
 }
-.reveal.is-in :is(.bb-grid, .bb-perks, .bb-phases, .bb-faq, .bento, .bb-plans) > :nth-child(2) { transition-delay: 0.08s; }
-.reveal.is-in :is(.bb-grid, .bb-perks, .bb-phases, .bb-faq, .bento, .bb-plans) > :nth-child(3) { transition-delay: 0.16s; }
-.reveal.is-in :is(.bb-grid, .bb-perks, .bb-phases, .bb-faq, .bento, .bb-plans) > :nth-child(4) { transition-delay: 0.24s; }
-.reveal.is-in :is(.bb-grid, .bb-perks, .bb-phases, .bb-faq, .bento, .bb-plans) > :nth-child(5) { transition-delay: 0.32s; }
-.reveal.is-in :is(.bb-grid, .bb-perks, .bb-phases, .bb-faq, .bento, .bb-plans) > :nth-child(n + 6) { transition-delay: 0.4s; }
+.reveal.is-in :is(.bb-grid, .bb-perks, .bb-phases, .bb-faq, .pillars, .eco, .bb-plans) > :nth-child(2) { transition-delay: 0.08s; }
+.reveal.is-in :is(.bb-grid, .bb-perks, .bb-phases, .bb-faq, .pillars, .eco, .bb-plans) > :nth-child(3) { transition-delay: 0.16s; }
+.reveal.is-in :is(.bb-grid, .bb-perks, .bb-phases, .bb-faq, .pillars, .eco, .bb-plans) > :nth-child(4) { transition-delay: 0.24s; }
+.reveal.is-in :is(.bb-grid, .bb-perks, .bb-phases, .bb-faq, .pillars, .eco, .bb-plans) > :nth-child(5) { transition-delay: 0.32s; }
+.reveal.is-in :is(.bb-grid, .bb-perks, .bb-phases, .bb-faq, .pillars, .eco, .bb-plans) > :nth-child(n + 6) { transition-delay: 0.4s; }
 
 .is-done,
 .is-done * {
