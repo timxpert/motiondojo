@@ -138,7 +138,6 @@ export function Footer() {
   ];
   const dojo: FLink[] = [
     { label: 'About', href: '/#intro', icon: 'info' },
-    { label: 'Community', href: '/#community', icon: 'people' },
     { label: 'Meet the team', href: '/#team', icon: 'team' },
   ];
   const socials = [

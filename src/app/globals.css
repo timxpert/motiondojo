@@ -798,30 +798,6 @@ main > .section:last-child {
 }
 
 /* ==================================================================
-   Community
-================================================================== */
-.community-head {
-  display: grid;
-  gap: 24px;
-}
-@media (min-width: 960px) {
-  .community-head {
-    grid-template-columns: 1fr 1fr;
-    align-items: end;
-    gap: 64px;
-  }
-  .community-head .side {
-    display: grid;
-    gap: 24px;
-    justify-items: start;
-  }
-}
-.community-head .side {
-  display: grid;
-  gap: 22px;
-  justify-items: start;
-}
-/* ==================================================================
    Testimonials
 ================================================================== */
 .voices {

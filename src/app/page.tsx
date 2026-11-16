@@ -6,7 +6,6 @@ import { Intro } from '@/components/Intro';
 import { Team } from '@/components/Team';
 import { Inside } from '@/components/Inside';
 import { Course } from '@/components/Course';
-import { Community } from '@/components/Community';
 import { Testimonials } from '@/components/Testimonials';
 import { FinalCTA } from '@/components/FinalCTA';
 import { Footer } from '@/components/Footer';
@@ -25,7 +24,6 @@ export default function HomePage() {
         <Team />
         <Inside />
         <Course />
-        <Community />
         <Testimonials />
         <FinalCTA />
       </main>

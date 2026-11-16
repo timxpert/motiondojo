@@ -1,5 +1,5 @@
 import React from 'react';
-import { COURSE_URL } from '@/config/site';
+import { COMMUNITY_JOIN_URL, COURSE_URL } from '@/config/site';
 
 export function Inside() {
   return (
@@ -36,8 +36,8 @@ export function Inside() {
                 <strong>The community</strong> is where members post work in progress, ask for help when something
                 won’t move right, and pass on paid referrals and collaborations.
               </p>
-              <a href="#community" className="btn btn-primary">
-                About the community
+              <a href={COMMUNITY_JOIN_URL} target="_blank" rel="noopener" className="btn btn-primary">
+                Join the community
               </a>
             </div>
           </article>
