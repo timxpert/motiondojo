@@ -1545,14 +1545,13 @@ details[open] > summary .bb-chev {
   cursor: wait;
 }
 
-/* Closing panel without a headline: the sentence carries it */
+/* Closing panel without a headline: a plain paragraph, a little larger than body text */
 .final.no-title .lede {
-  max-width: 24ch;
-  font-family: var(--font-display);
-  font-weight: 600;
-  font-size: clamp(1.6rem, 3.4vw, 2.6rem);
-  line-height: 1.15;
-  letter-spacing: -0.02em;
+  max-width: 36ch;
+  font-family: var(--font-body);
+  font-weight: 400;
+  font-size: clamp(1.15rem, 1.8vw, 1.4rem);
+  line-height: 1.5;
   color: var(--on-dark);
 }
 
