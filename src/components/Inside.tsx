@@ -1,47 +1,47 @@
 import React from 'react';
-import { COMMUNITY_JOIN_URL, COURSE_URL } from '@/config/site';
+
+/* The three things Motion Dojo is built around, in Motion Dojo's own words. */
+const PILLARS = [
+  {
+    key: 'learn',
+    title: 'Learning',
+    body: 'Helping members understand motion design, master their tools, and develop strong creative foundations.',
+  },
+  {
+    key: 'community',
+    title: 'Community',
+    body: 'Connecting like-minded creatives who can learn from, support, challenge, and inspire one another.',
+  },
+  {
+    key: 'grow',
+    title: 'Growth',
+    body: 'Helping members move beyond tutorials to creating meaningful work, building portfolios, and finding opportunities.',
+  },
+];
 
 export function Inside() {
   return (
-    <section className="section section-flat" id="resources" aria-labelledby="inside-title">
+    <section className="section section-flat" id="pillars" aria-labelledby="pillars-title">
       <div className="wrap">
         <div className="section-head">
-          <h2 className="h2" id="inside-title">
-            Two ways in.
+          <h2 className="h2" id="pillars-title">
+            Built around three things.
           </h2>
-          <p className="lede">
-            Most people come to Motion Dojo to learn the craft, to find other people doing it, or both.
-          </p>
         </div>
 
-        {/* Two offers, set apart by colour rather than pictures */}
-        <div className="bento">
-          <article className="tile-learn">
-            <h3 className="tile-title">Learn the craft</h3>
-            <div className="tile-copy">
-              <p>
-                <strong>Black Belt in Motion Design</strong> takes you from your first keyframe in Alight Motion to a
-                portfolio you can show clients, in four phases, at your own pace.
-              </p>
-              <a href={COURSE_URL} target="_blank" rel="noopener" className="btn btn-lime">
-                See the course
-              </a>
-            </div>
-          </article>
-
-          <article className="tile-grow">
-            <h3 className="tile-title">Find your people</h3>
-            <div className="tile-copy">
-              <p>
-                <strong>The community</strong> is where members post work in progress, ask for help when something
-                won’t move right, and pass on paid referrals and collaborations.
-              </p>
-              <a href={COMMUNITY_JOIN_URL} target="_blank" rel="noopener" className="btn btn-primary">
-                Join the community
-              </a>
-            </div>
-          </article>
-        </div>
+        <ol className="bento pillars">
+          {PILLARS.map((p, i) => (
+            <li key={p.key} className={`tile-${p.key}`}>
+              <span className="pillar-num" aria-hidden="true">
+                0{i + 1}
+              </span>
+              <div className="tile-copy">
+                <h3 className="tile-title">{p.title}</h3>
+                <p>{p.body}</p>
+              </div>
+            </li>
+          ))}
+        </ol>
       </div>
     </section>
   );

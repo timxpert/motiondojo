@@ -6,16 +6,6 @@
 import { Story } from '@/types';
 
 /* ------------------------------------------------------------------
-   Black Belt in Motion Design: the four phases (same names as the course page curriculum)
-------------------------------------------------------------------- */
-export const COURSE_PHASES = [
-  { title: 'Foundations', body: 'Design principles, typography, colour and your first steps in Alight Motion.' },
-  { title: 'Alight Motion mastery', body: 'Keyframes, the graph editor, every effect, null objects and the camera.' },
-  { title: 'Creative execution', body: 'The 12 principles of animation, scripts and voiceovers, and your first final project.' },
-  { title: 'Portfolio & mastery', body: 'AI workflows, your portfolio, personal branding, clients and pricing.' },
-];
-
-/* ------------------------------------------------------------------
    Meet the team: names, roles, bios and WhatsApp links as published on
    joinmotiondojo.vercel.app.
 ------------------------------------------------------------------- */

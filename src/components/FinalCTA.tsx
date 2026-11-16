@@ -2,8 +2,8 @@ import React from 'react';
 import { COMMUNITY_JOIN_URL } from '@/config/site';
 
 export function FinalCTA({
-  title = 'Come train with us.',
-  lede = 'Enrol in Black Belt in Motion Design and you’re in the community from your first lesson.',
+  title = 'Not just learning to animate. Growing together.',
+  lede = 'Motion Dojo is building a community of creatives who grow together. There’s room for you.',
   action,
 }: {
   title?: string;
@@ -26,8 +26,8 @@ export function FinalCTA({
         </h2>
         <p className="lede">{lede}</p>
         {action ?? (
-          <a href={COMMUNITY_JOIN_URL} target="_blank" rel="noopener" className="btn btn-lime">
-            Join Motion Dojo
+          <a href={COMMUNITY_JOIN_URL} target="_blank" rel="noopener noreferrer" className="btn btn-lime">
+            Join the community
           </a>
         )}
       </div>

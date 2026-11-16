@@ -625,39 +625,37 @@ main > .section:last-child {
 }
 
 /* ==================================================================
-   Two ways in: the course (violet) and the community (lime), side by side.
+   Built around three things: Learning (violet), Community (midnight),
+   Growth (lime). Numbered, equal tiles.
 ================================================================== */
 .bento {
   display: grid;
   gap: 16px;
 }
-.bento article {
+.bento > li {
   display: grid;
   align-content: space-between;
   gap: 40px;
-  padding: clamp(24px, 3.4vw, 44px);
+  padding: clamp(24px, 3vw, 36px);
   border-radius: var(--r-lg);
+}
+.pillar-num {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 1rem;
+  opacity: 0.7;
 }
 .tile-title {
   font-family: var(--font-display);
   font-weight: 600;
-  font-size: clamp(2rem, 4.2vw, 3.5rem);
+  font-size: clamp(2rem, 3.6vw, 2.75rem);
   line-height: 1;
   letter-spacing: -0.03em;
 }
 .tile-copy {
   display: grid;
   gap: 14px;
-  justify-items: start;
-  max-width: 48ch;
 }
-.tile-copy .btn {
-  margin-top: 10px;
-}
-.tile-copy strong {
-  font-weight: 600;
-}
-
 .tile-learn {
   background: var(--violet);
   color: #fff;
@@ -665,7 +663,17 @@ main > .section:last-child {
 .tile-learn p {
   color: rgba(255, 255, 255, 0.86);
 }
-
+.tile-community {
+  background: var(--midnight);
+  color: var(--on-dark);
+}
+.tile-community p {
+  color: var(--on-dark-muted);
+}
+.tile-community .pillar-num {
+  color: var(--lime);
+  opacity: 1;
+}
 .tile-grow {
   background: var(--lime);
   color: var(--midnight);
@@ -673,127 +681,71 @@ main > .section:last-child {
 .tile-grow p {
   color: #2b2346;
 }
-
 @media (min-width: 900px) {
   .bento {
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
     gap: 20px;
   }
-  .bento article {
-    min-height: 420px;
+  .bento > li {
+    min-height: 380px;
   }
 }
 
 /* ==================================================================
-   Black Belt in Motion Design
+   What makes Motion Dojo different: a dark statement panel
 ================================================================== */
-.course-copy {
-  display: grid;
-  gap: 22px;
-  justify-items: start;
-  max-width: 760px;
-}
-.course-copy .btn {
-  margin-top: 8px;
-}
-/* Four phases on a timeline */
-.phases {
-  position: relative;
-  display: grid;
-  gap: 0;
-  margin-top: clamp(56px, 7vw, 88px);
-}
-.phase {
-  position: relative;
-  display: grid;
-  align-content: start;
-  grid-template-columns: 52px 1fr;
-  gap: 4px 18px;
-  padding-bottom: 32px;
-}
-.phase::before {
-  content: "";
-  position: absolute;
-  left: 25px;
-  top: 40px;
-  bottom: 0;
-  width: 2px;
-  background: var(--line);
-}
-.phase:last-child::before {
-  display: none;
-}
-.phase-key {
-  grid-row: span 2;
-  position: relative;
-  z-index: 1;
-  isolation: isolate;
-  width: 52px;
-  height: 52px;
-  display: grid;
-  place-items: center;
-  font-family: var(--font-display);
+.kicker {
+  margin-bottom: 18px;
   font-weight: 600;
   font-size: 0.95rem;
   color: var(--violet);
-  font-variant-numeric: tabular-nums;
 }
-.phase-key::before {
-  content: "";
-  position: absolute;
-  inset: 9px;
-  z-index: -1;
-  transform: rotate(45deg);
-  border-radius: 6px;
-  background: var(--paper);
-  border: 2px solid var(--violet);
+.dark-section .kicker {
+  color: var(--lime);
 }
-.phase:last-child .phase-key::before {
-  background: var(--lime);
-  border-color: var(--midnight);
+.different .h2 {
+  max-width: 18ch;
 }
-.phase:last-child .phase-key {
-  color: var(--midnight);
+
+/* ==================================================================
+   The community, the course and the Ninjas: three rows, one per name
+================================================================== */
+.eco {
+  display: grid;
 }
-.phase h3 {
+.eco-row {
+  display: grid;
+  gap: 12px;
+  justify-items: start;
+  padding-block: clamp(22px, 3vw, 32px);
+  border-top: 1px solid var(--line);
+}
+.eco-row:last-child {
+  border-bottom: 1px solid var(--line);
+}
+.eco-is {
+  display: block;
+  margin-bottom: 4px;
+  font-size: 0.95rem;
+  font-weight: 500;
+  color: var(--violet);
+}
+.eco-name h3 {
   font-family: var(--font-display);
   font-weight: 600;
-  font-size: 1.2rem;
-  letter-spacing: -0.01em;
-  padding-top: 12px;
+  font-size: clamp(1.5rem, 2.6vw, 2rem);
+  line-height: 1.1;
+  letter-spacing: -0.02em;
 }
-.phase p {
+.eco-row p {
   color: var(--muted);
-  font-size: 1rem;
-  max-width: 30ch;
+  max-width: 46ch;
 }
 @media (min-width: 900px) {
-  .phases {
-    grid-template-columns: repeat(4, 1fr);
-    gap: 28px;
-  }
-  .phases::before {
-    content: "";
-    position: absolute;
-    left: 26px;
-    right: calc(25% - 26px);
-    top: 25px;
-    height: 2px;
-    background: var(--lavender);
-  }
-  .phase {
-    grid-template-columns: 1fr;
-    padding-bottom: 0;
-  }
-  .phase::before {
-    display: none;
-  }
-  .phase-key {
-    grid-row: auto;
-    margin-bottom: 10px;
-  }
-  .phase h3 {
-    padding-top: 0;
+  .eco-row {
+    grid-template-columns: 1.1fr 1.2fr auto;
+    align-items: center;
+    gap: 40px;
   }
 }
 
@@ -2125,7 +2077,7 @@ details[open] > :not(summary) {
 .story-card,
 .bb-plan,
 .bb-card,
-.bento > article {
+.bento > li {
   position: relative;
   transform: perspective(1000px) rotateX(var(--rx, 0deg)) rotateY(var(--ry, 0deg));
   transition: transform 0.8s var(--spring), box-shadow 0.4s ease;
@@ -2186,48 +2138,6 @@ details[open] > :not(summary) {
   scale: 1;
   transition: scale 1.4s var(--ease), transform 0.5s var(--ease);
 }
-
-/* The four-phase timeline draws itself, then each phase lights up in turn */
-.phases.reveal::before {
-  transform: scaleX(0);
-  transform-origin: left center;
-}
-.phases.reveal.is-in::before {
-  transform: none;
-  transition: transform 1.4s var(--ease) 0.15s;
-}
-.phases.reveal .phase-key {
-  transform: scale(0.4);
-  opacity: 0;
-}
-.phases.reveal.is-in .phase-key {
-  transform: none;
-  opacity: 1;
-  transition: transform 0.8s var(--bounce), opacity 0.3s ease;
-}
-.phases.reveal.is-in .phase:nth-child(1) .phase-key { transition-delay: 0.15s; }
-.phases.reveal.is-in .phase:nth-child(2) .phase-key { transition-delay: 0.45s; }
-.phases.reveal.is-in .phase:nth-child(3) .phase-key { transition-delay: 0.75s; }
-.phases.reveal.is-in .phase:nth-child(4) .phase-key { transition-delay: 1.05s; }
-.phases.reveal {
-  opacity: 1;
-  translate: none;
-}
-.phases.reveal .phase h3,
-.phases.reveal .phase p {
-  opacity: 0;
-  transform: translateY(10px);
-}
-.phases.reveal.is-in .phase h3,
-.phases.reveal.is-in .phase p {
-  opacity: 1;
-  transform: none;
-  transition: opacity 0.6s ease, transform 0.8s var(--ease);
-}
-.phases.reveal.is-in .phase:nth-child(1) :is(h3, p) { transition-delay: 0.25s; }
-.phases.reveal.is-in .phase:nth-child(2) :is(h3, p) { transition-delay: 0.55s; }
-.phases.reveal.is-in .phase:nth-child(3) :is(h3, p) { transition-delay: 0.85s; }
-.phases.reveal.is-in .phase:nth-child(4) :is(h3, p) { transition-delay: 1.15s; }
 
 /* Lists inside a revealed block arrive one item after another */
 .reveal :is(.bb-grid, .bb-perks, .bb-phases, .bb-faq, .bento, .bb-plans) > * {

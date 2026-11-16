@@ -15,7 +15,7 @@ import { useEffect } from 'react';
 ------------------------------------------------------------------- */
 
 const TAP_TARGETS = '.btn, .carousel-btn, .stories-btn, .enrol-option, .menu-btn';
-const TILT_TARGETS = '.project, .story-card, .bb-plan, .bb-card, .bento > article';
+const TILT_TARGETS = '.project, .story-card, .bb-plan, .bb-card, .bento > li';
 const REVEAL_ITEMS = [
   'main > .section:not(.hero):not(.reel) .wrap > *',
 ].join(',');

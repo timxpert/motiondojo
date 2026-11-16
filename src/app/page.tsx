@@ -6,6 +6,7 @@ import { Intro } from '@/components/Intro';
 import { Team } from '@/components/Team';
 import { Inside } from '@/components/Inside';
 import { Course } from '@/components/Course';
+import { Different } from '@/components/Different';
 import { Testimonials } from '@/components/Testimonials';
 import { FinalCTA } from '@/components/FinalCTA';
 import { Footer } from '@/components/Footer';
@@ -21,9 +22,10 @@ export default function HomePage() {
         <Hero />
         <Reel />
         <Intro />
-        <Team />
         <Inside />
+        <Different />
         <Course />
+        <Team />
         <Testimonials />
         <FinalCTA />
       </main>

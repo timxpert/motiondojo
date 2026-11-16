@@ -7,10 +7,10 @@
 
 /**
  * Where "Join the community" sends people.
- * Joining happens by enrolling in Black Belt (the community manager gives access once
- * payment is confirmed). Replace with a dedicated invite link when one exists.
+ * The community is open to members who aren't on the course, so this goes to the
+ * community manager on WhatsApp for now. Replace with the group invite link when ready.
  */
-export const COMMUNITY_JOIN_URL = '/blackbelt';
+export const COMMUNITY_JOIN_URL = 'https://wa.link/be49ci';
 
 /** Black Belt in Motion Design: the course page on this site. */
 export const COURSE_URL = '/blackbelt';
@@ -42,9 +42,10 @@ export const SITE_METADATA = {
 
 /** Main navigation (header, mobile menu and footer). */
 export const NAV = [
-  { href: '/', label: 'Home' },
   { href: '/#intro', label: 'About' },
-  { href: '/#resources', label: 'Resources' },
+  { href: '/#pillars', label: 'What we do' },
+  { href: '/#team', label: 'Team' },
+  { href: '/blackbelt', label: 'The course' },
 ];
 
 export const isExternal = (url: string) => /^https?:\/\//.test(url);

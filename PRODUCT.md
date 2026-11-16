@@ -1,5 +1,23 @@
 # Product
 
+## Motion Dojo in the team's own words (source of truth for copy)
+
+Motion Dojo is a community built for smartphone motion designers and creative enthusiasts who want to learn, improve, connect, and grow together. It's more than a place to learn how to animate: an environment where creatives don't have to figure everything out alone, where they develop skills, discover their potential, share ideas, get feedback, collaborate, and build confidence.
+
+Built around three things:
+- **Learning**: understanding motion design, mastering tools, strong creative foundations.
+- **Community**: like-minded creatives who learn from, support, challenge, and inspire one another.
+- **Growth**: moving beyond tutorials to meaningful work, portfolios, and opportunities.
+
+What makes it different: growth shouldn't be limited by the tools you use or by learning alone. From first steps in Alight Motion to impressive projects, there's room to improve, experiment, and connect.
+
+Names:
+- **Motion Dojo**: the community.
+- **Black Belt in Motion Design**: the course (structured, guided training for members who want it).
+- **Keyframe Ninjas**: students enrolled in the course.
+
+The bigger picture: not just teaching people to animate, but building a community of creatives who grow together.
+
 <!-- impeccable:product-schema 1 -->
 
 ## Platform
