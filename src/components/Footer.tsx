@@ -1,4 +1,5 @@
 import React from 'react';
+import { BackToTop } from './BackToTop';
 import { CONTACT, COURSE_URL, DOJO_AI_URL, NINJAS_SHOWCASE_URL, SOCIAL_LINKS } from '@/config/site';
 
 type IconName =
@@ -183,12 +184,8 @@ export function Footer() {
         </nav>
       </div>
 
-      <div className="footer-bottom">
-        <p>© {new Date().getFullYear()} Motion Dojo. All rights reserved.</p>
-        <a href="#top" className="footer-up" aria-label="Back to top" title="Back to top">
-          <Icon name="up" size={20} />
-        </a>
-      </div>
+      <p className="footer-bottom">© {new Date().getFullYear()} Motion Dojo. All rights reserved.</p>
+      <BackToTop />
     </footer>
   );
 }

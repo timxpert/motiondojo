@@ -1656,14 +1656,13 @@ details[open] > summary .bb-chev {
 /* ==================================================================
    Footer: a light panel. Brand, tagline and round social icons on the
    left; two lists where every link carries its own icon tile; copyright
-   and a round back-to-top button underneath.
+   centred underneath. Back to top floats in the corner (BackToTop.tsx).
 ================================================================== */
 .footer {
   background: var(--paper);
   padding: clamp(24px, 3vw, 40px) 0 clamp(20px, 3vw, 32px);
 }
-.footer-panel,
-.footer-bottom {
+.footer-panel {
   margin-inline: max(16px, calc((100% - var(--max) - var(--gutter) * 2) / 2));
 }
 .footer-panel {
@@ -1816,31 +1815,56 @@ details[open] > summary .bb-chev {
   }
 }
 .footer-bottom {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 16px;
-  padding: 20px clamp(8px, 2vw, 16px) 0;
+  /* room underneath so the floating button never sits on the copyright */
+  padding: 20px 16px 76px;
+  text-align: center;
   color: var(--muted);
   font-size: 0.95rem;
 }
-.footer-up {
-  flex: none;
+
+/* Floating back-to-top: appears after about a screen of scrolling */
+.to-top {
+  position: fixed;
+  right: max(16px, env(safe-area-inset-right));
+  bottom: max(16px, env(safe-area-inset-bottom));
+  z-index: 40;
   display: grid;
   place-items: center;
-  width: 48px;
-  height: 48px;
+  width: 52px;
+  height: 52px;
   border-radius: 50%;
   background: var(--midnight);
   color: var(--lime);
-  transition: background-color 0.25s ease, transform 0.6s var(--spring);
+  box-shadow: 0 14px 30px -12px rgba(20, 10, 46, 0.55);
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(16px) scale(0.8);
+  transition:
+    opacity 0.25s ease,
+    visibility 0s linear 0.6s,
+    transform 0.6s var(--spring),
+    background-color 0.25s ease,
+    color 0.25s ease;
 }
-.footer-up:hover {
+.to-top.is-shown {
+  opacity: 1;
+  visibility: visible;
+  transform: none;
+  transition:
+    opacity 0.25s ease,
+    visibility 0s,
+    transform 0.6s var(--spring),
+    background-color 0.25s ease,
+    color 0.25s ease;
+}
+.to-top:hover {
   background: var(--violet);
   color: #fff;
-  transform: translateY(-4px);
 }
-.footer-up:active {
+.to-top.is-shown:hover {
+  transform: translateY(-3px);
+}
+.to-top.is-shown:active {
   transform: scale(0.92);
   transition-duration: 0.09s;
 }
